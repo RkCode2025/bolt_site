@@ -30,14 +30,14 @@ export function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-4">
+        <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-4">
           Hi, I'm Syphax
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
           Developer passionate about learning, improving, and adapting every day.  
           I’m deeply interested in Machine Learning algorithms, Artificial Intelligence,
-          and software architecture — how systems think, scale, and evolve.
+          and software architecture.
         </p>
       </motion.div>
 
@@ -50,11 +50,10 @@ export function HeroSection() {
       >
         <h2 className="text-2xl font-semibold text-foreground">About</h2>
         <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-          I started coding out of curiosity and quickly became obsessed with how machines learn and reason.
-          My journey revolves around creating systems that merge intelligence and creativity — from
-          data-driven models to expressive user experiences.  
-          I’m currently focused on deep learning, FastAPI, and exploring how neural architectures
-          shape modern AI workflows and transform how we build intelligent software.
+          I’m deeply fascinated by how intelligence can be built — from the foundations of machine learning 
+          algorithms to the evolving world of artificial intelligence. My curiosity also extends to software architecture
+          — understanding how complex systems are designed, optimized, and scaled. I'm passionate about Natural Language Processing 
+          with libraries like Pytorch and Tensorflow.
         </p>
       </motion.div>
 
