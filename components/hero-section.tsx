@@ -9,7 +9,7 @@ export function HeroSection() {
     <section className="min-h-screen flex flex-col justify-center px-6 md:px-24 py-20 relative">
       {/* Profile Image - top right but visually balanced */}
       <motion.div
-        className="absolute top-16 right-23 w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border border-foreground/10 shadow-md"
+        className="absolute top-16 right-20 w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border border-foreground/10 shadow-md"
         initial={{ opacity: 0, x: 30, y: -30 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
