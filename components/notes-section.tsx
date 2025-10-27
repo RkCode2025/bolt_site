@@ -6,29 +6,29 @@ import { Calendar } from 'lucide-react';
 interface Note {
   title: string;
   date: string;
-  status: 'learning' | 'building' | 'exploring'| 'Completed';
+  status: 'learning' | 'building' | 'exploring' | 'completed';
 }
 
 const notes: Note[] = [
   {
-    title: 'Machine Learning with Pytorch and Scikit Learn',
+    title: 'Machine Learning with PyTorch and Scikit-learn',
     date: '2025',
     status: 'learning',
   },
   {
-    title: 'Experimenting with Pytorch implementations',
+    title: 'Experimenting with PyTorch implementations',
     date: '2025-10',
     status: 'exploring',
   },
   {
-    title: 'ML Specialization by Andrew NG',
+    title: 'ML Specialization by Andrew Ng',
     date: '2024',
-    status: 'Completed',
+    status: 'completed',
   },
   {
-    title: 'Exploring Tensorflow workflow and Structure',
+    title: 'Exploring TensorFlow workflow and structure',
     date: '2025',
-    status: 'Exploring',
+    status: 'exploring',
   },
   {
     title: 'Working on a custom LLM model',
@@ -37,11 +37,11 @@ const notes: Note[] = [
   },
 ];
 
-const statusStyles = {
-  learning: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-  building: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
-  exploring: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
-  Completed: 'bg-green-500/10 text-green-500 border-green-500/20',
+const statusStyles: Record<Note['status'], string> = {
+  learning: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  building: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
+  exploring: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+  completed: 'bg-green-500/10 text-green-400 border-green-500/20',
 };
 
 export function NotesSection() {
@@ -69,10 +69,11 @@ export function NotesSection() {
             >
               <motion.div
                 className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl p-5 border border-border/50 flex items-start gap-4 overflow-hidden"
-                whileHover={{ x: 8 }}
+                whileHover={{ x: 6 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                {/* Subtle moving gradient on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
                 <div className="relative z-10 flex-1">
                   <div className="flex items-start justify-between gap-4 mb-2">
@@ -80,11 +81,9 @@ export function NotesSection() {
                       {note.title}
                     </h3>
                     <span
-                      className={`text-xs px-3 py-1 rounded-full border font-mono whitespace-nowrap ${
-                        statusStyles[note.status]
-                      }`}
+                      className={`text-xs px-3 py-1 rounded-full border font-mono whitespace-nowrap ${statusStyles[note.status]}`}
                     >
-                      {note.status}
+                      {note.status.charAt(0).toUpperCase() + note.status.slice(1)}
                     </span>
                   </div>
 
