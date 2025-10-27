@@ -2,15 +2,15 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import profilePic from 'image-removebg-preview.png'; // update path if different
+import profilePic from 'image-removebg-preview.png'; // adjust path if needed
 
 export function HeroSection() {
   return (
-    <section className="min-h-screen flex flex-col justify-center px-6 md:px-24 py-20 relative">
-      {/* Profile Image - top right but visually balanced */}
+    <section className="min-h-screen flex flex-col justify-center px-6 md:px-20 py-20 relative">
+      {/* Profile Image - visually closer to text */}
       <motion.div
-        className="absolute top-16 right-20 w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border border-foreground/10 shadow-md"
-        initial={{ opacity: 0, x: 30, y: -30 }}
+        className="absolute top-20 right-10 md:top-24 md:right-32 w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border border-foreground/10 shadow-md"
+        initial={{ opacity: 0, x: 30, y: -20 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
@@ -35,9 +35,9 @@ export function HeroSection() {
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-          Developer passionate about learning, improving and adapting everyday.  
-          I am deeply interested in ML Algorithms, Artificial Intellegence
-          and software architecture.
+          Developer passionate about learning, improving, and adapting every day.  
+          I’m deeply interested in Machine Learning algorithms, Artificial Intelligence,
+          and software architecture — how systems think, scale, and evolve.
         </p>
       </motion.div>
 
@@ -50,10 +50,11 @@ export function HeroSection() {
       >
         <h2 className="text-2xl font-semibold text-foreground">About</h2>
         <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-          I’m deeply fascinated by how intelligence can be built — from the foundations of machine learning
-          algorithms to the evolving world of artificial intelligence. My curiosity also extends to software architecture
-          — understanding how complex systems are designed, optimized, and scaled. I'm passionate about Natural Language Processing
-          with libraries like Pytorch and Tensorflow.
+          I started coding out of curiosity and quickly became obsessed with how machines learn and reason.
+          My journey revolves around creating systems that merge intelligence and creativity — from
+          data-driven models to expressive user experiences.  
+          I’m currently focused on deep learning, FastAPI, and exploring how neural architectures
+          shape modern AI workflows and transform how we build intelligent software.
         </p>
       </motion.div>
 
@@ -64,16 +65,22 @@ export function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
       >
-        {['Python', 'NumPy', 'Pandas', 'scikit-learn', 'Machine Learning', 'PyTorch', 'Data Science'].map(
-          (skill) => (
-            <span
-              key={skill}
-              className="px-4 py-2 bg-foreground/10 rounded-full text-sm md:text-base text-foreground/80 font-medium hover:bg-foreground/20 transition"
-            >
-              {skill}
-            </span>
-          )
-        )}
+        {[
+          'Python',
+          'NumPy',
+          'Pandas',
+          'scikit-learn',
+          'Machine Learning',
+          'PyTorch',
+          'Data Science',
+        ].map((skill) => (
+          <span
+            key={skill}
+            className="px-4 py-2 bg-foreground/10 rounded-full text-sm md:text-base text-foreground/80 font-medium hover:bg-foreground/20 transition"
+          >
+            {skill}
+          </span>
+        ))}
       </motion.div>
     </section>
   );
