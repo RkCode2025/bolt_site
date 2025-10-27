@@ -13,22 +13,22 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: 'AI Model Playground',
-    description: 'Interactive environment for experimenting with transformer models and neural networks.',
-    tags: ['Python', 'PyTorch', 'Transformers'],
-    github: 'https://github.com/rkcode2025',
+    title: 'Neural Network from Scratch',
+    description: 'Recreating a Multilayer Perceptron Neural Network from scratch.',
+    tags: ['Python', 'Neural Nets', 'Numpy'],
+    github: 'https://github.com/rkcode2025/Hand_Digit_Recognition_with_Multilayer_Perceptron',
   },
   {
-    title: 'FastAPI Microservices',
-    description: 'Scalable backend architecture with modern async Python and containerized deployments.',
-    tags: ['FastAPI', 'Docker', 'PostgreSQL'],
-    github: 'https://github.com/rkcode2025',
+    title: 'Adaline Model from Scratch',
+    description: 'Detailed Implementation of Adaline Model from Scratch.',
+    tags: ['Numpy', 'ML', 'Scikit Learn'],
+    github: 'https://github.com/RkCode2025/Adaline-from-scratch-by-Machine-Learning-with-Pytorch-and-Scikit-learn-by-Sebastian-Raschka',
   },
   {
-    title: 'Generative Art Suite',
-    description: 'Creative coding project exploring algorithmic art and procedural generation.',
-    tags: ['TypeScript', 'Canvas', 'WebGL'],
-    github: 'https://github.com/rkcode2025',
+    title: 'Analysis of Amazon Bestsellers',
+    description: 'Detailed analysis of Amazon Bestsellers from 2009-2019.',
+    tags: ['Numpy', 'Plotly', 'Data Science'],
+    github: 'https://github.com/RkCode2025/Amazon-Bestseller-Books-2009-2019-Analysis',
   },
 ];
 
