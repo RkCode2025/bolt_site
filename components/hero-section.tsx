@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import profilePic from '@/public/image-removebg-preview.png'; // update path if different
+import profilePic from 'image-removebg-preview.png'; // update path if different
 
 export function HeroSection() {
   return (
