@@ -6,41 +6,42 @@ import { Calendar } from 'lucide-react';
 interface Note {
   title: string;
   date: string;
-  status: 'learning' | 'building' | 'exploring';
+  status: 'learning' | 'building' | 'exploring'| 'Completed';
 }
 
 const notes: Note[] = [
   {
-    title: 'Learning FastAPI for backend microservices',
-    date: '2025-10',
+    title: 'Machine Learning with Pytorch and Scikit Learn',
+    date: '2025',
     status: 'learning',
   },
   {
-    title: 'Experimenting with Transformer architectures',
+    title: 'Experimenting with Pytorch implementations',
     date: '2025-10',
     status: 'exploring',
   },
   {
-    title: 'Building real-time chat with WebSockets',
+    title: 'ML Specialization by Andrew NG',
+    date: '2024',
+    status: 'Completed',
+  },
+  {
+    title: 'Exploring Tensorflow workflow and Structure',
+    date: '2025',
+    status: 'Exploring',
+  },
+  {
+    title: 'Working on a custom LLM model',
     date: '2025-10',
     status: 'building',
-  },
-  {
-    title: 'Exploring LangChain for AI applications',
-    date: '2025-10',
-    status: 'learning',
-  },
-  {
-    title: 'Implementing vector embeddings with Pinecone',
-    date: '2025-10',
-    status: 'exploring',
   },
 ];
 
 const statusStyles = {
   learning: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-  building: 'bg-green-500/10 text-green-500 border-green-500/20',
+  building: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
   exploring: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+  Completed: 'bg-green-500/10 text-green-500 border-green-500/20',
 };
 
 export function NotesSection() {
