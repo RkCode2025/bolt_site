@@ -11,10 +11,7 @@ export default function Home() {
     <main className="relative min-h-screen">
       <AnimatedBackground />
 
-      {/* Top right theme toggle */}
-      <div className="fixed top-6 right-6 z-50">
-        <ThemeToggle />
-      </div>
+      
 
       {/* Page content */}
       <div className="relative z-10">
