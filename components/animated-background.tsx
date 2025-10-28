@@ -1,29 +1,61 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+  fadeSpeed: number;
+  update: (width: number, height: number, mouse: { x: number; y: number }) => void;
+  draw: (ctx: CanvasRenderingContext2D) => void;
+}
 
 export function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameId = useRef<number>(0);
+  const particlesRef = useRef<Particle[]>([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const canvasSizeRef = useRef({ width: 0, height: 0 });
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect dark mode & reduced motion
+  useEffect(() => {
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const reducedMotionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const updateDarkMode = () => setIsDark(darkModeMediaQuery.matches);
+    const updateReducedMotion = () => setReducedMotion(reducedMotionMediaQuery.matches);
+
+    updateDarkMode();
+    updateReducedMotion();
+
+    darkModeMediaQuery.addEventListener('change', updateDarkMode);
+    reducedMotionMediaQuery.addEventListener('change', updateReducedMotion);
+
+    return () => {
+      darkModeMediaQuery.removeEventListener('change', updateDarkMode);
+      reducedMotionMediaQuery.removeEventListener('change', updateReducedMotion);
+    };
+  }, []);
 
   useEffect(() => {
+    if (reducedMotion) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
-    let particles: Particle[] = [];
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    class Particle {
+    // Particle class
+    class ParticleImpl {
       x: number;
       y: number;
       size: number;
@@ -32,9 +64,9 @@ export function AnimatedBackground() {
       opacity: number;
       fadeSpeed: number;
 
-      constructor(canvasWidth: number, canvasHeight: number) {
-        this.x = Math.random() * canvasWidth;
-        this.y = Math.random() * canvasHeight;
+      constructor(width: number, height: number) {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
         this.size = Math.random() * 2 + 0.5;
         this.speedX = Math.random() * 0.5 - 0.25;
         this.speedY = Math.random() * 0.5 - 0.25;
@@ -42,77 +74,163 @@ export function AnimatedBackground() {
         this.fadeSpeed = Math.random() * 0.002 + 0.001;
       }
 
-      update(canvasWidth: number, canvasHeight: number) {
+      update(width: number, height: number, mouse: { x: number; y: number }) {
+        // Mouse repulsion
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 150 && distance > 0) {
+          const force = (150 - distance) / 150;
+          this.x += (dx / distance) * force * 1.5;
+          this.y += (dy / distance) * force * 1.5;
+        }
+
+        // Normal movement
         this.x += this.speedX;
         this.y += this.speedY;
 
+        // Fade oscillation
         this.opacity += this.fadeSpeed;
         if (this.opacity >= 0.7 || this.opacity <= 0.1) {
           this.fadeSpeed *= -1;
         }
 
-        if (this.x > canvasWidth) this.x = 0;
-        if (this.x < 0) this.x = canvasWidth;
-        if (this.y > canvasHeight) this.y = 0;
-        if (this.y < 0) this.y = canvasHeight;
+        // Wrap around edges
+        if (this.x > width) this.x = 0;
+        if (this.x < 0) this.x = width;
+        if (this.y > height) this.y = 0;
+        if (this.y < 0) this.y = height;
       }
 
-      draw(context: CanvasRenderingContext2D) {
-        context.fillStyle = `rgba(100, 100, 255, ${this.opacity})`;
-        context.beginPath();
-        context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        context.fill();
+      draw(ctx: CanvasRenderingContext2D) {
+        const r = isDark ? 120 : 70;
+        const g = isDark ? 160 : 100;
+        const b = 255;
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    const init = () => {
-      particles = [];
-      const numberOfParticles = Math.min(Math.floor((canvas.width * canvas.height) / 15000), 80);
-      for (let i = 0; i < numberOfParticles; i++) {
-        particles.push(new Particle(canvas.width, canvas.height));
+    // Resize handler with debounce
+    const handleResize = () => {
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+
+      resizeTimeoutRef.current = setTimeout(() => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvasSizeRef.current = { width: canvas.width, height: canvas.height };
+        initParticles();
+      }, 100);
+    };
+
+    // Mouse move
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    // Visibility change
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationFrameId.current);
+      } else {
+        animate();
       }
     };
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Initialize particles
+    const initParticles = () => {
+      const area = canvas.width * canvas.height;
+      const density = window.innerWidth < 768 ? 30000 : 18000;
+      const maxParticles = window.innerWidth < 768 ? 50 : 100;
+      const count = Math.min(Math.floor(area / density), maxParticles);
 
-      particles.forEach((particle, index) => {
-        particle.update(canvas.width, canvas.height);
+      particlesRef.current = Array.from({ length: count }, () => 
+        new ParticleImpl(canvas.width, canvas.height) as Particle
+      );
+    };
+
+    // Animation loop
+    const animate = () => {
+      const { width, height } = canvasSizeRef.current;
+
+      // Fade trail (motion blur effect)
+      ctx.fillStyle = isDark 
+        ? 'rgba(0, 0, 0, 0.08)' 
+        : 'rgba(255, 255, 255, 0.05)';
+      ctx.fillRect(0, 0, width, height);
+
+      const particles = particlesRef.current;
+      const maxConnectionsPerParticle = 4;
+
+      particles.forEach((particle, i) => {
+        particle.update(width, height, mouseRef.current);
         particle.draw(ctx);
 
-        for (let j = index + 1; j < particles.length; j++) {
-          const dx = particles[j].x - particle.x;
-          const dy = particles[j].y - particle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        let connections = 0;
+        for (let j = i + 1; j < particles.length && connections < maxConnectionsPerParticle; j++) {
+          const p2 = particles[j];
+          const dx = p2.x - particle.x;
+          const dy = p2.y - particle.y;
+          const distance = Math.hypot(dx, dy);
 
-          if (distance < 120) {
-            ctx.strokeStyle = `rgba(100, 100, 255, ${0.15 * (1 - distance / 120)})`;
-            ctx.lineWidth = 0.5;
+          if (distance < 130) {
+            const opacity = 0.2 * (1 - distance / 130);
+            const r = isDark ? 120 : 80;
+            const g = isDark ? 160 : 120;
+            const b = 255;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+            ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
+            connections++;
           }
         }
       });
 
-      animationFrameId = requestAnimationFrame(animate);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    init();
+    // Setup
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvasSizeRef.current = { width: canvas.width, height: canvas.height };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    initParticles();
     animate();
 
+    // Cleanup
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+      cancelAnimationFrame(animationFrameId.current);
     };
-  }, []);
+  }, [reducedMotion, isDark]);
+
+  // Render nothing if reduced motion
+  if (reducedMotion) {
+    return (
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 opacity-20 -z-10" />
+    );
+  }
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-40 dark:opacity-30"
-      style={{ zIndex: 0 }}
+      className="fixed inset-0 pointer-events-none -z-10"
+      style={{
+        opacity: isDark ? 0.35 : 0.4,
+        mixBlendMode: 'screen',
+      }}
     />
   );
 }
