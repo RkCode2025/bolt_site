@@ -25,7 +25,7 @@ export function AnimatedBackground() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  // 🌗 Detect dark mode & reduced motion preferences
+  // Detect dark mode & reduced motion
   useEffect(() => {
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const reducedMotionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -54,7 +54,7 @@ export function AnimatedBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 🌌 Particle class
+    // Particle class
     class ParticleImpl {
       x: number;
       y: number;
@@ -103,10 +103,11 @@ export function AnimatedBackground() {
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        // 🎨 Dynamic colors per theme
+        // 🌙 Dark Mode → soft electric blue glow
+        // ☀️ Light Mode → rich deep blue tone
         const color = isDark
-          ? `rgba(140, 190, 255, ${this.opacity})` // glowing sky blue for dark
-          : `rgba(20, 80, 200, ${this.opacity * 1.2})`; // deep royal blue for light
+          ? `rgba(130, 180, 255, ${this.opacity})`
+          : `rgba(40, 90, 200, ${this.opacity * 1.2})`;
 
         ctx.fillStyle = color;
         ctx.beginPath();
@@ -115,23 +116,24 @@ export function AnimatedBackground() {
       }
     }
 
-    // 📏 Resize handler (debounced)
+    // Resize handler with debounce
     const handleResize = () => {
       if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+
       resizeTimeoutRef.current = setTimeout(() => {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         canvasSizeRef.current = { width: canvas.width, height: canvas.height };
         initParticles();
-      }, 150);
+      }, 100);
     };
 
-    // 🖱 Mouse move tracking
+    // Mouse move
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    // 💤 Pause animation when tab is hidden
+    // Visibility change
     const handleVisibilityChange = () => {
       if (document.hidden) {
         cancelAnimationFrame(animationFrameId.current);
@@ -140,25 +142,26 @@ export function AnimatedBackground() {
       }
     };
 
-    // 🌠 Initialize particles
+    // Initialize particles
     const initParticles = () => {
       const area = canvas.width * canvas.height;
       const density = window.innerWidth < 768 ? 30000 : 18000;
       const maxParticles = window.innerWidth < 768 ? 50 : 100;
       const count = Math.min(Math.floor(area / density), maxParticles);
+
       particlesRef.current = Array.from({ length: count }, () =>
         new ParticleImpl(canvas.width, canvas.height) as Particle
       );
     };
 
-    // 🎞 Animation loop
+    // Animation loop
     const animate = () => {
       const { width, height } = canvasSizeRef.current;
 
-      // Slight trail effect
+      // Fade trail (motion blur effect)
       ctx.fillStyle = isDark
         ? 'rgba(0, 0, 0, 0.08)'
-        : 'rgba(255, 255, 255, 0.06)';
+        : 'rgba(255, 255, 255, 0.05)';
       ctx.fillRect(0, 0, width, height);
 
       const particles = particlesRef.current;
@@ -178,8 +181,8 @@ export function AnimatedBackground() {
           if (distance < 130) {
             const opacity = 0.25 * (1 - distance / 130);
             const color = isDark
-              ? `rgba(140, 190, 255, ${opacity})`
-              : `rgba(20, 80, 200, ${opacity * 1.1})`;
+              ? `rgba(130, 180, 255, ${opacity})`
+              : `rgba(40, 90, 200, ${opacity * 1.1})`;
 
             ctx.strokeStyle = color;
             ctx.lineWidth = 0.6;
@@ -195,9 +198,9 @@ export function AnimatedBackground() {
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    // 🧩 Setup
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    // Setup
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     canvasSizeRef.current = { width: canvas.width, height: canvas.height };
 
     window.addEventListener('resize', handleResize);
@@ -207,7 +210,7 @@ export function AnimatedBackground() {
     initParticles();
     animate();
 
-    // 🧹 Cleanup
+    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
@@ -217,18 +220,17 @@ export function AnimatedBackground() {
     };
   }, [reducedMotion, isDark]);
 
-  // ♿ Static fallback
+  // Static fallback for reduced motion
   if (reducedMotion) {
     return (
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 opacity-20 z-[1]" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 opacity-20 -z-10" />
     );
   }
 
-  // 🎨 Render canvas properly layered
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-[1]"
+      className="fixed inset-0 pointer-events-none -z-10"
       style={{
         opacity: isDark ? 0.35 : 0.6,
         mixBlendMode: isDark ? 'screen' : 'multiply',
