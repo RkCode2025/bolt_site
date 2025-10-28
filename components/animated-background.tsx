@@ -67,10 +67,10 @@ export function AnimatedBackground() {
       constructor(width: number, height: number) {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 2 + 0.5;
+        this.size = Math.random() * 2 + 0.6;
         this.speedX = Math.random() * 0.5 - 0.25;
         this.speedY = Math.random() * 0.5 - 0.25;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.opacity = Math.random() * 0.5 + 0.3;
         this.fadeSpeed = Math.random() * 0.002 + 0.001;
       }
 
@@ -103,10 +103,13 @@ export function AnimatedBackground() {
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        const r = isDark ? 120 : 70;
-        const g = isDark ? 160 : 100;
-        const b = 255;
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
+        // 🌙 Dark Mode → soft electric blue glow
+        // ☀️ Light Mode → rich deep blue tone
+        const color = isDark
+          ? `rgba(130, 180, 255, ${this.opacity})`
+          : `rgba(40, 90, 200, ${this.opacity * 1.2})`;
+
+        ctx.fillStyle = color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -146,7 +149,7 @@ export function AnimatedBackground() {
       const maxParticles = window.innerWidth < 768 ? 50 : 100;
       const count = Math.min(Math.floor(area / density), maxParticles);
 
-      particlesRef.current = Array.from({ length: count }, () => 
+      particlesRef.current = Array.from({ length: count }, () =>
         new ParticleImpl(canvas.width, canvas.height) as Particle
       );
     };
@@ -156,8 +159,8 @@ export function AnimatedBackground() {
       const { width, height } = canvasSizeRef.current;
 
       // Fade trail (motion blur effect)
-      ctx.fillStyle = isDark 
-        ? 'rgba(0, 0, 0, 0.08)' 
+      ctx.fillStyle = isDark
+        ? 'rgba(0, 0, 0, 0.08)'
         : 'rgba(255, 255, 255, 0.05)';
       ctx.fillRect(0, 0, width, height);
 
@@ -176,11 +179,12 @@ export function AnimatedBackground() {
           const distance = Math.hypot(dx, dy);
 
           if (distance < 130) {
-            const opacity = 0.2 * (1 - distance / 130);
-            const r = isDark ? 120 : 80;
-            const g = isDark ? 160 : 120;
-            const b = 255;
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+            const opacity = 0.25 * (1 - distance / 130);
+            const color = isDark
+              ? `rgba(130, 180, 255, ${opacity})`
+              : `rgba(40, 90, 200, ${opacity * 1.1})`;
+
+            ctx.strokeStyle = color;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -216,7 +220,7 @@ export function AnimatedBackground() {
     };
   }, [reducedMotion, isDark]);
 
-  // Render nothing if reduced motion
+  // Static fallback for reduced motion
   if (reducedMotion) {
     return (
       <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 opacity-20 -z-10" />
@@ -228,8 +232,9 @@ export function AnimatedBackground() {
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none -z-10"
       style={{
-        opacity: isDark ? 0.35 : 0.4,
-        mixBlendMode: 'screen',
+        opacity: isDark ? 0.35 : 0.6,
+        mixBlendMode: isDark ? 'screen' : 'multiply',
+        transition: 'opacity 0.4s ease, mix-blend-mode 0.4s ease',
       }}
     />
   );
