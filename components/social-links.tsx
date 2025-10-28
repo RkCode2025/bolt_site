@@ -96,7 +96,7 @@ export function SocialLinks() {
         >
           <p className="text-muted-foreground mb-2">Open to collaborations and new ideas</p>
           <a
-            href="mailto:hello@example.com"
+            href="mailto:syphaxtwt20@gmail.com"
             className="inline-flex items-center gap-2 text-sm hover:text-foreground transition-colors font-mono"
           >
             <Mail className="w-4 h-4" />
