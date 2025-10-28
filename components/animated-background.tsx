@@ -228,14 +228,14 @@ export function AnimatedBackground() {
   }
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none -z-10"
-      style={{
-        opacity: isDark ? 0.35 : 0.6,
-        mixBlendMode: isDark ? 'screen' : 'multiply',
-        transition: 'opacity 0.4s ease, mix-blend-mode 0.4s ease',
-      }}
-    />
-  );
+  <canvas
+    ref={canvasRef}
+    className="fixed inset-0 pointer-events-none z-[1]"
+    style={{
+      opacity: isDark ? 0.35 : 0.6,
+      mixBlendMode: isDark ? 'screen' : 'multiply',
+      transition: 'opacity 0.4s ease, mix-blend-mode 0.4s ease',
+    }}
+  />
+);
 }
