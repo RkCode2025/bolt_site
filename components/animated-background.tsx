@@ -50,7 +50,6 @@ export function AnimatedBackground() {
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -67,35 +66,31 @@ export function AnimatedBackground() {
       constructor(width: number, height: number) {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 2 + 0.6;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
+        this.size = Math.random() * 2 + 0.8;
+        this.speedX = Math.random() * 0.6 - 0.3;
+        this.speedY = Math.random() * 0.6 - 0.3;
         this.opacity = Math.random() * 0.5 + 0.3;
         this.fadeSpeed = Math.random() * 0.002 + 0.001;
       }
 
       update(width: number, height: number, mouse: { x: number; y: number }) {
-        // Mouse repulsion
         const dx = this.x - mouse.x;
         const dy = this.y - mouse.y;
         const distance = Math.hypot(dx, dy);
-        if (distance < 150 && distance > 0) {
-          const force = (150 - distance) / 150;
+        if (distance < 120 && distance > 0) {
+          const force = (120 - distance) / 120;
           this.x += (dx / distance) * force * 1.5;
           this.y += (dy / distance) * force * 1.5;
         }
 
-        // Normal movement
         this.x += this.speedX;
         this.y += this.speedY;
 
         // Fade oscillation
         this.opacity += this.fadeSpeed;
-        if (this.opacity >= 0.7 || this.opacity <= 0.1) {
-          this.fadeSpeed *= -1;
-        }
+        if (this.opacity >= 0.7 || this.opacity <= 0.1) this.fadeSpeed *= -1;
 
-        // Wrap around edges
+        // Wrap around
         if (this.x > width) this.x = 0;
         if (this.x < 0) this.x = width;
         if (this.y > height) this.y = 0;
@@ -103,23 +98,34 @@ export function AnimatedBackground() {
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        // 🌙 Dark Mode → soft electric blue glow
-        // ☀️ Light Mode → rich deep blue tone
         const color = isDark
-          ? `rgba(130, 180, 255, ${this.opacity})`
-          : `rgba(40, 90, 200, ${this.opacity * 1.2})`;
+          ? `rgba(130, 180, 255, ${this.opacity})` // electric blue glow
+          : `rgba(30, 70, 180, ${this.opacity * 1.3})`; // deep blue tone for light mode
 
-        ctx.fillStyle = color;
         ctx.beginPath();
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = color;
+        ctx.fillStyle = color;
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
+        ctx.shadowBlur = 0;
       }
     }
 
-    // Resize handler with debounce
+    // Initialize particles
+    const initParticles = () => {
+      const area = canvas.width * canvas.height;
+      const density = window.innerWidth < 768 ? 28000 : 16000;
+      const maxParticles = window.innerWidth < 768 ? 40 : 80;
+      const count = Math.min(Math.floor(area / density), maxParticles);
+      particlesRef.current = Array.from({ length: count }, () =>
+        new ParticleImpl(canvas.width, canvas.height) as Particle
+      );
+    };
+
+    // Resize with debounce
     const handleResize = () => {
       if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
-
       resizeTimeoutRef.current = setTimeout(() => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -128,71 +134,25 @@ export function AnimatedBackground() {
       }, 100);
     };
 
-    // Mouse move
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    // Visibility change
     const handleVisibilityChange = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(animationFrameId.current);
-      } else {
-        animate();
-      }
+      if (document.hidden) cancelAnimationFrame(animationFrameId.current);
+      else animate();
     };
 
-    // Initialize particles
-    const initParticles = () => {
-      const area = canvas.width * canvas.height;
-      const density = window.innerWidth < 768 ? 30000 : 18000;
-      const maxParticles = window.innerWidth < 768 ? 50 : 100;
-      const count = Math.min(Math.floor(area / density), maxParticles);
-
-      particlesRef.current = Array.from({ length: count }, () =>
-        new ParticleImpl(canvas.width, canvas.height) as Particle
-      );
-    };
-
-    // Animation loop
     const animate = () => {
       const { width, height } = canvasSizeRef.current;
-
-      // Fade trail (motion blur effect)
       ctx.fillStyle = isDark
-        ? 'rgba(0, 0, 0, 0.08)'
-        : 'rgba(255, 255, 255, 0.05)';
+        ? 'rgba(0, 0, 0, 0.1)'
+        : 'rgba(255, 255, 255, 0.08)';
       ctx.fillRect(0, 0, width, height);
 
-      const particles = particlesRef.current;
-      const maxConnectionsPerParticle = 4;
-
-      particles.forEach((particle, i) => {
-        particle.update(width, height, mouseRef.current);
-        particle.draw(ctx);
-
-        let connections = 0;
-        for (let j = i + 1; j < particles.length && connections < maxConnectionsPerParticle; j++) {
-          const p2 = particles[j];
-          const dx = p2.x - particle.x;
-          const dy = p2.y - particle.y;
-          const distance = Math.hypot(dx, dy);
-
-          if (distance < 130) {
-            const opacity = 0.25 * (1 - distance / 130);
-            const color = isDark
-              ? `rgba(130, 180, 255, ${opacity})`
-              : `rgba(40, 90, 200, ${opacity * 1.1})`;
-
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-            connections++;
-          }
-        }
+      particlesRef.current.forEach((p) => {
+        p.update(width, height, mouseRef.current);
+        p.draw(ctx);
       });
 
       animationFrameId.current = requestAnimationFrame(animate);
@@ -202,28 +162,25 @@ export function AnimatedBackground() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasSizeRef.current = { width: canvas.width, height: canvas.height };
+    initParticles();
+    animate();
 
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    initParticles();
-    animate();
-
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
       cancelAnimationFrame(animationFrameId.current);
     };
   }, [reducedMotion, isDark]);
 
-  // Static fallback for reduced motion
+  // Fallback for reduced motion
   if (reducedMotion) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 opacity-20 -z-10" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-gray-900 dark:to-gray-800 opacity-20 -z-10" />
     );
   }
 
@@ -232,7 +189,7 @@ export function AnimatedBackground() {
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none -z-10"
       style={{
-        opacity: isDark ? 0.35 : 0.6,
+        opacity: isDark ? 0.5 : 0.6,
         mixBlendMode: isDark ? 'screen' : 'multiply',
         transition: 'opacity 0.4s ease, mix-blend-mode 0.4s ease',
       }}
