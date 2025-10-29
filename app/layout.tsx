@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://syphax.vercel.app'), // ✅ your deployed site domain
+  metadataBase: new URL('https://syphax.vercel.app'),
   title: 'Syphax – Developer & AI Enthusiast',
   description:
     'Portfolio showcasing projects in AI, machine learning, and creative coding. Exploring the intersection of technology and creativity.',
@@ -21,17 +21,28 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Syphax' }],
 
-  // ✅ Favicon and app icons
+  // ✅ Full favicon + platform integration
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon.ico' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
     ],
-    apple: '/apple-touch-icon.png',
+    apple: [
+      { url: '/favicon/apple-touch-icon.png', sizes: '180x180' },
+      { url: '/favicon/apple-touch-icon-152x152.png', sizes: '152x152' },
+      { url: '/favicon/apple-touch-icon-167x167.png', sizes: '167x167' },
+    ],
+    shortcut: '/favicon/favicon.ico',
+    other: [
+      { rel: 'manifest', url: '/favicon/site.webmanifest' },
+      { rel: 'mask-icon', url: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
+      { rel: 'msapplication-TileColor', url: '/favicon/mstile-150x150.png' },
+    ],
   },
 
-  // ✅ Social / OG tags
+  // ✅ Social / Open Graph
   openGraph: {
     title: 'Syphax – Developer & AI Enthusiast',
     description:
@@ -41,13 +52,19 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+
+  // ✅ Twitter
   twitter: {
     card: 'summary_large_image',
     title: 'Syphax – Developer & AI Enthusiast',
     description:
       'Showcasing my work in AI, deep learning, and software architecture.',
-    creator: '@syphax', // optional, if you have a Twitter handle
+    creator: '@syphax',
   },
+
+  // ✅ Optional Microsoft tile metadata
+  manifest: '/favicon/site.webmanifest',
+  themeColor: '#000000',
 };
 
 export default function RootLayout({
