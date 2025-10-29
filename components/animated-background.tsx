@@ -30,9 +30,9 @@ export function AnimatedBackground() {
       opacity: number;
       fade: number;
 
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+      constructor(width: number, height: number) {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
         this.size = Math.random() * 2 + 0.5;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
@@ -40,9 +40,9 @@ export function AnimatedBackground() {
         this.fade = (Math.random() * 0.002 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
       }
 
-      update() {
-        this.x = (this.x + this.vx + canvas.width) % canvas.width;
-        this.y = (this.y + this.vy + canvas.height) % canvas.height;
+      update(width: number, height: number) {
+        this.x = (this.x + this.vx + width) % width;
+        this.y = (this.y + this.vy + height) % height;
         this.opacity += this.fade;
         if (this.opacity < 0.1 || this.opacity > 0.7) this.fade *= -1;
       }
@@ -57,19 +57,16 @@ export function AnimatedBackground() {
 
     const initParticles = () => {
       const num = Math.min((canvas.width * canvas.height) / 15000, 80);
-      particles = Array.from({ length: num }, () => new Particle());
+      particles = Array.from({ length: num }, () => new Particle(canvas.width, canvas.height));
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Precompute stroke style
       ctx.lineWidth = 0.5;
 
-      // Update and draw particles
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
-        p1.update();
+        p1.update(canvas.width, canvas.height);
         p1.draw(ctx);
 
         for (let j = i + 1; j < particles.length; j++) {
