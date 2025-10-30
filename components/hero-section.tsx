@@ -7,12 +7,14 @@ import profilePic from 'image-removebg-preview.png'; // adjust path if needed
 export function HeroSection() {
   return (
     <section className="min-h-screen flex flex-col justify-center px-6 md:px-20 py-20 relative">
-      {/* Profile Image - visually closer to text */}
+     
+      {/* Profile Image with hover animation */}
       <motion.div
-        className="absolute top-20 right-10 md:top-24 md:right-32 w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border border-foreground/10 shadow-md"
+        className="absolute top-20 right-10 md:top-24 md:right-32 w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border border-foreground/10 shadow-md cursor-pointer"
         initial={{ opacity: 0, x: 30, y: -20 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
+        whileHover={{ scale: 1.15, rotate: 5, boxShadow: '0px 10px 25px rgba(0,0,0,0.2)' }}
       >
         <Image
           src={profilePic}
@@ -23,9 +25,9 @@ export function HeroSection() {
         />
       </motion.div>
 
-      {/* Intro Text */}
+      {/* Intro Text with dotted border */}
       <motion.div
-        className="max-w-3xl"
+        className="max-w-3xl border border-dotted border-foreground/40 rounded-xl p-4 md:p-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -50,10 +52,9 @@ export function HeroSection() {
       >
         <h2 className="text-2xl font-semibold text-foreground">About</h2>
         <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-          I’m deeply fascinated by how intelligence can be built — from the foundations of machine learning 
-          algorithms to the evolving world of artificial intelligence. My curiosity also extends to software architecture
-          — understanding how complex systems are designed, optimized, and scaled. I'm passionate about Natural Language Processing 
-          with libraries like Pytorch and Tensorflow.
+          I’m deeply fascinated by how intelligence can be built — from the foundations of ML 
+          to the evolving world of AI. Curious about software architecture and passionate about NLP 
+          with PyTorch & TensorFlow.
         </p>
       </motion.div>
 
