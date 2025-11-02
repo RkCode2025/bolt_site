@@ -19,10 +19,10 @@ const projects: Project[] = [
     github: 'https://github.com/rkcode2025/Hand_Digit_Recognition_with_Multilayer_Perceptron',
   },
   {
-    title: 'Adaline Model from Scratch',
-    description: 'Detailed Implementation of Adaline Model from Scratch.',
-    tags: ['Numpy', 'ML', 'Scikit Learn'],
-    github: 'https://github.com/RkCode2025/Adaline-from-scratch-by-Machine-Learning-with-Pytorch-and-Scikit-learn-by-Sebastian-Raschka',
+    title: 'Loan Approval Probability Classification',
+    description: 'Classification of probability of Bank Loan Approval.',
+    tags: ['Numpy', 'Xgboost', 'Scikit Learn'],
+    github: 'https://github.com/RkCode2025/Loan-Approval-Classification',
   },
   {
     title: 'Analysis of Amazon Bestsellers',
