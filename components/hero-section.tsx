@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import profilePic from 'Miyamoto Musashi.jpg'; // ✅ Make sure image is in /public folder
+import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg'; // ✅ Make sure image is in /public folder
 
 export function HeroSection() {
   return (
