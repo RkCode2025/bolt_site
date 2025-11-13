@@ -18,7 +18,7 @@ const socialLinks = [
   },
 ];
 
-export function SozialLinks() {
+export function SocialLinks() {  // Fixed: SozialLinks → SocialLinks
   return (
     <section className="px-6 md:px-12 py-24 relative">
       <div className="max-w-4xl mx-auto">
