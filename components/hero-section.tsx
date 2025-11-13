@@ -2,96 +2,78 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg'; // ✅ Make sure image is in /public folder
+import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg';
 
 export function HeroSection() {
   return (
-    <section className="px-6 md:px-20 py-14 flex flex-col items-start relative text-black">
-      <div className="w-full max-w-4xl mx-auto relative">
-        {/* Profile beside intro - tighter horizontal layout */}
-        <div className="flex flex-col md:flex-row md:items-center md:gap-5 mb-6">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="md:flex-1"
+    <section className="min-h-screen flex flex-col justify-center px-6 md:px-20 py-20 relative">
+      {/* Profile Image */}
+      <motion.div
+        className="absolute top-20 right-10 md:top-24 md:right-32 w-36 h-36 md:w-52 md:h-52 rounded-full overflow-hidden border border-dashed border-foreground/40 cursor-pointer bg-background/30 backdrop-blur-md"
+        initial={{ opacity: 0, x: 30, y: -20 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        whileHover={{ scale: 1.12, rotate: 3 }}
+      >
+        <Image src={profilePic} alt="Syphax" fill className="object-cover" priority />
+      </motion.div>
+
+      {/* Intro */}
+      <motion.div
+        className="max-w-3xl border border-dashed border-foreground/50 rounded-xl p-6 md:p-8 backdrop-blur-xl bg-background/40"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+          Hi, I'm Syphax
+        </h1>
+        <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+          Developer passionate about learning, improving, and adapting every day. I’m deeply
+          interested in Machine Learning algorithms, Artificial Intelligence, and software
+          architecture.
+        </p>
+      </motion.div>
+
+      {/* About */}
+      <motion.div
+        className="max-w-3xl mt-10 border border-dashed border-foreground/50 rounded-xl p-6 backdrop-blur-xl bg-background/40"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <h2 className="text-2xl font-semibold text-foreground">About</h2>
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+          I’m deeply fascinated by how intelligence can be built — from ML fundamentals to AI
+          systems. I study models, scalability, and system design. Strong passion for NLP with
+          PyTorch & TensorFlow.
+        </p>
+      </motion.div>
+
+      {/* Skills */}
+      <motion.div
+        className="mt-12 flex flex-wrap gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        {[
+          'Python',
+          'NumPy',
+          'Pandas',
+          'scikit-learn',
+          'Machine Learning',
+          'PyTorch',
+          'Data Science',
+        ].map((skill) => (
+          <span
+            key={skill}
+            className="px-4 py-2 bg-foreground/10 rounded-full text-sm md:text-base text-foreground/80 font-jetbrains"
           >
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
-              Hi, I'm Syphax
-            </h1>
-            <p className="text-base md:text-lg leading-snug font-medium text-black">
-              Developer passionate about learning, improving, and adapting every day.  
-              Deeply interested in Machine Learning, Artificial Intelligence,  
-              and software architecture.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border border-black/20 
-                       bg-background/50 backdrop-blur-sm shrink-0 mx-auto md:mx-0 md:ml-4"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <Image src={profilePic} alt="Profile" fill className="object-cover" priority />
-          </motion.div>
-        </div>
-
-        {/* About */}
-        <motion.div
-          className="mb-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-        >
-          <h2 className="text-lg font-semibold mb-1">About</h2>
-          <p className="text-sm md:text-base leading-snug max-w-2xl text-gray-700">
-            Fascinated by how intelligence can be built — from ML fundamentals to AI systems.  
-            Focused on scalable model design, NLP with PyTorch & TensorFlow, and modern dev practices.
-          </p>
-        </motion.div>
-
-        {/* Education */}
-        <motion.div
-          className="mb-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-        >
-          <h2 className="text-lg font-semibold mb-1">Education</h2>
-          <div className="flex flex-col sm:flex-row sm:justify-between text-gray-700 text-sm">
-            <div>
-              <p className="font-medium text-black">Independent Learner</p>
-              <p>Deep Learning, AI Systems & Web Development</p>
-            </div>
-            <span className="text-xs sm:text-sm mt-1 sm:mt-0 opacity-80">2023 – Present</span>
-          </div>
-        </motion.div>
-
-        {/* Skills */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-        >
-          <h2 className="text-lg font-semibold mb-2">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {[
-              'Python', 'NumPy', 'Pandas', 'scikit-learn',
-              'Machine Learning', 'PyTorch', 'Data Science',
-            ].map((skill) => (
-              <span
-                key={skill}
-                className="px-3 py-1 bg-black/10 rounded-full text-xs md:text-sm 
-                           text-black/80 font-medium"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+            {skill}
+          </span>
+        ))}
+      </motion.div>
     </section>
   );
 }
-
