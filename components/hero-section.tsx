@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import profilePic from 'Miyamoto Musashi.jpg'; // make sure the filename is exactly correct (case-sensitive!)
+import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg'; // make sure the filename is exactly correct (case-sensitive!)
 
 export function HeroSection() {
   return (
