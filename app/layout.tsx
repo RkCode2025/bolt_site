@@ -1,4 +1,4 @@
-import './globals.css';
+import './globals.css';                     // ← This is the required import
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 
@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Syphax' }],
 
-  // ✅ Full favicon + platform integration
   icons: {
     icon: [
       { url: '/favicon/favicon.ico' },
@@ -42,7 +41,6 @@ export const metadata: Metadata = {
     ],
   },
 
-  // ✅ Social / Open Graph
   openGraph: {
     title: 'Syphax – Developer & AI Enthusiast',
     description:
@@ -53,16 +51,14 @@ export const metadata: Metadata = {
     type: 'website',
   },
 
-  // ✅ Twitter
   twitter: {
     card: 'summary_large_image',
     title: 'Syphax – Developer & AI Enthusiast',
     description:
       'Showcasing my work in AI, deep learning, and software architecture.',
-    creator: '@syphax',
+    creator: '@syphax_twt',
   },
 
-  // ✅ Optional Microsoft tile metadata
   manifest: '/favicon/site.webmanifest',
   themeColor: '#000000',
 };
