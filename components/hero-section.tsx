@@ -2,87 +2,52 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg'; // make sure the filename is exactly correct (case-sensitive!)
+import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg'; // adjust to your exact file path
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center py-20">
-      {/* ===== Profile Picture – now safely positioned above everything ===== */}
-      <motion.div
-        className="absolute top-20 right-6 md:right-12 lg:right-20 w-32 h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 rounded-full overflow-hidden border-2 border-dashed border-foreground/40 bg-background/40 backdrop-blur-md shadow-2xl"
-        initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
-        whileHover={{ scale: 1.1, rotate: 4 }}
-      >
-        <Image
-          src={profilePic}
-          alt="Syphax"
-          fill
-          className="object-cover"
-          priority
-        />
-      </motion.div>
-
-      {/* ===== Main Content – safely indented from the picture ===== */}
-      <div className="max-w-3xl pr-0 md:pr-48 lg:pr-64"> {/* This padding-right prevents overlap */}
-        {/* Intro */}
-        <motion.div
-          className="border border-dashed border-foreground/50 rounded-2xl p-8 backdrop-blur-xl bg-background/50 shadow-xl"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+    <section className="relative w-full py-8">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start gap-6 md:gap-12">
+        
+        {/* ==== LEFT: Text Content ==== */}
+        <div className="flex-1">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Hi, I'm Syphax
           </h1>
+
           <p className="mt-4 text-lg md:text-xl text-muted-foreground leading-relaxed">
-            Developer passionate about learning, improving, and adapting every day. I’m deeply
-            interested in Machine Learning algorithms, Artificial Intelligence, and software
-            architecture.
+            Developer passionate about learning, improving, and adapting every day. 
+            I’m deeply interested in Machine Learning, Artificial Intelligence, and 
+            software architecture. Always exploring new technologies and eager to 
+            tackle new challenges.
           </p>
-        </motion.div>
 
-        {/* About */}
-        <motion.div
-          className="mt-10 border border-dashed border-foreground/50 rounded-2xl p-8 backdrop-blur-xl bg-background/50 shadow-xl"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold mb-3">About</h2>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-            I’m deeply fascinated by how intelligence can be built — from ML fundamentals to AI
-            systems. I study models, scalability, and system design. Strong passion for NLP with
-            PyTorch & TensorFlow.
-          </p>
-        </motion.div>
+          {/* About Section — very tight spacing */}
+          <div className="mt-8">
+            <h2 className="text-xl md:text-2xl font-semibold">About</h2>
+            <p className="mt-2 text-base md:text-lg text-muted-foreground leading-relaxed">
+              I started coding and quickly found it both fun and interesting. I’m driven 
+              by the desire to build things that make a real impact. My interests lie 
+              primarily in backend systems and modern AI — especially NLP with PyTorch 
+              and TensorFlow.
+            </p>
+          </div>
+        </div>
 
-        {/* Skills */}
+        {/* ==== RIGHT: Profile Image ==== */}
         <motion.div
-          className="mt-12 flex flex-wrap gap-3"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          className="w-32 h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 rounded-full overflow-hidden shadow-md shrink-0"
         >
-          {[
-            'Python',
-            'NumPy',
-            'Pandas',
-            'scikit-learn',
-            'Machine Learning',
-            'PyTorch',
-            'TensorFlow',
-            'NLP',
-            'Data Science',
-          ].map((skill) => (
-            <span
-              key={skill}
-              className="px-5 py-2.5 bg-foreground/10 rounded-full text-sm md:text-base font-medium tracking-wide"
-            >
-              {skill}
-            </span>
-          ))}
+          <Image
+            src={profilePic}
+            alt="Syphax"
+            fill
+            className="object-cover"
+          />
         </motion.div>
       </div>
     </section>
