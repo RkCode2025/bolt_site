@@ -1,10 +1,10 @@
 // app/page.tsx
 import { AnimatedBackground } from '@/components/animated-background';
 import { ThemeToggle } from '@/components/theme-toggle';
-import HeroSection from '@/components/hero-section';
-import ProjectsSection from '@/components/projects-section';
-import SocialLinks from '@/components/social-links';
-import BottomNav from '@/components/BottomNav';
+import { HeroSection } from '@/components/hero-section';
+import { ProjectsSection } from '@/components/projects-section';
+import { SocialLinks } from '@/components/social-links';
+import { BottomNav } from '@/components/BottomNav';
 
 export default function Home() {
   return (
