@@ -34,7 +34,7 @@ const projects: Project[] = [
 
 export function ProjectsSection() {
   return (
-    <section className="px-6 md:px-12 pt-4 pb-16 relative">
+    <section className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           className="text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
