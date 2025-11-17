@@ -13,8 +13,9 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="w-full pt-10 pb-2">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-3 md:gap-4 px-6">
+       <section className="w-full pt-10 pb-2">
+  <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
+
 
         {/* ==== LEFT TEXT ==== */}
         <div className="flex-1 max-w-2xl"> 
