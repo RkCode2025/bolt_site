@@ -2,7 +2,15 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg';
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6 }
+};
 
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
@@ -27,18 +35,32 @@ export function HeroSection() {
 
         {/* ==== LEFT TEXT ==== */}
         <div className="flex-1 max-w-2xl">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-            Hi, I'm Syphax
-          </h1>
 
-          <p className="mt-4 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg">
+          {/* Heading */}
+          <motion.h1
+            className="text-4xl md:text-6xl font-bold tracking-tight leading-tight"
+            {...fadeUp}
+          >
+            Hi, I'm Syphax
+          </motion.h1>
+
+          {/* Description paragraph */}
+          <motion.p
+            className="mt-4 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg"
+            {...fadeUp}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             Developer passionate about learning, improving, and adapting every day.
             I’m deeply interested in Machine Learning, Artificial Intelligence, and
             software architecture.
-          </p>
+          </motion.p>
 
           {/* ==== ABOUT SECTION ==== */}
-          <div className="mt-10">
+          <motion.div
+            className="mt-10"
+            {...fadeUp}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <h2 className="text-lg md:text-xl font-semibold tracking-tight">
               About
             </h2>
@@ -48,17 +70,21 @@ export function HeroSection() {
               primarily in backend systems and modern AI — especially NLP with PyTorch
               and TensorFlow.
             </p>
-          </div>
+          </motion.div>
 
-          {/* ==== TECH STACK SECTION ==== */}
-          <div className="mt-10">
+          {/* ==== TECH STACK ==== */}
+          <motion.div
+            className="mt-10"
+            {...fadeUp}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <h2 className="text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
             </h2>
 
             <div className="flex flex-wrap gap-3 mt-4">
-              {techStack.map((tech) => (
-                <span
+              {techStack.map((tech, idx) => (
+                <motion.span
                   key={tech}
                   className="
                     px-3 py-1 rounded-md text-sm border
@@ -66,16 +92,26 @@ export function HeroSection() {
                     dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700
                     transition
                   "
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.05 * idx }}
                 >
                   {tech}
-                </span>
+                </motion.span>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* ==== RIGHT PFP ==== */}
-        <div className="shrink-0 flex items-start pt-1 md:-ml-10">
+        <motion.div
+          className="shrink-0 flex items-start pt-1 md:-ml-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+        >
           <div
             className={`
               w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl
@@ -93,7 +129,7 @@ export function HeroSection() {
               priority
             />
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>
