@@ -2,6 +2,7 @@ import { AnimatedBackground } from '@/components/animated-background';
 import { HeroSection } from '@/components/hero-section';
 import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
+import JourneyTimeline from '@/components/JourneyTimeline';
 import BottomNav from '@/components/BottomNav';
 
 export default function Home() {
@@ -16,6 +17,11 @@ export default function Home() {
           <HeroSection />
         </section>
 
+        {/* TIMELINE / JOURNEY */}
+        <section id="journey" className="py-10 border-t border-border/40">
+          <JourneyTimeline />
+        </section>
+
         {/* PROJECTS */}
         <section id="projects" className="py-0 border-t border-border/40">
           <ProjectsSection />
@@ -28,7 +34,7 @@ export default function Home() {
 
         {/* NOTES (optional) */}
         <section id="notes" className="py-0 border-t border-border/40">
-          {/* Add your NotesSection here if you want */}
+          {/* Add your NotesSection here if needed */}
         </section>
 
         {/* FOOTER */}
