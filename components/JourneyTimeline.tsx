@@ -29,7 +29,7 @@ export default function Timeline() {
         {/* === Vertical line (center column) === */}
         <div className="col-start-2 relative">
           <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[3px] h-full 
-                          bg-gradient-to-b from-purple-500/80 via-fuchsia-500/80 to-cyan-500/80
+                          bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500
                           rounded-full opacity-80" />
         </div>
 
