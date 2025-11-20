@@ -51,7 +51,7 @@ export default function Timeline() {
                   className="
                     absolute -left-[48px] 
                     top-1
-                    w-4 h-4 rounded-full bg-green-500
+                    w-4 h-4 rounded-full bg-teal-500
                     border-4 border-white dark:border-neutral-900
                     left-1/2 -translate-x-1/2
                   "
