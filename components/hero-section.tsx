@@ -12,13 +12,21 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-       <section className="w-full pt-10 pb-2">
-  <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
+  const techStack = [
+    'Python',
+    'PyTorch',
+    'TensorFlow',
+    'NumPy',
+    'Scikit-learn',
+    'Pandas'
+  ];
 
+  return (
+    <section className="w-full pt-10 pb-2">
+      <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
 
         {/* ==== LEFT TEXT ==== */}
-        <div className="flex-1 max-w-2xl"> 
+        <div className="flex-1 max-w-2xl">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
             Hi, I'm Syphax
           </h1>
@@ -29,6 +37,7 @@ export function HeroSection() {
             software architecture.
           </p>
 
+          {/* ==== ABOUT SECTION ==== */}
           <div className="mt-10">
             <h2 className="text-lg md:text-xl font-semibold tracking-tight">
               About
@@ -40,6 +49,24 @@ export function HeroSection() {
               and TensorFlow.
             </p>
           </div>
+
+          {/* ==== TECH STACK SECTION ==== */}
+          <div className="mt-10">
+            <h2 className="text-lg md:text-xl font-semibold tracking-tight">
+              Tech Stack
+            </h2>
+
+            <div className="flex flex-wrap gap-3 mt-4">
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 rounded-md bg-neutral-900/60 border border-neutral-700 text-neutral-200 text-sm hover:bg-neutral-800 transition"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* ==== RIGHT PFP ==== */}
@@ -48,9 +75,7 @@ export function HeroSection() {
             className={`
               w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10
               transform transition-all duration-700 ease-out
-
               ${loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'}
-
               hover:scale-105 hover:shadow-2xl
             `}
           >
