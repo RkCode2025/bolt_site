@@ -50,24 +50,31 @@ export function HeroSection() {
             </p>
           </div>
 
+          
           {/* ==== TECH STACK SECTION ==== */}
           <div className="mt-10">
             <h2 className="text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
             </h2>
-
+            
             <div className="flex flex-wrap gap-3 mt-4">
               {techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 rounded-md bg-neutral-900/60 border border-neutral-700 text-neutral-200 text-sm hover:bg-neutral-800 transition"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+               <span
+                 key={tech}
+                 className="
+                 px-3 py-1
+                 rounded-md text-sm
+                 border
+                 bg-neutral-100 text-neutral-700 border-neutral-300 
+                 dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700 transition
+                 "
+              >
+          {tech}
+      </span>
+    ))}
+  </div>
+</div>
+
 
         {/* ==== RIGHT PFP ==== */}
         <div className="shrink-0 flex items-start pt-1 md:-ml-10">
