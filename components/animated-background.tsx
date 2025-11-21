@@ -35,8 +35,8 @@ export function AnimatedBackground() {
         this.size = Math.random() * 2 + 0.5;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.opacity = Math.random() * 0.5 + 0.2;
-        this.fade = (Math.random() * 0.002 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
+        this.opacity = Math.random() * 0.6 + 0.4;
+        this.fade = (Math.random() * 0.0025 + 0.0015) * (Math.random() > 0.5 ? 1 : -1);
       }
 
       update(width: number, height: number) {
