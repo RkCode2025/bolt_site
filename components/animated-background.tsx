@@ -1,26 +1,24 @@
 'use client';
-
 import { useEffect, useRef } from 'react';
 
-export function AnimatedBackground() {
+export function AnimatedBackground() { 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     let animationFrameId: number;
     let particles: Particle[] = [];
-    let isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    const updateTheme = () => {
-      isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
     };
-
-    window.matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", updateTheme);
 
     class Particle {
       x: number;
@@ -34,10 +32,10 @@ export function AnimatedBackground() {
       constructor(width: number, height: number) {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 2.2 + 1;
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.vy = (Math.random() - 0.5) * 0.3;
-        this.opacity = Math.random() * 0.7 + 0.4;
+        this.size = Math.random() * 2 + 0.5;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.2;
         this.fade = (Math.random() * 0.002 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
       }
 
@@ -45,37 +43,46 @@ export function AnimatedBackground() {
         this.x = (this.x + this.vx + width) % width;
         this.y = (this.y + this.vy + height) % height;
         this.opacity += this.fade;
-        if (this.opacity < 0.2 || this.opacity > 1) this.fade *= -1;
+        if (this.opacity < 0.1 || this.opacity > 0.7) this.fade *= -1;
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = isDark
-          ? `rgba(255, 255, 255, ${this.opacity})`
-          : `rgba(0, 0, 0, ${this.opacity})`;
-
+        ctx.fillStyle = `rgba(100, 100, 255, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initParticles();
-    };
-
     const initParticles = () => {
-      const num = Math.min((canvas.width * canvas.height) / 15000, 90);
+      const num = Math.min((canvas.width * canvas.height) / 15000, 80);
       particles = Array.from({ length: num }, () => new Particle(canvas.width, canvas.height));
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 0.5;
 
-      for (const p of particles) {
-        p.update(canvas.width, canvas.height);
-        p.draw(ctx);
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update(canvas.width, canvas.height);
+        p1.draw(ctx);
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p2.x - p1.x;
+          const dy = p2.y - p1.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < 14400) {
+            const opacity = 0.15 * (1 - Math.sqrt(distSq) / 120);
+            ctx.strokeStyle = `rgba(100, 100, 255, ${opacity})`;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
       }
 
       animationFrameId = requestAnimationFrame(animate);
@@ -88,15 +95,13 @@ export function AnimatedBackground() {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
-      window.matchMedia("(prefers-color-scheme: dark)")
-        .removeEventListener("change", updateTheme);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-80 dark:opacity-40"
+      className="fixed inset-0 pointer-events-none opacity-40 dark:opacity-30"
       style={{ zIndex: 0 }}
     />
   );
