@@ -1,4 +1,4 @@
-import './globals.css';                     // ← This is the required import
+import './globals.css';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 
@@ -21,24 +21,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Syphax' }],
 
+  // simplified favicon usage
   icons: {
-    icon: [
-      { url: '/favicon/favicon.ico' },
-      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/favicon/apple-touch-icon.png', sizes: '180x180' },
-      { url: '/favicon/apple-touch-icon-152x152.png', sizes: '152x152' },
-      { url: '/favicon/apple-touch-icon-167x167.png', sizes: '167x167' },
-    ],
-    shortcut: '/favicon/favicon.ico',
-    other: [
-      { rel: 'manifest', url: '/favicon/site.webmanifest' },
-      { rel: 'mask-icon', url: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
-      { rel: 'msapplication-TileColor', url: '/favicon/mstile-150x150.png' },
-    ],
+    icon: '/favicon.png',
   },
 
   openGraph: {
@@ -59,7 +44,7 @@ export const metadata: Metadata = {
     creator: '@syphax_twt',
   },
 
-  manifest: '/favicon/site.webmanifest',
+  manifest: '/site.webmanifest',
   themeColor: '#000000',
 };
 
