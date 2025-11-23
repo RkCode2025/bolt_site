@@ -49,22 +49,30 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className="page-body">
+      <body className="page-body relative">
 
-        {/* THEME PROVIDER */}
+        {/* LEFT VERTICAL LINE */}
+        <div className="fixed left-0 top-0 h-screen w-[2px] bg-white/20 z-50" />
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
+          {/* GRID CONTAINER */}
+          <main className="grid min-h-screen w-full
+                           grid-cols-1 md:grid-cols-12 
+                           gap-6 px-6 md:px-12 py-10">
 
-          {/* STRUCTURED PAGE WRAPPER */}
-          <main className="page-container">
-            {children}
+            {/* GRID CONTENT */}
+            <div className="md:col-start-2 md:col-span-10">
+              {children}
+            </div>
+
           </main>
-
         </ThemeProvider>
+
       </body>
     </html>
   );
