@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Syphax' }],
 
-  // simplified favicon usage
   icons: {
     icon: '/favicon.png',
   },
@@ -56,14 +55,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body>
+      <body className="relative pl-10"> 
+        {/* Left Vertical Line */}
+        <div className="pointer-events-none fixed left-0 top-0 h-screen w-[2px] bg-white/10 z-[9999]" />
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          {/* Global Layout Container */}
+          <div className="max-w-6xl mx-auto px-6 py-10 space-y-24">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>
