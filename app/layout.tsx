@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://syphax.vercel.app'),
   title: 'Syphax – Developer & AI Enthusiast',
   description:
-    'Portfolio showcasing projects in AI, machine learning, and creative coding. Exploring the intersection of technology and creativity.',
+    'Portfolio showcasing projects in AI, machine learning, and creative coding.',
   keywords: [
     'developer',
     'AI',
@@ -20,29 +20,23 @@ export const metadata: Metadata = {
     'data science',
   ],
   authors: [{ name: 'Syphax' }],
-
   icons: {
     icon: '/favicon.png',
   },
-
   openGraph: {
     title: 'Syphax – Developer & AI Enthusiast',
-    description:
-      'Personal portfolio showcasing projects in AI, ML, and creative experiments.',
+    description: 'Portfolio showcasing AI and ML projects.',
     url: 'https://syphax.vercel.app',
     siteName: 'Syphax Portfolio',
     locale: 'en_US',
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
     title: 'Syphax – Developer & AI Enthusiast',
-    description:
-      'Showcasing my work in AI, deep learning, and software architecture.',
+    description: 'AI, deep learning, and creative coding portfolio.',
     creator: '@syphax_twt',
   },
-
   manifest: '/site.webmanifest',
   themeColor: '#000000',
 };
@@ -55,20 +49,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className="relative pl-10"> 
-        {/* Left Vertical Line */}
-        <div className="pointer-events-none fixed left-0 top-0 h-screen w-[2px] bg-white/10 z-[9999]" />
+      <body className="page-body">
 
+        {/* THEME PROVIDER */}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {/* Global Layout Container */}
-          <div className="max-w-6xl mx-auto px-6 py-10 space-y-24">
+
+          {/* STRUCTURED PAGE WRAPPER */}
+          <main className="page-container">
             {children}
-          </div>
+          </main>
+
         </ThemeProvider>
       </body>
     </html>
