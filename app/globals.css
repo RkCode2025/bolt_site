@@ -65,6 +65,8 @@
   body {
     @apply bg-background text-foreground min-h-screen;
     font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding-left: 16px !important; /* ← Push content away from the line */
+    position: relative;
   }
 
   code,
@@ -72,6 +74,21 @@
   kbd {
     font-family: 'IBM Plex Mono', 'Courier New', monospace;
   }
+}
+
+/* ────────────────────────────────
+   Left vertical line (always on top)
+   ──────────────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.12);
+  z-index: 9999;
+  pointer-events: none;
 }
 
 /* ────────────────────────────────
