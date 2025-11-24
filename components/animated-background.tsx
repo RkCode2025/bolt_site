@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
-export function AnimatedBackground() { 
+export function AnimatedBackground({ theme = "dark" }: { theme?: "light" | "dark" }) { 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -13,6 +13,10 @@ export function AnimatedBackground() {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
+
+    const color = theme === "light"
+      ? "100, 100, 255"       // bluish for light
+      : "160, 160, 255";      // softer for dark mode
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -47,7 +51,7 @@ export function AnimatedBackground() {
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = `rgba(100, 100, 255, ${this.opacity})`;
+        ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -76,7 +80,7 @@ export function AnimatedBackground() {
 
           if (distSq < 14400) {
             const opacity = 0.15 * (1 - Math.sqrt(distSq) / 120);
-            ctx.strokeStyle = `rgba(100, 100, 255, ${opacity})`;
+            ctx.strokeStyle = `rgba(${color}, ${opacity})`;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
@@ -96,7 +100,7 @@ export function AnimatedBackground() {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas
