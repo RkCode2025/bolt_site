@@ -1,67 +1,199 @@
 'use client';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { cn } from "@/lib/utils";
 
-import { useEffect, useRef } from 'react';
+export interface FlickeringGridProps {
+  squareSize?: number;
+  gridGap?: number;
+  flickerChance?: number;
+  color?: string;
+  width?: number;
+  height?: number;
+  className?: string;
+  maxOpacity?: number;
+  theme?: "light" | "dark";
+}
 
-export function AnimatedBackground() {
+export const AnimatedBackground: React.FC<FlickeringGridProps> = ({
+  squareSize = 4,
+  gridGap = 6,
+  flickerChance = 0.3,
+  color,
+  width,
+  height,
+  className,
+  maxOpacity = 0.3,
+  theme = "dark",
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
-  useEffect(() => {
-    const c = canvasRef.current;
-    if (!c) return;
+  // Theme-based color logic
+  const gridColor = color ?? (theme === "light" ? "rgb(40, 40, 40)" : "rgb(200, 200, 200)");
 
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-
-    // Resize canvas
-    const resize = () => {
-      c.width = window.innerWidth;
-      c.height = window.innerHeight;
+  const memoizedColor = useMemo(() => {
+    const toRGBA = (inputColor: string) => {
+      if (typeof window === "undefined") {
+        return `rgba(0, 0, 0,`;
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 1;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return "rgba(255, 0, 0,";
+      ctx.fillStyle = inputColor;
+      ctx.fillRect(0, 0, 1, 1);
+      const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+      return `rgba(${r}, ${g}, ${b},`;
     };
-    resize();
-    window.addEventListener("resize", resize);
 
-    // Animation loop
-    const draw = () => {
-      const width = c.width;
-      const height = c.height;
+    return toRGBA(gridColor);
+  }, [gridColor]);
 
-      // --- FLICKERING BACKGROUND ---
-      const flicker = Math.random() > 0.5;
-      ctx.fillStyle = flicker
-        ? "rgba(255,255,255,0.05)"
-        : "rgba(0,0,0,0.2)";
+  const setupCanvas = useCallback(
+    (canvas: HTMLCanvasElement, width: number, height: number) => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      const cols = Math.floor(width / (squareSize + gridGap));
+      const rows = Math.floor(height / (squareSize + gridGap));
+
+      const squares = new Float32Array(cols * rows);
+      for (let i = 0; i < squares.length; i++) {
+        squares[i] = Math.random() * maxOpacity;
+      }
+
+      return { cols, rows, squares, dpr };
+    },
+    [squareSize, gridGap, maxOpacity]
+  );
+
+  const updateSquares = useCallback(
+    (squares: Float32Array, deltaTime: number) => {
+      for (let i = 0; i < squares.length; i++) {
+        if (Math.random() < flickerChance * deltaTime) {
+          squares[i] = Math.random() * maxOpacity;
+        }
+      }
+    },
+    [flickerChance, maxOpacity]
+  );
+
+  const drawGrid = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      width: number,
+      height: number,
+      cols: number,
+      rows: number,
+      squares: Float32Array,
+      dpr: number
+    ) => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "transparent";
       ctx.fillRect(0, 0, width, height);
 
-      // --- GRID ---
-      const gridSize = 40;
-      ctx.beginPath();
-      ctx.lineWidth = 0.4;
-      ctx.strokeStyle = "rgba(255,255,255,0.06)";
-
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const opacity = squares[i * rows + j];
+          ctx.fillStyle = `${memoizedColor}${opacity})`;
+          ctx.fillRect(
+            i * (squareSize + gridGap) * dpr,
+            j * (squareSize + gridGap) * dpr,
+            squareSize * dpr,
+            squareSize * dpr
+          );
+        }
       }
+    },
+    [memoizedColor, squareSize, gridGap]
+  );
 
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-      }
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
-      ctx.stroke();
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      requestAnimationFrame(draw);
+    let animationFrameId: number;
+    let gridParams: ReturnType<typeof setupCanvas>;
+
+    const updateCanvasSize = () => {
+      const newWidth = width || container.clientWidth;
+      const newHeight = height || container.clientHeight;
+
+      setCanvasSize({ width: newWidth, height: newHeight });
+      gridParams = setupCanvas(canvas, newWidth, newHeight);
     };
 
-    draw();
+    updateCanvasSize();
 
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+    let lastTime = 0;
+    const animate = (time: number) => {
+      if (!isInView) return;
+
+      const deltaTime = (time - lastTime) / 1000;
+      lastTime = time;
+
+      updateSquares(gridParams.squares, deltaTime);
+      drawGrid(
+        ctx,
+        canvas.width,
+        canvas.height,
+        gridParams.cols,
+        gridParams.rows,
+        gridParams.squares,
+        gridParams.dpr
+      );
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const resizeObserver = new ResizeObserver(() => updateCanvasSize());
+    resizeObserver.observe(container);
+
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    intersectionObserver.observe(canvas);
+
+    if (isInView) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+    };
+  }, [setupCanvas, updateSquares, drawGrid, width, height, isInView]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 w-full h-full -z-10"
-    />
+    <div ref={containerRef} className={cn("w-full h-full", className)}>
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none"
+        style={{
+          width: canvasSize.width,
+          height: canvasSize.height,
+        }}
+      />
+    </div>
   );
-}
+};
