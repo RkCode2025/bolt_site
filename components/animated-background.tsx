@@ -6,29 +6,30 @@ export function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const c = canvasRef.current;
+    if (!c) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = c.getContext("2d");
     if (!ctx) return;
 
-    // Resize canvas to fill screen
+    // Resize canvas
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
     };
     resize();
     window.addEventListener("resize", resize);
 
-    // Flicker + grid animation
-    function draw() {
-      const { width, height } = canvas;
+    // Animation loop
+    const draw = () => {
+      const width = c.width;
+      const height = c.height;
 
-      // --- FLICKER BACKGROUND ---
+      // --- FLICKERING BACKGROUND ---
       const flicker = Math.random() > 0.5;
       ctx.fillStyle = flicker
-        ? "rgba(255,255,255,0.05)" // light flash
-        : "rgba(0,0,0,0.2)";       // dark pulse
+        ? "rgba(255,255,255,0.05)"
+        : "rgba(0,0,0,0.2)";
       ctx.fillRect(0, 0, width, height);
 
       // --- GRID ---
@@ -37,13 +38,11 @@ export function AnimatedBackground() {
       ctx.lineWidth = 0.4;
       ctx.strokeStyle = "rgba(255,255,255,0.06)";
 
-      // vertical lines
       for (let x = 0; x < width; x += gridSize) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
       }
 
-      // horizontal lines
       for (let y = 0; y < height; y += gridSize) {
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
@@ -52,7 +51,7 @@ export function AnimatedBackground() {
       ctx.stroke();
 
       requestAnimationFrame(draw);
-    }
+    };
 
     draw();
 
