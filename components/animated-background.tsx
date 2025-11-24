@@ -40,8 +40,8 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
 
       setBaseColor(
         isDark
-          ? "rgb(120,180,255)" // bluish for dark mode
-          : "rgb(100,100,100)" // gray for light mode
+          ? "rgb(120, 120, 255)" // bluish for dark mode
+          : "rgb(180, 180, 255)" // gray for light mode
       );
     };
 
