@@ -8,48 +8,54 @@ import BottomNav from '@/components/BottomNav';
 export default function Home() {
   return (
     <>
-      {/* Animated grid background — only on sides */}
-      <AnimatedBackground
-        sidesOnly
-        className="opacity-40 dark:opacity-25"
-        // We'll pass a ref-based safe zone via a tiny prop trick below
-      />
+      {/* Flickering grid — only on the left & right sides (no lag!) */}
+      <AnimatedBackground className="opacity-50 dark:opacity-30" />
 
-      {/* Main Content */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center">
-        <div className="flex-1 flex justify-center px-6 sm:px-8 lg:px-12">
-          {/* This is the visible content card */}
-          <div 
+      {/* Main Layout */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Centered Content Card — Narrower & More Elegant */}
+        <main className="flex-1 flex items-center justify-center px-5 sm:px-8">
+          <div
             id="content-card"
-            className="w-full max-w-5xl xl:max-w-6xl mx-auto 
-                       border border-border/40 rounded-2xl 
-                       p-6 sm:p-8 
-                       backdrop-blur-xl bg-background/40 shadow-lg"
+            className="w-full max-w-3xl mx-auto               // ← Narrower card (~800px max)
+                       border border-border/50 rounded-3xl      // Slightly softer corners
+                       p-8 sm:p-10 lg:p-12                      // More internal breathing room
+                       backdrop-blur-2xl bg-background/60       // Stronger glass effect
+                       shadow-2xl ring-1 ring-white/10         // Subtle glow ring
+                       transition-all duration-500"
           >
-            <section id="hero" className="pt-4">
+            {/* Hero */}
+            <section id="hero" className="pb-8">
               <HeroSection />
             </section>
 
-            <section id="journey" className="py-10 border-t border-border/40">
+            {/* Journey */}
+            <section id="journey" className="py-12 border-t border-border/40">
               <JourneyTimeline />
             </section>
 
-            <section id="projects" className="py-10 border-t border-border/40">
+            {/* Projects */}
+            <section id="projects" className="py-12 border-t border-border/40">
               <ProjectsSection />
             </section>
 
-            <section id="socials" className="py-10 border-t border-border/40">
+            {/* Socials */}
+            <section id="socials" className="py-12 border-t border-border/40">
               <SocialLinks />
             </section>
 
-            <footer className="py-8 text-center text-sm text-muted-foreground border-t border-border/50">
-              <p>Built with Next.js, Tailwind CSS, and Framer Motion</p>
-              <p className="mt-1">© 2025 — Always learning, always building</p>
+            {/* Footer */}
+            <footer className="pt-12 mt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
+              <p className="mb-1">Built with Next.js 14, Tailwind & Framer Motion</p>
+              <p>© 2025 — Always learning, always building</p>
             </footer>
           </div>
-        </div>
+        </main>
 
-        <BottomNav />
+        {/* Bottom Navigation */}
+        <div className="pb-6">
+          <BottomNav />
+        </div>
       </div>
     </>
   );
