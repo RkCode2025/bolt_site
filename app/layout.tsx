@@ -1,12 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
-import { JetBrains_Mono } from 'next/font/google';
-
-const jetbrains = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://syphax.vercel.app'),
@@ -26,7 +20,12 @@ export const metadata: Metadata = {
     'data science',
   ],
   authors: [{ name: 'Syphax' }],
-  icons: { icon: '/favicon.png' },
+
+  // simplified favicon usage
+  icons: {
+    icon: '/favicon.png',
+  },
+
   openGraph: {
     title: 'Syphax – Developer & AI Enthusiast',
     description:
@@ -36,6 +35,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
     title: 'Syphax – Developer & AI Enthusiast',
@@ -43,6 +43,7 @@ export const metadata: Metadata = {
       'Showcasing my work in AI, deep learning, and software architecture.',
     creator: '@syphax_twt',
   },
+
   manifest: '/site.webmanifest',
   themeColor: '#000000',
 };
@@ -53,11 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={jetbrains.variable}  // ★ APPLY JETBRAINS MONO
-    >
+    <html lang="en" suppressHydrationWarning>
       <head />
       <body>
         <ThemeProvider
