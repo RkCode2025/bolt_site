@@ -2,7 +2,15 @@
 
 import { useEffect, useRef } from "react";
 
-export function AnimatedBackground() {
+interface AnimatedBackgroundProps {
+  sidesOnly?: boolean;
+  className?: string;
+}
+
+export function AnimatedBackground({
+  sidesOnly = false,
+  className = "",
+}: AnimatedBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -16,6 +24,7 @@ export function AnimatedBackground() {
 
     function resize() {
       const dpr = window.devicePixelRatio || 1;
+
       const width = window.innerWidth;
       const height = window.innerHeight;
 
@@ -25,8 +34,7 @@ export function AnimatedBackground() {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
 
-      ctx.resetTransform();
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       drawStaticGrid();
     }
@@ -34,20 +42,23 @@ export function AnimatedBackground() {
     window.addEventListener("resize", resize);
     resize();
 
-    // Your content box area (manual)
+    // Content box (same as your layout)
+    const contentWidth = 800; // matches ~ max-w-5xl (adjust if needed)
+
     const box = {
-      x: window.innerWidth / 2 - 500 / 2,
+      x: window.innerWidth / 2 - contentWidth / 2,
       y: 140,
-      w: 500,
+      w: contentWidth,
       h: window.innerHeight - 250,
     };
 
     const cell = 45;
     let rows = 0;
     let cols = 0;
+
     let flickers: { r: number; c: number; life: number }[] = [];
 
-    /** STATIC GRID (NO ANIMATION EXCEPT FLICKERS) */
+    /** STATIC GRID */
     function drawStaticGrid() {
       if (!canvas || !ctx) return;
 
@@ -56,26 +67,27 @@ export function AnimatedBackground() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "rgba(255,255,255,0.04)";
+      ctx.fillStyle = "rgba(255,255,255,0.05)";
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           const x = c * cell;
           const y = r * cell;
 
-          // BLOCK ONLY the horizontal span of the box
-          const insideHorizontalBand =
-            x > box.x && x < box.x + box.w &&
-            y > box.y && y < box.y + box.h;
+          if (sidesOnly) {
+            const insideHorizontalBand =
+              x > box.x && x < box.x + box.w &&
+              y > box.y && y < box.y + box.h;
 
-          if (insideHorizontalBand) continue;
+            if (insideHorizontalBand) continue;
+          }
 
           ctx.fillRect(x, y, 1, 1);
         }
       }
     }
 
-    /** SPAWN RANDOM FLICKERS (ONLY OUTSIDE BOX) */
+    /** SPAWN FLICKERS */
     function spawnFlicker() {
       if (!canvas) return;
 
@@ -85,12 +97,13 @@ export function AnimatedBackground() {
       const x = c * cell;
       const y = r * cell;
 
-      // Prevent flickers inside box horizontal region
-      const inHorizontalBand =
-        x > box.x && x < box.x + box.w &&
-        y > box.y && y < box.y + box.h;
+      if (sidesOnly) {
+        const inHorizontalBand =
+          x > box.x && x < box.x + box.w &&
+          y > box.y && y < box.y + box.h;
 
-      if (inHorizontalBand) return;
+        if (inHorizontalBand) return;
+      }
 
       flickers.push({ r, c, life: 1 + Math.random() * 0.6 });
     }
@@ -104,7 +117,7 @@ export function AnimatedBackground() {
         const y = f.r * cell;
 
         ctx.fillStyle = `rgba(255,255,255,${f.life})`;
-        ctx.fillRect(x, y, 1.2, 1.2);
+        ctx.fillRect(x, y, 1.3, 1.3);
 
         f.life -= 0.03;
         if (f.life <= 0) flickers.splice(i, 1);
@@ -122,12 +135,12 @@ export function AnimatedBackground() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [sidesOnly]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 pointer-events-none"
+      className={`fixed inset-0 -z-10 pointer-events-none ${className}`}
     />
   );
 }
