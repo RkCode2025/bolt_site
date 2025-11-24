@@ -1,203 +1,108 @@
 'use client';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useEffect, useRef } from 'react';
 
-export interface AnimatedBackgroundProps {
-  squareSize?: number;
-  gridGap?: number;
-  flickerChance?: number;
-  color?: string;
-  width?: number;
-  height?: number;
-  className?: string;
-  maxOpacity?: number;
-  theme?: "light" | "dark";
-}
-
-export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
-  squareSize = 4,
-  gridGap = 6,
-  flickerChance = 0.3,
-  color,
-  width,
-  height,
-  className,
-  maxOpacity = 0.3,
-  theme = "dark",
-}) => {
+export function AnimatedBackground() { 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-
-  const isDark = theme === "dark";
-
-  // Dark theme gets cooler bluish color and adjusted opacity/flicker
-  const gridColor = color ?? (isDark ? "rgb(100, 200, 255)" : "rgb(40, 40, 40)");
-  const maxOpacityAdjusted = isDark ? 0.4 : maxOpacity;
-  const flickerChanceAdjusted = isDark ? flickerChance * 0.7 : flickerChance;
-
-  const memoizedColor = useMemo(() => {
-    const toRGBA = (inputColor: string) => {
-      if (typeof window === "undefined") {
-        return `rgba(0, 0, 0,`;
-      }
-      const canvas = document.createElement("canvas");
-      canvas.width = canvas.height = 1;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return "rgba(255, 0, 0,";
-      ctx.fillStyle = inputColor;
-      ctx.fillRect(0, 0, 1, 1);
-      const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
-      return `rgba(${r}, ${g}, ${b},`;
-    };
-
-    return toRGBA(gridColor);
-  }, [gridColor]);
-
-  const setupCanvas = useCallback(
-    (canvas: HTMLCanvasElement, width: number, height: number) => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-
-      const cols = Math.floor(width / (squareSize + gridGap));
-      const rows = Math.floor(height / (squareSize + gridGap));
-      const squares = new Float32Array(cols * rows);
-      for (let i = 0; i < squares.length; i++) {
-        squares[i] = Math.random() * maxOpacityAdjusted;
-      }
-
-      return { cols, rows, squares, dpr };
-    },
-    [squareSize, gridGap, maxOpacityAdjusted]
-  );
-
-  const updateSquares = useCallback(
-    (squares: Float32Array, deltaTime: number) => {
-      for (let i = 0; i < squares.length; i++) {
-        if (Math.random() < flickerChanceAdjusted * deltaTime) {
-          squares[i] = Math.random() * maxOpacityAdjusted;
-        }
-      }
-    },
-    [flickerChanceAdjusted, maxOpacityAdjusted]
-  );
-
-  const drawGrid = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      width: number,
-      height: number,
-      cols: number,
-      rows: number,
-      squares: Float32Array,
-      dpr: number
-    ) => {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "transparent";
-      ctx.fillRect(0, 0, width, height);
-
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          const opacity = squares[i * rows + j];
-          ctx.fillStyle = `${memoizedColor}${opacity})`;
-          ctx.fillRect(
-            i * (squareSize + gridGap) * dpr,
-            j * (squareSize + gridGap) * dpr,
-            squareSize * dpr,
-            squareSize * dpr
-          );
-        }
-      }
-    },
-    [memoizedColor, squareSize, gridGap]
-  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     let animationFrameId: number;
-    let gridParams: ReturnType<typeof setupCanvas>;
+    let particles: Particle[] = [];
 
-    const updateCanvasSize = () => {
-      const newWidth = width || container.clientWidth;
-      const newHeight = height || container.clientHeight;
-
-      setCanvasSize({ width: newWidth, height: newHeight });
-      gridParams = setupCanvas(canvas, newWidth, newHeight);
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
     };
 
-    updateCanvasSize();
+    class Particle {
+      x: number;
+      y: number;
+      size: number;
+      vx: number;
+      vy: number;
+      opacity: number;
+      fade: number;
 
-    let lastTime = 0;
-    const animate = (time: number) => {
-      if (!isInView) return;
+      constructor(width: number, height: number) {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2 + 0.5;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.6 + 0.4;
+        this.fade = (Math.random() * 0.0025 + 0.0015) * (Math.random() > 0.5 ? 1 : -1);
+      }
 
-      const deltaTime = (time - lastTime) / 1000;
-      lastTime = time;
+      update(width: number, height: number) {
+        this.x = (this.x + this.vx + width) % width;
+        this.y = (this.y + this.vy + height) % height;
+        this.opacity += this.fade;
+        if (this.opacity < 0.1 || this.opacity > 0.7) this.fade *= -1;
+      }
 
-      updateSquares(gridParams.squares, deltaTime);
-      drawGrid(
-        ctx,
-        canvas.width,
-        canvas.height,
-        gridParams.cols,
-        gridParams.rows,
-        gridParams.squares,
-        gridParams.dpr
-      );
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    const resizeObserver = new ResizeObserver(() => updateCanvasSize());
-    resizeObserver.observe(container);
-
-    const intersectionObserver = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
-
-    intersectionObserver.observe(canvas);
-
-    if (isInView) {
-      animationFrameId = requestAnimationFrame(animate);
+      draw(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = `rgba(100, 100, 255, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      resizeObserver.disconnect();
-      intersectionObserver.disconnect();
+    const initParticles = () => {
+      const num = Math.min((canvas.width * canvas.height) / 15000, 80);
+      particles = Array.from({ length: num }, () => new Particle(canvas.width, canvas.height));
     };
-  }, [setupCanvas, updateSquares, drawGrid, width, height, isInView]);
 
-  // Optional: container gradient background for dark mode (uncomment if desired)
-  // const containerStyle = isDark ? { background: 'linear-gradient(135deg, #0a111e, #001f3f)' } : {};
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 0.5;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update(canvas.width, canvas.height);
+        p1.draw(ctx);
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p2.x - p1.x;
+          const dy = p2.y - p1.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < 14400) {
+            const opacity = 0.15 * (1 - Math.sqrt(distSq) / 120);
+            ctx.strokeStyle = `rgba(100, 100, 255, ${opacity})`;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("w-full h-full", className)}
-      // style={containerStyle} // Enable if gradient background desired
-    >
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none"
-        style={{
-          width: canvasSize.width,
-          height: canvasSize.height,
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none opacity-40 dark:opacity-30"
+      style={{ zIndex: 0 }}
+    />
   );
-};
+}
