@@ -23,54 +23,27 @@ export function HeroSection() {
   const techStack = ['Python', 'PyTorch', 'TensorFlow', 'NumPy', 'Scikit-learn', 'Pandas'];
 
   return (
-    <section className="w-full pt-10 pb-2">
-      <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
+    <section className="w-full pt-16 pb-6 bg-white dark:bg-neutral-900">
+      <div className="max-w-6xl mx-auto px-10 md:px-20 flex flex-col md:flex-row items-start gap-8">
 
-        {/* ==== LEFT TEXT ==== */}
-        <div className="flex-1 max-w-2xl">
-
-          {/* ⭐ GLASSMORPHIC HEADING BOX ⭐ */}
-          <motion.div
-            className="
-              p-6 rounded-xl
-              border border-white/20 dark:border-white/10
-              bg-white/20 dark:bg-white/5
-              backdrop-blur-xl shadow-xl
-            "
-            {...fadeUp}
-          >
-            <motion.h1
-              className="text-4xl md:text-6xl font-bold tracking-tight leading-tight"
-            >
+        {/* LEFT TEXT BOX */}
+        <div className="flex-1 max-w-2xl space-y-10 bg-neutral-100 dark:bg-neutral-800 rounded-xl p-8 shadow-md border border-gray-200 dark:border-neutral-700">
+          <motion.div {...fadeUp}>
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
               Hi, I'm Syphax
-            </motion.h1>
-
-            <motion.p
-              className="mt-4 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg"
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-lg">
               Developer passionate about learning, improving, and adapting every day.
               I’m deeply interested in Machine Learning, Artificial Intelligence, and
               software architecture.
-            </motion.p>
+            </p>
           </motion.div>
 
-          {/* ⭐ GLASSMORPHIC ABOUT BOX ⭐ */}
-          <motion.div
-            className="
-              mt-10 p-6 rounded-xl
-              border border-white/20 dark:border-white/10
-              bg-white/15 dark:bg-white/5
-              backdrop-blur-lg shadow-lg
-            "
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <h2 className="text-lg md:text-xl font-semibold tracking-tight">
+          <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }}>
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-white">
               About
             </h2>
-
-            <p className="mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+            <p className="mt-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl">
               I started coding and quickly found it both fun and interesting. I’m driven
               by the desire to build things that make a real impact. My interests lie
               primarily in backend systems and modern AI — especially NLP with PyTorch
@@ -78,24 +51,18 @@ export function HeroSection() {
             </p>
           </motion.div>
 
-          {/* ==== TECH STACK ==== */}
-          <motion.div
-            className="mt-10"
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h2 className="text-lg md:text-xl font-semibold tracking-tight">
+          <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }}>
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-white">
               Tech Stack
             </h2>
-
-            <div className="flex flex-wrap gap-3 mt-4">
+            <div className="flex flex-wrap gap-4 mt-5">
               {techStack.map((tech, idx) => (
                 <motion.span
                   key={tech}
                   className="
-                    px-3 py-1 rounded-md text-sm border
-                    bg-neutral-100 text-neutral-700 border-neutral-300 
-                    dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700
+                    px-4 py-2 rounded-md text-base font-semibold border
+                    bg-white dark:bg-neutral-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-neutral-600
+                    hover:bg-blue-600 hover:text-white cursor-default
                     transition
                   "
                   initial={{ opacity: 0, y: 10 }}
@@ -110,20 +77,21 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ==== RIGHT IMAGE ==== */}
+        {/* PROFILE IMAGE */}
         <motion.div
-          className="shrink-0 flex items-start pt-1 md:-ml-10"
+          className="shrink-0 flex items-start pt-2 md:-ml-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.35 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div
             className={`
-              w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl
-              border border-white/10 transform transition-all duration-700 ease-out
-              ${loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'}
-              hover:scale-105 hover:shadow-2xl
+              w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden relative
+              shadow-lg border border-gray-300 dark:border-gray-600
+              transform transition-all duration-700 ease-out
+              ${loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-90'}
+              hover:scale-105 hover:shadow-xl
             `}
           >
             <Image
