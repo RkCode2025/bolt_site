@@ -1,154 +1,216 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
-
-interface AnimatedBackgroundProps {
-  sidesOnly?: boolean;
-  className?: string;
-  contentMaxWidth?: number; // e.g., 800 for max-w-5xl
-  topOffset?: number;       // space from top (header)
-  bottomOffset?: number;    // space from bottom
-}
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 export function AnimatedBackground({
-  sidesOnly = false,
-  className = "",
-  contentMaxWidth = 800,
-  topOffset = 140,
-  bottomOffset = 250,
-}: AnimatedBackgroundProps) {
+  theme = "dark",
+}: {
+  theme?: "light" | "dark";
+}) {
+  const color = theme === "light"
+    ? "rgb(180, 180, 255)"
+    : "rgb(120, 120, 255)";
+
+  return (
+    <div className="fixed inset-0 -z-10 pointer-events-none">
+      <FlickeringGrid
+        squareSize={4}
+        gridGap={6}
+        flickerChance={0.3}
+        maxOpacity={0.3}
+        color={color}
+        className="opacity-30 dark:opacity-25 w-full h-full"
+      />
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          Flickering Grid Source Code                        */
+/* -------------------------------------------------------------------------- */
+
+interface FlickeringGridProps {
+  squareSize?: number;
+  gridGap?: number;
+  flickerChance?: number;
+  color?: string;
+  width?: number;
+  height?: number;
+  className?: string;
+  maxOpacity?: number;
+}
+
+export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
+  squareSize = 4,
+  gridGap = 6,
+  flickerChance = 0.3,
+  color = "rgb(0,0,0)",
+  width,
+  height,
+  className,
+  maxOpacity = 0.3,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameId = useRef<number>();
-  const flickersRef = useRef<{ r: number; c: number; life: number }[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [isInView, setIsInView] = useState(false);
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+
+  const memoizedColor = useMemo(() => {
+    const toRGBA = (color: string) => {
+      if (typeof window === "undefined") return `rgba(0,0,0,`;
+      const temp = document.createElement("canvas");
+      temp.width = temp.height = 1;
+      const ctx = temp.getContext("2d");
+      if (!ctx) return "rgba(255,0,0,";
+
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 1, 1);
+      const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+      return `rgba(${r}, ${g}, ${b},`;
+    };
+
+    return toRGBA(color);
+  }, [color]);
+
+  const setupCanvas = useCallback(
+    (canvas: HTMLCanvasElement, width: number, height: number) => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      const cols = Math.floor(width / (squareSize + gridGap));
+      const rows = Math.floor(height / (squareSize + gridGap));
+      const squares = new Float32Array(cols * rows);
+
+      for (let i = 0; i < squares.length; i++) {
+        squares[i] = Math.random() * maxOpacity;
+      }
+
+      return { cols, rows, squares, dpr };
+    },
+    [squareSize, gridGap, maxOpacity]
+  );
+
+  const updateSquares = useCallback(
+    (squares: Float32Array, deltaTime: number) => {
+      for (let i = 0; i < squares.length; i++) {
+        if (Math.random() < flickerChance * deltaTime) {
+          squares[i] = Math.random() * maxOpacity;
+        }
+      }
+    },
+    [flickerChance, maxOpacity]
+  );
+
+  const drawGrid = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      width: number,
+      height: number,
+      cols: number,
+      rows: number,
+      squares: Float32Array,
+      dpr: number
+    ) => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const opacity = squares[i * rows + j];
+          ctx.fillStyle = `${memoizedColor}${opacity})`;
+          ctx.fillRect(
+            i * (squareSize + gridGap) * dpr,
+            j * (squareSize + gridGap) * dpr,
+            squareSize * dpr,
+            squareSize * dpr
+          );
+        }
+      }
+    },
+    [memoizedColor, squareSize, gridGap]
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let rows = 0;
-    let cols = 0;
-    const cell = 45;
-    const dpr = window.devicePixelRatio || 1;
+    let animationFrameId: number;
+    let gridParams: ReturnType<typeof setupCanvas>;
 
-    // Content safe zone (center column to avoid)
-    const getContentBox = () => ({
-      x: window.innerWidth / 2 - contentMaxWidth / 2,
-      y: topOffset,
-      w: contentMaxWidth,
-      h: window.innerHeight - topOffset - bottomOffset,
-    });
+    const updateCanvasSize = () => {
+      const newWidth = width || container.clientWidth;
+      const newHeight = height || container.clientHeight;
 
-    const resize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      rows = Math.ceil(height / cell);
-      cols = Math.ceil(width / cell);
-
-      drawStaticGrid();
+      setCanvasSize({ width: newWidth, height: newHeight });
+      gridParams = setupCanvas(canvas, newWidth, newHeight);
     };
 
-    const drawStaticGrid = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+    updateCanvasSize();
 
-      const box = getContentBox();
+    let lastTime = 0;
 
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const x = c * cell;
-          const y = r * cell;
+    const animate = (time: number) => {
+      if (!isInView) return;
 
-          if (sidesOnly) {
-            const insideBox =
-              x >= box.x &&
-              x <= box.x + box.w &&
-              y >= box.y &&
-              y <= box.y + box.h;
+      const deltaTime = (time - lastTime) / 1000;
+      lastTime = time;
 
-            if (insideBox) continue;
-          }
+      updateSquares(gridParams.squares, deltaTime);
 
-          ctx.fillRect(x + 0.5, y + 0.5, 1, 1); // centered pixel
-        }
-      }
+      drawGrid(
+        ctx,
+        canvas.width,
+        canvas.height,
+        gridParams.cols,
+        gridParams.rows,
+        gridParams.squares,
+        gridParams.dpr
+      );
+
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    const spawnFlicker = () => {
-      const r = Math.floor(Math.random() * rows);
-      const c = Math.floor(Math.random() * cols);
-      const x = c * cell;
-      const y = r * cell;
+    const resizeObserver = new ResizeObserver(updateCanvasSize);
+    resizeObserver.observe(container);
 
-      if (sidesOnly) {
-        const box = getContentBox();
-        const insideBox =
-          x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h;
-        if (insideBox) return;
-      }
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(canvas);
 
-      flickersRef.current.push({
-        r,
-        c,
-        life: 0.8 + Math.random() * 0.7, // 0.8–1.5
-      });
-    };
-
-    const animate = () => {
-      const flickers = flickersRef.current;
-
-      // Use reverse loop to safely remove items
-      for (let i = flickers.length - 1; i >= 0; i--) {
-        const f = flickers[i];
-        f.life -= 0.025;
-
-        if (f.life <= 0) {
-          flickers.splice(i, 1);
-          continue;
-        }
-
-        const x = f.c * cell;
-        const y = f.r * cell;
-        ctx.fillStyle = `rgba(255, 255, 255, ${f.life})`;
-        ctx.fillRect(x, y, 2, 2); // slightly larger for visibility
-      }
-
-      // Randomly spawn new flickers
-      if (Math.random() < 0.2) spawnFlicker();
-
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
-
-    // Initial setup
-    resize();
-    window.addEventListener("resize", resize);
-
-    // Start animation
-    animate();
+    if (isInView) requestAnimationFrame(animate);
 
     return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-      window.removeEventListener("resize", resize);
-      flickersRef.current = [];
+      cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
     };
-  }, [sidesOnly, contentMaxWidth, topOffset, bottomOffset]);
+  }, [setupCanvas, updateSquares, drawGrid, width, height, isInView]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={`fixed inset-0 -z-10 pointer-events-none ${className}`}
-    />
+    <div ref={containerRef} className={className}>
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none"
+        style={{
+          width: canvasSize.width,
+          height: canvasSize.height,
+        }}
+      />
+    </div>
   );
-}
+};
