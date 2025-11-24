@@ -1,114 +1,124 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-export function AnimatedBackground({
-  theme = "dark",
-  sidesOnly = false,
-  className = ""
-}: {
-  theme?: "light" | "dark";
-  sidesOnly?: boolean;
-  className?: string;
-}) {
-  return (
-    <div
-      className={
-        sidesOnly
-          ? // expands background OUTSIDE the box only
-            "absolute inset-0 -inset-x-[20vw] -inset-y-[12vh] overflow-hidden pointer-events-none"
-          : "absolute inset-0 overflow-hidden pointer-events-none"
-      }
-    >
-      <FlickeringGrid
-        theme={theme}
-        className={className}
-      />
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/*                          ULTRA-FAST FLICKERING GRID                        */
-/* -------------------------------------------------------------------------- */
-
-function FlickeringGrid({
-  theme,
-  className
-}: {
-  theme: "light" | "dark";
-  className?: string;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const cell = 10; // spacing
-  const size = 3; // square size
-  const flickerSpeed = 0.07;
-
-  const color = theme === "light"
-    ? "rgba(180,180,255,"
-    : "rgba(120,120,255,";
+export function AnimatedBackground() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d", { alpha: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => {
-      canvas.width = window.innerWidth * 1.6; // extended for sidesOnly effect
-      canvas.height = window.innerHeight * 1.6;
-      buildStaticGrid();
+    let animationFrameId: number;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+
+      ctx.scale(dpr, dpr);
+      drawStaticGrid(); // Rebuild after resize
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    // Your content box area coordinates
+    const box = {
+      x: window.innerWidth / 2 - 500 / 2,
+      y: 140,
+      w: 500,
+      h: window.innerHeight - 250,
     };
 
-    let gridAlpha: number[][] = [];
+    const cell = 45;
     let rows = 0;
     let cols = 0;
+    let flickers: { r: number; c: number; life: number }[] = [];
 
-    // Draw only once — static grid
-    function buildStaticGrid() {
+    /** STATIC GRID (NO ANIMATION EXCEPT FLICKERS) */
+    function drawStaticGrid() {
+      if (!canvas || !ctx) return;
+
       rows = Math.ceil(canvas.height / cell);
       cols = Math.ceil(canvas.width / cell);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      gridAlpha = Array.from({ length: rows }, () =>
-        Array.from({ length: cols }, () => Math.random())
-      );
+      ctx.fillStyle = "rgba(255,255,255,0.04)";
 
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          ctx.fillStyle = `${color}${gridAlpha[y][x] * 0.25})`;
-          ctx.fillRect(x * cell, y * cell, size, size);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * cell;
+          const y = r * cell;
+
+          // Skip inside the content box
+          if (x > box.x && x < box.x + box.w && y > box.y && y < box.y + box.h)
+            continue;
+
+          ctx.fillRect(x, y, 1, 1);
         }
       }
     }
 
+    /** SPAWN RANDOM FLICKERS (ONLY OUTSIDE BOX) */
+    function spawnFlicker() {
+      if (!canvas) return;
+
+      const r = Math.floor(Math.random() * rows);
+      const c = Math.floor(Math.random() * cols);
+
+      const x = c * cell;
+      const y = r * cell;
+
+      if (x > box.x && x < box.x + box.w && y > box.y && y < box.y + box.h)
+        return;
+
+      flickers.push({ r, c, life: 1 + Math.random() * 0.6 });
+    }
+
+    /** ANIMATION LOOP (ONLY FLICKERS, NO FULL REDRAW) */
     function animate() {
-      // fade updates only
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          if (Math.random() < flickerSpeed) {
-            const next = Math.random();
-            gridAlpha[y][x] = next;
-            ctx.fillStyle = `${color}${next * 0.25})`;
-            ctx.fillRect(x * cell, y * cell, size, size);
-          }
-        }
-      }
+      if (!canvas || !ctx) return;
 
-      requestAnimationFrame(animate);
+      flickers.forEach((f, i) => {
+        const x = f.c * cell;
+        const y = f.r * cell;
+
+        ctx.fillStyle = `rgba(255,255,255,${f.life})`;
+        ctx.fillRect(x, y, 1.2, 1.2);
+
+        f.life -= 0.03;
+        if (f.life <= 0) flickers.splice(i, 1);
+      });
+
+      if (Math.random() < 0.25) spawnFlicker();
+
+      animationFrameId = requestAnimationFrame(animate);
     }
 
-    resize();
+    drawStaticGrid();
     animate();
-    window.addEventListener("resize", resize);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", resize);
     };
-  }, [theme]);
+  }, []);
 
-  return <canvas ref={canvasRef} className={className} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 -z-10 pointer-events-none"
+    />
+  );
 }
