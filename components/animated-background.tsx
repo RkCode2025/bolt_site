@@ -22,7 +22,7 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   width,
   height,
   className,
-  maxOpacity,
+  maxOpacity = 0.3,
   theme = "dark",
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,28 +30,20 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   const [isInView, setIsInView] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
-  // ★ Improved theme colors (clean dark mode)
-  const gridColor =
-    color ??
-    (theme === "light"
-      ? "rgb(90, 90, 90)"   // light mode subtle grey
-      : "rgb(80, 80, 80)"); // dark mode soft dim grey
-
-  // ★ Better subtle opacity for dark mode
-  const finalMaxOpacity =
-    maxOpacity ?? (theme === "dark" ? 0.12 : 0.25);
+  // Select color based on theme, but allow override
+  const gridColor = color ?? (theme === "light" ? "rgb(40, 40, 40)" : "rgb(200, 200, 200)");
 
   const memoizedColor = useMemo(() => {
     const toRGBA = (inputColor: string) => {
-      if (typeof window === "undefined") return `rgba(0, 0, 0,`;
+      if (typeof window === "undefined") {
+        return `rgba(0, 0, 0,`;
+      }
       const canvas = document.createElement("canvas");
       canvas.width = canvas.height = 1;
       const ctx = canvas.getContext("2d");
-      if (!ctx) return "rgba(255,0,0,";
-
+      if (!ctx) return "rgba(255, 0, 0,";
       ctx.fillStyle = inputColor;
       ctx.fillRect(0, 0, 1, 1);
-
       const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
       return `rgba(${r}, ${g}, ${b},`;
     };
@@ -70,25 +62,24 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       const cols = Math.floor(width / (squareSize + gridGap));
       const rows = Math.floor(height / (squareSize + gridGap));
       const squares = new Float32Array(cols * rows);
-
       for (let i = 0; i < squares.length; i++) {
-        squares[i] = Math.random() * finalMaxOpacity;
+        squares[i] = Math.random() * maxOpacity;
       }
 
       return { cols, rows, squares, dpr };
     },
-    [squareSize, gridGap, finalMaxOpacity]
+    [squareSize, gridGap, maxOpacity]
   );
 
   const updateSquares = useCallback(
     (squares: Float32Array, deltaTime: number) => {
       for (let i = 0; i < squares.length; i++) {
         if (Math.random() < flickerChance * deltaTime) {
-          squares[i] = Math.random() * finalMaxOpacity;
+          squares[i] = Math.random() * maxOpacity;
         }
       }
     },
-    [flickerChance, finalMaxOpacity]
+    [flickerChance, maxOpacity]
   );
 
   const drawGrid = useCallback(
@@ -109,7 +100,6 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
         for (let j = 0; j < rows; j++) {
           const opacity = squares[i * rows + j];
           ctx.fillStyle = `${memoizedColor}${opacity})`;
-
           ctx.fillRect(
             i * (squareSize + gridGap) * dpr,
             j * (squareSize + gridGap) * dpr,
@@ -164,16 +154,21 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    const resizeObserver = new ResizeObserver(updateCanvasSize);
+    const resizeObserver = new ResizeObserver(() => updateCanvasSize());
     resizeObserver.observe(container);
 
     const intersectionObserver = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
       { threshold: 0 }
     );
+
     intersectionObserver.observe(canvas);
 
-    if (isInView) animationFrameId = requestAnimationFrame(animate);
+    if (isInView) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -183,16 +178,7 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   }, [setupCanvas, updateSquares, drawGrid, width, height, isInView]);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "w-full h-full",
-        theme === "dark"
-          ? "bg-gradient-to-b from-[#0b0b0b] to-[#111]" // ★ premium dark fade
-          : "bg-white",
-        className
-      )}
-    >
+    <div ref={containerRef} className={cn("w-full h-full", className)}>
       <canvas
         ref={canvasRef}
         className="pointer-events-none"
