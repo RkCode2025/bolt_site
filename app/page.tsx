@@ -24,7 +24,7 @@ export default function Home() {
               max-w-3xl                /* smaller card */
               mx-auto
               border border-border/40
-              p-6 sm:p-8 lg:p-10        /* reduced padding */
+              p-10 sm:p-12 lg:p-15        /* reduced padding */
               backdrop-blur-xl bg-background/60
               shadow-xl ring-1 ring-white/10
               transition-all duration-500
