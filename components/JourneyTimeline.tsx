@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 export default function Timeline() {
@@ -23,22 +22,17 @@ export default function Timeline() {
         Timeline
       </h2>
 
-      {/* === GRID === */}
+      {/* === GRID: 3 columns === */}
       <div className="grid grid-cols-[20px_32px_1fr] relative">
 
-        {/* === Vertical line === */}
+        {/* === Vertical line (center column) === */}
         <div className="col-start-2 relative">
-          <div
-            className="absolute left-1/2 -translate-x-1/2 top-0 w-[3px] h-full 
-            bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500
-            rounded-full opacity-80"
-          />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[3px] h-full bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-full opacity-80" />
         </div>
 
         {/* === Events === */}
         <div className="col-start-3">
           <div className="space-y-12">
-
             {events.map((ev, i) => (
               <div
                 key={i}
@@ -48,44 +42,30 @@ export default function Timeline() {
                     : "opacity-0 translate-y-3"
                 } transition-all duration-700 ease-out`}
               >
-                {/* === Dot === */}
+                {/* === Dot (centered on line) === */}
                 <span
                   className="
-                    absolute -left-[48px] 
-                    top-4
+                    absolute 
+                    -left-[48px]
+                    top-1
                     w-4 h-4 rounded-full bg-teal-500
                     border-4 border-white dark:border-neutral-900
-                    left-1/2 -translate-x-1/2
                   "
                 />
 
-                {/* === Event Box === */}
-                <div
-                  className="
-                    w-full
-                    p-4 md:p-5
-                    rounded-xl
-                    border border-neutral-300/60 dark:border-neutral-800
-                    bg-white/60 dark:bg-neutral-900/60
-                    backdrop-blur
-                    shadow-sm
-                    hover:shadow-md transition-shadow
-                  "
-                >
+                {/* === Text === */}
+                <div>
                   <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
                     {ev.date}
                   </p>
-
                   <p className="mt-1 text-neutral-600 dark:text-neutral-400">
                     {ev.text}
                   </p>
                 </div>
               </div>
             ))}
-
           </div>
         </div>
-
       </div>
     </section>
   );
