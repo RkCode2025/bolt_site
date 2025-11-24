@@ -1,14 +1,8 @@
 'use client';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-export interface FlickeringGridProps {
+export interface AnimatedBackgroundProps {
   squareSize?: number;
   gridGap?: number;
   flickerChance?: number;
@@ -20,7 +14,7 @@ export interface FlickeringGridProps {
   theme?: "light" | "dark";
 }
 
-export const AnimatedBackground: React.FC<FlickeringGridProps> = ({
+export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   squareSize = 4,
   gridGap = 6,
   flickerChance = 0.3,
@@ -36,7 +30,7 @@ export const AnimatedBackground: React.FC<FlickeringGridProps> = ({
   const [isInView, setIsInView] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
-  // Theme-based color logic
+  // Select color based on theme, but allow override
   const gridColor = color ?? (theme === "light" ? "rgb(40, 40, 40)" : "rgb(200, 200, 200)");
 
   const memoizedColor = useMemo(() => {
@@ -67,7 +61,6 @@ export const AnimatedBackground: React.FC<FlickeringGridProps> = ({
 
       const cols = Math.floor(width / (squareSize + gridGap));
       const rows = Math.floor(height / (squareSize + gridGap));
-
       const squares = new Float32Array(cols * rows);
       for (let i = 0; i < squares.length; i++) {
         squares[i] = Math.random() * maxOpacity;
