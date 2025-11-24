@@ -21,10 +21,10 @@ export default function Home() {
             id="content-card"
             className="
               w-full 
-              max-w-5xl                /* smaller card */
+              max-w-4xl                /* smaller card */
               mx-auto
               border border-border/40
-              p-10 sm:p-12 lg:p-15        /* reduced padding */
+              p-8 sm:p-10 lg:p-12        /* reduced padding */
               backdrop-blur-xl bg-background/60
               shadow-xl ring-1 ring-white/10
               transition-all duration-500
