@@ -11,6 +11,7 @@ export default function Home() {
       <AnimatedBackground />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 xl:max-w-6xl">
+        <div className="border border-border/40 rounded-2xl p-6 sm:p-8 backdrop-blur-xl bg-background/40 shadow-lg">
 
         {/* HERO */}
         <section id="hero" className="py-0 pt-4">
@@ -42,6 +43,7 @@ export default function Home() {
           <p>Built with Next.js, Tailwind CSS, and Framer Motion</p>
           <p className="mt-1">© 2025 — Always learning, always building</p>
         </footer>
+        </div>
       </div>
 
       <BottomNav />
