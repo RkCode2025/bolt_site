@@ -9,7 +9,7 @@ const fadeUp = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.6 },
 };
 
 export function HeroSection() {
@@ -29,17 +29,17 @@ export function HeroSection() {
         {/* LEFT TEXT */}
         <div className="flex-1 max-w-2xl">
           <motion.div {...fadeUp}>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+            <motion.h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
               Hi, I'm Syphax
-            </h1>
-            <p
+            </motion.h1>
+            <motion.p
               className="mt-4 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg"
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               Developer passionate about learning, improving, and adapting every day.
               I’m deeply interested in Machine Learning, Artificial Intelligence, and
               software architecture.
-            </p>
+            </motion.p>
           </motion.div>
 
           <motion.div
@@ -47,15 +47,15 @@ export function HeroSection() {
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <h2 className="text-lg md:text-xl font-semibold tracking-tight">
+            <motion.h2 className="text-lg md:text-xl font-semibold tracking-tight">
               About
-            </h2>
-            <p className="mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+            </motion.h2>
+            <motion.p className="mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
               I started coding and quickly found it both fun and interesting. I’m driven
               by the desire to build things that make a real impact. My interests lie
               primarily in backend systems and modern AI — especially NLP with PyTorch
               and TensorFlow.
-            </p>
+            </motion.p>
           </motion.div>
 
           <motion.div
@@ -63,14 +63,19 @@ export function HeroSection() {
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h2 className="text-lg md:text-xl font-semibold tracking-tight">
+            <motion.h2 className="text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
-            </h2>
+            </motion.h2>
             <div className="flex flex-wrap gap-3 mt-4">
               {techStack.map((tech, idx) => (
                 <motion.span
                   key={tech}
-                  className="px-3 py-1 rounded-md text-sm border bg-neutral-100 text-neutral-700 border-neutral-300 dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700 transition"
+                  className="
+                    px-3 py-1 rounded-md text-sm border
+                    bg-neutral-100 text-neutral-700 border-neutral-300 
+                    dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700
+                    transition
+                  "
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -92,7 +97,9 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.35 }}
         >
           <div
-            className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'} hover:scale-105 hover:shadow-2xl`}
+            className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
+              loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'
+            } hover:scale-105 hover:shadow-2xl`}
           >
             <Image
               src={profilePic}
@@ -104,7 +111,6 @@ export function HeroSection() {
             />
           </div>
         </motion.div>
-
       </div>
     </section>
   );
