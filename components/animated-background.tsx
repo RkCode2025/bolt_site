@@ -14,7 +14,7 @@ import React, {
 
 interface AnimatedBackgroundProps {
   theme?: "light" | "dark";
-  className?: string; // ← Added support
+  className?: string;
 }
 
 export function AnimatedBackground({
@@ -77,7 +77,11 @@ export const FlickeringGridSidesOnly: React.FC<
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+
+    const data = ctx.getImageData(0, 0, 1, 1).data;
+    const r = data[0];
+    const g = data[1];
+    const b = data[2];
 
     return `rgba(${r},${g},${b},`;
   }, [color]);
@@ -135,7 +139,7 @@ export const FlickeringGridSidesOnly: React.FC<
       for (let row = 0; row < rows; row++) {
         const y = row * totalCell;
 
-        // Optional vertical limits for even better performance
+        // Extra margin for better vertical focus
         if (y < contentBox.top - 100 || y > contentBox.bottom + 100) continue;
 
         if (Math.random() < flickerChance) {
@@ -154,7 +158,7 @@ export const FlickeringGridSidesOnly: React.FC<
     maxOpacity,
   ]);
 
-  /* ───────── Auto-resize + animation loop (smooth 60fps) ───────── */
+  /* ───────── Auto-resize + animation loop ───────── */
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
