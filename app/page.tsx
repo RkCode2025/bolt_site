@@ -21,7 +21,7 @@ export default function Home() {
             id="content-card"
             className="
               w-full 
-              max-w-3xl                /* smaller card */
+              max-w-5xl                /* smaller card */
               mx-auto
               border border-border/40
               p-10 sm:p-12 lg:p-15        /* reduced padding */
