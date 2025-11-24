@@ -30,8 +30,12 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   const [isInView, setIsInView] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
-  // Select color based on theme, but allow override
-  const gridColor = color ?? (theme === "light" ? "rgb(40, 40, 40)" : "rgb(200, 200, 200)");
+  const isDark = theme === "dark";
+
+  // Dark theme gets cooler bluish color and adjusted opacity/flicker
+  const gridColor = color ?? (isDark ? "rgb(100, 200, 255)" : "rgb(40, 40, 40)");
+  const maxOpacityAdjusted = isDark ? 0.4 : maxOpacity;
+  const flickerChanceAdjusted = isDark ? flickerChance * 0.7 : flickerChance;
 
   const memoizedColor = useMemo(() => {
     const toRGBA = (inputColor: string) => {
@@ -63,23 +67,23 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       const rows = Math.floor(height / (squareSize + gridGap));
       const squares = new Float32Array(cols * rows);
       for (let i = 0; i < squares.length; i++) {
-        squares[i] = Math.random() * maxOpacity;
+        squares[i] = Math.random() * maxOpacityAdjusted;
       }
 
       return { cols, rows, squares, dpr };
     },
-    [squareSize, gridGap, maxOpacity]
+    [squareSize, gridGap, maxOpacityAdjusted]
   );
 
   const updateSquares = useCallback(
     (squares: Float32Array, deltaTime: number) => {
       for (let i = 0; i < squares.length; i++) {
-        if (Math.random() < flickerChance * deltaTime) {
-          squares[i] = Math.random() * maxOpacity;
+        if (Math.random() < flickerChanceAdjusted * deltaTime) {
+          squares[i] = Math.random() * maxOpacityAdjusted;
         }
       }
     },
-    [flickerChance, maxOpacity]
+    [flickerChanceAdjusted, maxOpacityAdjusted]
   );
 
   const drawGrid = useCallback(
@@ -177,8 +181,15 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
     };
   }, [setupCanvas, updateSquares, drawGrid, width, height, isInView]);
 
+  // Optional: container gradient background for dark mode (uncomment if desired)
+  // const containerStyle = isDark ? { background: 'linear-gradient(135deg, #0a111e, #001f3f)' } : {};
+
   return (
-    <div ref={containerRef} className={cn("w-full h-full", className)}>
+    <div
+      ref={containerRef}
+      className={cn("w-full h-full", className)}
+      // style={containerStyle} // Enable if gradient background desired
+    >
       <canvas
         ref={canvasRef}
         className="pointer-events-none"
