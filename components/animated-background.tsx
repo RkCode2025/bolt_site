@@ -25,14 +25,16 @@ export function AnimatedBackground() {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
 
+      ctx.resetTransform();
       ctx.scale(dpr, dpr);
-      drawStaticGrid(); // Rebuild after resize
+
+      drawStaticGrid();
     }
 
     window.addEventListener("resize", resize);
     resize();
 
-    // Your content box area coordinates
+    // Your content box area (manual)
     const box = {
       x: window.innerWidth / 2 - 500 / 2,
       y: 140,
@@ -61,9 +63,12 @@ export function AnimatedBackground() {
           const x = c * cell;
           const y = r * cell;
 
-          // Skip inside the content box
-          if (x > box.x && x < box.x + box.w && y > box.y && y < box.y + box.h)
-            continue;
+          // BLOCK ONLY the horizontal span of the box
+          const insideHorizontalBand =
+            x > box.x && x < box.x + box.w &&
+            y > box.y && y < box.y + box.h;
+
+          if (insideHorizontalBand) continue;
 
           ctx.fillRect(x, y, 1, 1);
         }
@@ -80,13 +85,17 @@ export function AnimatedBackground() {
       const x = c * cell;
       const y = r * cell;
 
-      if (x > box.x && x < box.x + box.w && y > box.y && y < box.y + box.h)
-        return;
+      // Prevent flickers inside box horizontal region
+      const inHorizontalBand =
+        x > box.x && x < box.x + box.w &&
+        y > box.y && y < box.y + box.h;
+
+      if (inHorizontalBand) return;
 
       flickers.push({ r, c, life: 1 + Math.random() * 0.6 });
     }
 
-    /** ANIMATION LOOP (ONLY FLICKERS, NO FULL REDRAW) */
+    /** ANIMATION LOOP */
     function animate() {
       if (!canvas || !ctx) return;
 
