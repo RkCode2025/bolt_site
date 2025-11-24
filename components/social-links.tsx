@@ -20,7 +20,7 @@ const socialLinks = [
 
 export function SocialLinks() {  // Fixed: SozialLinks → SocialLinks
   return (
-    <section className="px-6 md:px-12 py-24 relative">
+    <section className="px-6 md:px-12 pt-0 relative">
       <div className="max-w-4xl mx-auto">
         <motion.h2
           className="text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
