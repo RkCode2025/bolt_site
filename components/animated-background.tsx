@@ -13,7 +13,6 @@ export interface AnimatedBackgroundProps {
   squareSize?: number;
   gridGap?: number;
   flickerChance?: number;
-  color?: string;
   maxOpacity?: number;
   className?: string;
 }
@@ -22,7 +21,6 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   squareSize = 4,
   gridGap = 6,
   flickerChance = 0.25,
-  color = "rgb(120,120,120)",
   maxOpacity = 0.25,
   className,
 }) => {
@@ -31,11 +29,37 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
 
   const [isInView, setIsInView] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [baseColor, setBaseColor] = useState("rgb(120,120,120)");
 
-  // -----------------------------
-  // Convert color → rgba(r,g,b,
-  // (Safe for TS, no downlevel iteration)
-  // -----------------------------
+  // -----------------------------------------------------
+  // Watch HTML <html data-theme="dark"> for theme changes
+  // -----------------------------------------------------
+  useEffect(() => {
+    const updateColor = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+
+      setBaseColor(
+        isDark
+          ? "rgb(120,180,255)" // bluish for dark mode
+          : "rgb(100,100,100)" // gray for light mode
+      );
+    };
+
+    updateColor();
+
+    // MutationObserver to track theme changes
+    const mo = new MutationObserver(updateColor);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => mo.disconnect();
+  }, []);
+
+  // -----------------------------------------------------
+  // Convert rgb → rgba(r,g,b,
+  // -----------------------------------------------------
   const memoizedColor = useMemo(() => {
     if (typeof window === "undefined") return "rgba(0,0,0,";
 
@@ -44,20 +68,16 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
     const ctx = canvas.getContext("2d");
     if (!ctx) return "rgba(0,0,0,";
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = baseColor;
     ctx.fillRect(0, 0, 1, 1);
 
     const data = ctx.getImageData(0, 0, 1, 1).data;
-    const r = data[0];
-    const g = data[1];
-    const b = data[2];
+    return `rgba(${data[0]},${data[1]},${data[2]},`;
+  }, [baseColor]);
 
-    return `rgba(${r},${g},${b},`;
-  }, [color]);
-
-  // -----------------------------
-  // Compute grid + initial opacities
-  // -----------------------------
+  // -----------------------------------------------------
+  // Grid Setup
+  // -----------------------------------------------------
   const setupCanvas = useCallback(
     (canvas: HTMLCanvasElement, width: number, height: number) => {
       const dpr = window.devicePixelRatio || 1;
@@ -79,9 +99,6 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
     [squareSize, gridGap, maxOpacity]
   );
 
-  // -----------------------------
-  // Update flicker state
-  // -----------------------------
   const updateSquares = useCallback(
     (squares: Float32Array, delta: number) => {
       const limit = flickerChance * delta;
@@ -94,9 +111,6 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
     [flickerChance, maxOpacity]
   );
 
-  // -----------------------------
-  // Draw grid
-  // -----------------------------
   const drawGrid = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -126,14 +140,13 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
     [memoizedColor, squareSize, gridGap]
   );
 
-  // -----------------------------
-  // Animation lifecycle
-  // -----------------------------
+  // -----------------------------------------------------
+  // Animation Lifecycle
+  // -----------------------------------------------------
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -145,6 +158,7 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       const w = container.clientWidth;
       const h = container.clientHeight;
       setCanvasSize({ width: w, height: h });
+
       grid = setupCanvas(canvas, w, h);
     };
 
@@ -152,6 +166,7 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
 
     const animate = (t: number) => {
       if (!isInView) return;
+
       const delta = (t - last) / 1000;
       last = t;
 
