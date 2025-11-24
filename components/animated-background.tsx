@@ -12,10 +12,9 @@ interface AnimatedBackgroundProps {
   theme?: "light" | "dark";
 }
 
-export function AnimatedBackground({
-  theme = "dark",
-}: AnimatedBackgroundProps) {
-  const color = theme === "light" ? "rgb(180, 180, 255)" : "rgb(120, 120, 255)";
+export function AnimatedBackground({ theme = "dark" }: AnimatedBackgroundProps) {
+  const color =
+    theme === "light" ? "rgb(180, 180, 255)" : "rgb(120, 120, 255)";
 
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none">
@@ -42,7 +41,9 @@ interface FlickeringGridSidesOnlyProps {
   maxOpacity?: number;
 }
 
-export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = ({
+export const FlickeringGridSidesOnly: React.FC<
+  FlickeringGridSidesOnlyProps
+> = ({
   squareSize = 4,
   gridGap = 6,
   flickerChance = 0.3,
@@ -64,7 +65,6 @@ export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = (
     return `rgba(${r},${g},${b},`;
   }, [color]);
 
-  // Watch the real content card (#content-card) bounds
   useEffect(() => {
     const card = document.getElementById("content-card");
     if (!card) return;
@@ -75,7 +75,7 @@ export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = (
     const ro = new ResizeObserver(update);
     ro.observe(card);
     window.addEventListener("resize", update);
-    window.addEventListener("scroll", update); // in case it moves
+    window.addEventListener("scroll", update);
 
     return () => {
       ro.disconnect();
@@ -90,35 +90,30 @@ export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = (
 
     const ctx = canvas.getContext("2d")!;
     const dpr = window.devicePixelRatio || 1;
+
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
     ctx.clearRect(0, 0, width, height);
 
     const totalCell = squareSize + gridGap;
     const cols = Math.ceil(width / totalCell);
     const rows = Math.ceil(height / totalCell);
 
-    // Only draw on left and right sides
-    const leftEdge = 0;
-    const rightEdge = contentBox.right;
     const safeLeft = contentBox.left;
-    const safeRight = width;
+    const safeRight = contentBox.right;
 
     for (let col = 0; col < cols; col++) {
       const x = col * totalCell;
 
-      // Skip if inside the center content area
-      if (x + squareSize >= safeLeft && x <= rightEdge) continue;
+      if (x + squareSize >= safeLeft && x <= safeRight) continue;
 
       for (let row = 0; row < rows; row++) {
         const y = row * totalCell;
 
-        // Optional: also skip top/bottom margins if you want
         if (y < contentBox.top - 100 || y > contentBox.bottom + 100) continue;
 
         const opacity = Math.random() * maxOpacity;
@@ -128,9 +123,17 @@ export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = (
         }
       }
     }
-  }, [contentBox, memoizedColor, squareSize, gridGap, flickerChance, maxOpacity]);
+  }, [
+    contentBox,
+    memoizedColor,
+    squareSize,
+    gridGap,
+    flickerChance,
+    maxOpacity,
+  ]);
 
-  //  useEffect(() => {
+  // ✅ FIXED useEffect WRAPPER
+  useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
@@ -145,7 +148,6 @@ export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = (
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
-    // Animate flicker
     let frame = 0;
     const animate = () => {
       draw();
@@ -157,7 +159,7 @@ export const FlickeringGridSidesOnly: React.FC<FlickeringGridSidesOnlyProps> = (
       cancelAnimationFrame(frame);
       ro.disconnect();
     };
-  }, [draw]);
+  }, [draw]); // ← missing earlier — this caused your error
 
   return (
     <div ref={containerRef} className={className}>
