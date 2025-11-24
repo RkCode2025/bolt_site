@@ -8,16 +8,17 @@ import BottomNav from '@/components/BottomNav';
 export default function Home() {
   return (
     <>
-      <div className="relative flex justify-center">
+      {/* Background ONLY around edges of the box */}
+      <AnimatedBackground
+        sidesOnly
+        className="opacity-40 dark:opacity-25"
+      />
 
-        {/* 🔥 Background ONLY around edges of the box */}
-        <AnimatedBackground
-          sidesOnly
-          className="opacity-40 dark:opacity-25"
-        />
-
+      {/* MAIN CONTENT WRAPPER */}
+      <div className="relative z-10 flex justify-center">
+        
         {/* MAIN CONTENT BOX */}
-        <div className="relative z-10 mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 xl:max-w-6xl">
+        <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 xl:max-w-6xl">
           <div className="border border-border/40 rounded-2xl p-6 sm:p-8 backdrop-blur-xl bg-background/40 shadow-lg">
 
             {/* HERO */}
