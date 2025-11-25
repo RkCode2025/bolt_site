@@ -18,10 +18,10 @@ export interface AnimatedBackgroundProps {
 }
 
 export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
-  squareSize = 5,
+  squareSize = 7,
   gridGap = 4,
   flickerChance = 0.25,
-  maxOpacity = 0.4,
+  maxOpacity = 0.6,
   className,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,7 +41,7 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       setBaseColor(
         isDark
           ? "rgb(0, 255, 140)" // green for dark mode
-          : "rgb(180, 180, 255)" // gray for light mode
+          : "rgb(148, 0, 211)" // gray for light mode
       );
     };
 
