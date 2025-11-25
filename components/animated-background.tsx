@@ -18,7 +18,7 @@ export interface AnimatedBackgroundProps {
 }
 
 export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
-  squareSize = 6,
+  squareSize = 5,
   gridGap = 4,
   flickerChance = 0.25,
   maxOpacity = 0.4,
