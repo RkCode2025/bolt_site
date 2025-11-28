@@ -33,7 +33,7 @@ export function HeroSection() {
               Hi, I'm Syphax
             </motion.h1>
             <motion.p
-              className="mt-4 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg"
+              className="mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               Developer passionate about learning, improving, and adapting every day.
