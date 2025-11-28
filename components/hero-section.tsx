@@ -29,11 +29,12 @@ export function HeroSection() {
         {/* LEFT TEXT */}
         <div className="flex-1 max-w-2xl">
           <motion.div {...fadeUp}>
-            <motion.h1 className="text-4xl md:text-5xl font-semibold mb-16 tracking-tight">
+            <motion.h1 className="text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
               Hi, I'm Syphax
             </motion.h1>
+
             <motion.p
-              className="mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
+              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               Developer passionate about learning, improving, and adapting every day.
