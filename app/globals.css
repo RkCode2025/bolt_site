@@ -1,12 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ────────────────────────────────
-   Design tokens (shadcn/ui style)
-   ──────────────────────────────── */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -52,20 +49,15 @@
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
   }
-}
 
-/* ────────────────────────────────
-   Global styles & typography
-   ──────────────────────────────── */
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground min-h-screen;
-    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    padding-left: 16px !important; /* ← Push content away from the line */
+    font-family: 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, serif;
+    padding-left: 16px !important;
     position: relative;
   }
 
@@ -76,9 +68,6 @@
   }
 }
 
-/* ────────────────────────────────
-   Left vertical line (always on top)
-   ──────────────────────────────── */
 body::before {
   content: "";
   position: fixed;
@@ -91,9 +80,6 @@ body::before {
   pointer-events: none;
 }
 
-/* ────────────────────────────────
-   Utility helpers
-   ──────────────────────────────── */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
