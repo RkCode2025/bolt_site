@@ -27,7 +27,6 @@ export default function Experience() {
 
   const githubUrl = "https://github.com/old-droid";
 
-  // Inline SVG icons
   const BriefcaseIcon = (
     <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
       <path d="M6 7V5a2 2 0 012-2h4a2 2 0 012 2v2h3a1 1 0 011 1v3H2V8a1 1 0 011-1h3zm2-2v2h4V5H8z" />
@@ -48,7 +47,7 @@ export default function Experience() {
     <section className="max-w-6xl mx-auto px-6 sm:px-8 md:px-10 mt-14">
 
       <h2
-        className={`text-2xl md:text-3xl font-bold mb-8 transition-all duration-700 
+        className={`text-4xl md:text-5xl font-semibold mb-8 transition-all duration-700 
         ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
       >
         Experience
@@ -66,8 +65,8 @@ export default function Experience() {
               <div className="flex items-center gap-4">
                 {BriefcaseIcon}
                 <div>
-                  <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
-                    {exp.role} <span className="text-green-700 dark:text-green-400 text-sm font-semibold">({exp.date})</span>
+                  <h3 className="text-xl font-semibold mb-1 text-neutral-900 dark:text-neutral-100">
+                    {exp.role} <span className="text-sm text-green-700 dark:text-green-400 font-semibold">({exp.date})</span>
                   </h3>
 
                   <p className="text-base text-neutral-600 dark:text-neutral-400 font-medium">
@@ -85,7 +84,7 @@ export default function Experience() {
             <div className="ml-9 h-px bg-neutral-300 dark:bg-neutral-700 mb-4"></div>
 
             {/* Description */}
-            <p className="ml-9 text-neutral-700 dark:text-neutral-300 leading-normal">
+            <p className="ml-9 text-base text-neutral-700 dark:text-neutral-300 leading-normal">
               {exp.description}
             </p>
           </div>
