@@ -13,7 +13,6 @@ export default function Experience() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Set a slight timeout (e.g., 50ms) to trigger the CSS transition/fade-in
     const timer = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(timer);
   }, []);
@@ -23,20 +22,24 @@ export default function Experience() {
       role: "AI/ML Developer",
       company: "Fiberr (Startup)",
       date: "Nov 2025 – Present",
-      // Enhanced description for better impact
-      description: "Implementing **novel model architectures** for a research-based startup, focusing on translating cutting-edge R&D into **developmental insights** and production-ready systems.",
+      description: "Working as an AI/ML developer for a research-based startup for developmental insight.",
     },
-    // Add more experiences here as needed
   ];
 
-  const githubUrl = "https://github.com/old-droid"; // Centralized GitHub URL
+  const githubUrl = "https://github.com/old-droid"; 
 
   return (
     <section className="max-w-6xl mx-auto px-6 sm:px-8 md:px-10 mt-14">
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-8">
+      
+      {/* Animation added to the H2 heading */}
+      <h2 
+        className={`
+          text-2xl md:text-3xl font-bold tracking-tight mb-8 transition-all duration-700 ease-out 
+          ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}
+        `}
+      >
         Experience
       </h2>
-      
       
       <div className="space-y-10">
         {experiences.map((exp, i) => (
@@ -48,39 +51,30 @@ export default function Experience() {
               ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}
             `}
           >
-            {/* 1. Primary Hierarchy (Role and Company) */}
             <div className="flex items-start gap-4 mb-1"> 
-              {/* Experience Icon (FaBriefcase) */}
               <FaBriefcase className="w-5 h-5 mt-1 flex-shrink-0 text-green-600 dark:text-green-400" />
 
               <div>
-                {/* Role: Highest level of text hierarchy (large, bold) */}
                 <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
                   {exp.role}
                 </h3>
-                {/* Company: Second level (medium size, medium weight, italic) */}
                 <p className="text-base text-neutral-600 dark:text-neutral-400 font-medium italic">
                   {exp.company}
                 </p>
               </div>
             </div>
 
-            {/* 2. Secondary Detail (Date) - Indented for alignment */}
             <p className="ml-9 text-sm text-green-700 dark:text-green-400 font-semibold">
               {exp.date}
             </p>
 
-            {/* 3. Description (The main content) - Indented */}
             <p className="ml-9 mt-4 text-neutral-700 dark:text-neutral-300 leading-normal">
               {exp.description}
             </p>
-
           </div>
         ))}
       </div>
 
-      {/* The dedicated GitHub Button at the bottom of the section
-      */}
       <div className="mt-10 text-center">
         <a
           href={githubUrl}
