@@ -55,7 +55,7 @@ export default function Experience() {
   return (
     <section className="max-w-6xl mx-auto px-6 sm:px-8 md:px-10 mt-14">
       <h2
-        className={`text-4xl md:text-5xl font-semibold mb-10 transition-all duration-700 ${
+        className={`font-heading text-4xl md:text-5xl font-semibold mb-10 transition-all duration-700 ${
           mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
         }`}
       >
@@ -70,18 +70,17 @@ export default function Experience() {
               mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
             }`}
           >
-            {/* Top section with left text + right GitHub icon */}
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center gap-4">
                 {BriefcaseIcon}
                 <div className="space-y-1">
-                  <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                  <h3 className="font-heading text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                     {exp.role}{' '}
                     <span className="text-sm text-blue-600 dark:text-green-400 font-semibold">
                       ({exp.date})
                     </span>
                   </h3>
-                  <p className="text-base text-neutral-600 dark:text-neutral-400 font-medium">
+                  <p className="font-info text-base text-neutral-600 dark:text-neutral-400 font-medium">
                     {exp.company}
                   </p>
                 </div>
@@ -92,11 +91,9 @@ export default function Experience() {
               </a>
             </div>
 
-            {/* Divider */}
             <div className="ml-9 h-px bg-neutral-300 dark:bg-neutral-700 mb-4"></div>
 
-            {/* Description */}
-            <p className="ml-9 text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">
+            <p className="ml-9 font-info text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">
               {exp.description}
             </p>
           </div>
