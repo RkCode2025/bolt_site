@@ -37,7 +37,7 @@ export function ProjectsSection() {
     <section className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
+          className="font-heading text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -63,14 +63,14 @@ export function ProjectsSection() {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative z-10 flex-1 flex flex-col">
-                  <h3 className="text-xl font-semibold mb-3">{project.title}</h3>
-                  <p className="text-muted-foreground mb-4 flex-1">{project.description}</p>
+                  <h3 className="font-heading text-xl font-semibold mb-3">{project.title}</h3>
+                  <p className="font-info text-muted-foreground mb-4 flex-1">{project.description}</p>
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-jetbrains"
+                        className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-info"
                       >
                         {tag}
                       </span>
@@ -83,7 +83,7 @@ export function ProjectsSection() {
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        className="flex items-center gap-2 text-sm font-info text-muted-foreground hover:text-foreground transition-colors"
                       >
                         <Github className="w-4 h-4" /> Code
                       </a>
@@ -93,7 +93,7 @@ export function ProjectsSection() {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        className="flex items-center gap-2 text-sm font-info text-muted-foreground hover:text-foreground transition-colors"
                       >
                         <ExternalLink className="w-4 h-4" /> Demo
                       </a>
