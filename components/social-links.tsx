@@ -18,7 +18,7 @@ const socialLinks = [
   },
 ];
 
-export function SocialLinks() {  // Fixed: SozialLinks → SocialLinks
+export function SocialLinks() {
   return (
     <section className="px-6 md:px-12 pt-0 relative">
       <div className="max-w-4xl mx-auto">
@@ -46,26 +46,33 @@ export function SocialLinks() {  // Fixed: SozialLinks → SocialLinks
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ scale: 1.02 }}
             >
+              {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
+              {/* Icon with shake */}
               <motion.div
                 className="relative z-10 p-4 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors"
-                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                transition={{ duration: 0.5 }}
+                initial={{ rotate: 0 }}
+                whileHover={{
+                  rotate: [0, -10, 10, -10, 0],
+                }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
                 <link.icon className="w-8 h-8" />
               </motion.div>
 
+              {/* Text */}
               <div className="relative z-10 flex-1">
                 <h3 className="text-xl font-semibold mb-1">{link.name}</h3>
                 <p className="text-sm text-muted-foreground font-jetbrains">{link.username}</p>
               </div>
 
+              {/* Arrow animation */}
               <motion.div
                 className="relative z-10 text-muted-foreground"
                 initial={{ x: 0 }}
                 whileHover={{ x: 5 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -80,6 +87,7 @@ export function SocialLinks() {  // Fixed: SozialLinks → SocialLinks
           ))}
         </div>
 
+        {/* Footer */}
         <motion.div
           className="mt-16 text-center"
           initial={{ opacity: 0 }}
