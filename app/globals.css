@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* --- GOOGLE FONTS IMPORT --- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -54,28 +55,33 @@
     @apply border-border;
   }
 
+  /* --- BODY FONT = INTER --- */
   body {
     @apply bg-background text-foreground min-h-screen;
+    font-family: 'Inter', sans-serif;
     padding-left: 16px !important;
     position: relative;
   }
 
-  /* Font utilities */
+  /* --- HEADING FONT = PLAYFAIR DISPLAY --- */
   .font-heading {
     font-family: 'Playfair Display', serif;
   }
 
+  /* --- INFO TEXT = INTER --- */
   .font-info {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Inter', sans-serif;
   }
 
+  /* --- CODE STILL INTER MONOSPACE VARIANT --- */
   code,
   pre,
   kbd {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Inter', monospace;
   }
 }
 
+/* LEFT VERTICAL LINE */
 body::before {
   content: "";
   position: fixed;
