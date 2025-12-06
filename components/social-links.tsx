@@ -22,8 +22,9 @@ export function SocialLinks() {
   return (
     <section className="px-6 md:px-12 pt-0 relative">
       <div className="max-w-4xl mx-auto">
+        {/* Heading */}
         <motion.h2
-          className="text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
+          className="font-heading text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -32,6 +33,7 @@ export function SocialLinks() {
           Connect
         </motion.h2>
 
+        {/* Social Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {socialLinks.map((link, index) => (
             <motion.a
@@ -63,8 +65,8 @@ export function SocialLinks() {
 
               {/* Text */}
               <div className="relative z-10 flex-1">
-                <h3 className="text-xl font-semibold mb-1">{link.name}</h3>
-                <p className="text-sm text-muted-foreground font-jetbrains">{link.username}</p>
+                <h3 className="font-heading text-xl font-semibold mb-1">{link.name}</h3>
+                <p className="font-info text-sm text-muted-foreground">{link.username}</p>
               </div>
 
               {/* Arrow animation */}
@@ -95,10 +97,10 @@ export function SocialLinks() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-muted-foreground mb-2">Open to collaborations and new ideas</p>
+          <p className="font-info text-muted-foreground mb-2">Open to collaborations and new ideas</p>
           <a
             href="mailto:syphaxtwt2025@gmail.com"
-            className="inline-flex items-center gap-2 text-sm hover:text-foreground transition-colors font-jetbrains"
+            className="inline-flex items-center gap-2 text-sm hover:text-foreground transition-colors font-info"
           >
             <Mail className="w-4 h-4" /> Get in touch
           </a>
