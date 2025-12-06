@@ -56,15 +56,23 @@
 
   body {
     @apply bg-background text-foreground min-h-screen;
-    font-family: 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, serif;
     padding-left: 16px !important;
     position: relative;
+  }
+
+  /* Font utilities */
+  .font-heading {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-info {
+    font-family: 'IBM Plex Mono', monospace;
   }
 
   code,
   pre,
   kbd {
-    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    font-family: 'IBM Plex Mono', monospace;
   }
 }
 
