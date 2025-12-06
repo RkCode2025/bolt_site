@@ -25,16 +25,14 @@ export function HeroSection() {
   return (
     <section className="w-full pt-10 pb-2">
       <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
-
-        {/* LEFT TEXT */}
         <div className="flex-1 max-w-2xl">
           <motion.div {...fadeUp}>
-            <motion.h1 className="text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
+            <motion.h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
               Hi, I'm Syphax
             </motion.h1>
 
             <motion.p
-              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
+              className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               Developer passionate about learning, improving, and adapting every day.
@@ -43,15 +41,11 @@ export function HeroSection() {
             </motion.p>
           </motion.div>
 
-          <motion.div
-            className="mt-10"
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <motion.h2 className="text-lg md:text-xl font-semibold tracking-tight">
+          <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
+            <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
               About
             </motion.h2>
-            <motion.p className="mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+            <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
               I started coding and quickly found it both fun and interesting. I’m driven
               by the desire to build things that make a real impact. My interests lie
               primarily in backend systems and modern AI — especially NLP with PyTorch
@@ -59,24 +53,18 @@ export function HeroSection() {
             </motion.p>
           </motion.div>
 
-          <motion.div
-            className="mt-10"
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <motion.h2 className="text-lg md:text-xl font-semibold tracking-tight">
+          <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
+            <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
             </motion.h2>
             <div className="flex flex-wrap gap-3 mt-4">
               {techStack.map((tech, idx) => (
                 <motion.span
                   key={tech}
-                  className="
-                    px-3 py-1 rounded-md text-sm border
+                  className="font-info px-3 py-1 rounded-md text-sm border
                     bg-neutral-100 text-neutral-700 border-neutral-300 
                     dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700
-                    transition
-                  "
+                    transition"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -89,7 +77,6 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* RIGHT IMAGE */}
         <motion.div
           className="shrink-0 flex items-start pt-1 md:-ml-10"
           initial={{ opacity: 0, y: 20 }}
