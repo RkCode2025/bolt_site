@@ -12,6 +12,51 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
+  const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const isDark = theme === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+
+    // 1. Check if the browser supports View Transitions
+    // @ts-ignore: specific browser API check
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    const x = e.clientX;
+    const y = e.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // 2. Start the transition
+    // @ts-ignore
+    const transition = document.startViewTransition(() => {
+      setTheme(newTheme);
+    });
+
+    // 3. Define the animation
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: clipPath,
+        },
+        {
+          duration: 500,
+          easing: 'ease-in-out',
+          // We always animate the "new" view growing on top of the old one
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    });
+  };
+
   if (!mounted) {
     return (
       <button className="relative w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center">
@@ -22,7 +67,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={toggleTheme}
       className="relative w-10 h-10 rounded-full bg-secondary/50 hover:bg-secondary transition-all duration-300 flex items-center justify-center group overflow-hidden"
       aria-label="Toggle theme"
     >
