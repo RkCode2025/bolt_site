@@ -1,17 +1,9 @@
-/* --- GOOGLE FONTS IMPORT: INTER ONLY --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* --- GOOGLE FONTS IMPORT --- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* --- LOCAL FONT: MENCKEN STD HEAD NARROW --- */
-@font-face {
-  font-family: 'Mencken Std Head Narrow';
-  src: url('/fonnts.com-Mencken-Std-Head-Narrow-.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-}
 
 @layer base {
   :root {
@@ -71,9 +63,9 @@
     position: relative;
   }
 
-  /* --- HEADING FONT = MENCKEN --- */
+  /* --- HEADING FONT = PLAYFAIR DISPLAY ---
   .font-heading {
-    font-family: 'Mencken Std Head Narrow', serif;
+    font-family: 'Playfair Display', serif;
   }
 
   /* --- INFO TEXT = INTER --- */
@@ -81,7 +73,7 @@
     font-family: 'Inter', sans-serif;
   }
 
-  /* --- CODE STILL INTER'S MONOSPACE --- */
+  /* --- CODE STILL INTER MONOSPACE VARIANT --- */
   code,
   pre,
   kbd {
