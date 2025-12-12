@@ -63,7 +63,7 @@
     position: relative;
   }
 
-  /* --- HEADING FONT = PLAYFAIR DISPLAY ---
+  /* --- HEADING FONT = PLAYFAIR DISPLAY --- */
   .font-heading {
     font-family: 'Playfair Display', serif;
   }
@@ -89,7 +89,8 @@ body::before {
   left: 0;
   width: 2px;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.12);
+  /* Use CSS variables for better theme integration, or adjust the rgba value for dark mode */
+  background: rgba(var(--primary-foreground, 255, 255, 255) / 0.12);
   z-index: 9999;
   pointer-events: none;
 }
@@ -98,4 +99,48 @@ body::before {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+
+/* * --- VIEW TRANSITION API OVERRIDES FOR CIRCULAR REVEAL --- 
+ * This CSS is crucial for the animation defined in themetoggle.tsx to work.
+ * It disables the browser's default fade and manages the layer stacking.
+*/
+
+/* 1. Reset default View Transition animations */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none; /* Disable browser's default cross-fade */
+  mix-blend-mode: normal; 
+}
+
+/* 2. Set Z-index for the transition elements */
+
+/* Default (Light to Dark) - The NEW (dark) content grows on top */
+:root:not(.dark)::view-transition-new(root) {
+  z-index: 1; /* New content (Dark) is on top */
+}
+
+:root:not(.dark)::view-transition-old(root) {
+  z-index: 0; /* Old content (Light) is underneath */
+}
+
+/* Dark mode (Dark to Light) - The NEW (light) content grows on top */
+.dark::view-transition-new(root) {
+  z-index: 1; /* New content (Light) is on top */
+}
+
+.dark::view-transition-old(root) {
+  z-index: 0; /* Old content (Dark) is underneath */
+}
+
+/* 3. Ensure full-screen coverage */
+::view-transition-old(root),
+::view-transition-new(root) {
+  object-fit: cover;
+  position: absolute; /* Ensures they cover the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
