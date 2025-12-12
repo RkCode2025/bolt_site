@@ -103,17 +103,32 @@ body::before {
 
 
 /* * --- VIEW TRANSITION API OVERRIDES FOR CIRCULAR REVEAL --- 
- * This CSS is crucial for the animation to work and targets 'page-content'.
+ * Targets 'page-content' and includes performance optimization.
 */
 
-/* 1. Reset default View Transition animations using the specific name */
+/* 1. Performance Fix: Encourage Hardware Acceleration */
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
+  /* Hints the browser to prepare for animation on the GPU */
+  will-change: transform, opacity, clip-path;
+  /* Limits render scope to the element, improving speed */
+  contain: layout style;
+}
+
+/* Also apply will-change to the HTML element itself to optimize background/color change */
+html {
+  will-change: background-color, color; 
+}
+
+
+/* 2. Reset default View Transition animations */
 ::view-transition-old(page-content),
 ::view-transition-new(page-content) {
   animation: none; /* Disable browser's default cross-fade */
   mix-blend-mode: normal; 
 }
 
-/* 2. Set Z-index for the transition elements */
+/* 3. Set Z-index for the transition elements */
 
 /* Default (Light to Dark) - The NEW (dark) content grows on top */
 :root:not(.dark)::view-transition-new(page-content) {
@@ -133,7 +148,7 @@ body::before {
   z-index: 0; /* Old content (Dark) is underneath */
 }
 
-/* 3. Ensure full-screen coverage */
+/* 4. Ensure full-screen coverage */
 ::view-transition-old(page-content),
 ::view-transition-new(page-content) {
   object-fit: cover;
