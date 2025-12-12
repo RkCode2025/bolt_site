@@ -17,12 +17,20 @@ export default function BottomNav() {
 
   useEffect(() => {
     setMounted(true);
-    // Ensure the HTML tag has the view-transition-name property for the CSS to target
-    document.documentElement.style.viewTransitionName = 'page-content';
     
-    return () => {
-        document.documentElement.style.viewTransitionName = '';
+    // FIX: Use 'as any' and bracket notation to bypass TypeScript errors 
+    // on the new 'viewTransitionName' property.
+    const htmlStyle = document.documentElement.style as any;
+
+    if (htmlStyle.viewTransitionName !== undefined) {
+        htmlStyle.viewTransitionName = 'page-content';
     }
+
+    return () => {
+        if (htmlStyle.viewTransitionName !== undefined) {
+            htmlStyle.viewTransitionName = '';
+        }
+    };
   }, []);
 
   const scrollToSection = (id: string) => {
@@ -33,7 +41,7 @@ export default function BottomNav() {
   };
 
   /**
-   * New function to handle theme toggle with circular reveal animation.
+   * Function to handle theme toggle with circular reveal animation.
    */
   const handleThemeToggle = (e: React.MouseEvent<SVGSVGElement>) => {
     const isDark = theme === 'dark';
@@ -92,7 +100,7 @@ export default function BottomNav() {
           transition-all duration-300 hover:bg-white/40 dark:hover:bg-neutral-900/40
         "
       >
-        {/* Navigation links (No change here) */}
+        {/* Navigation links */}
         <Home
           onClick={() => scrollToSection('hero')}
           className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
