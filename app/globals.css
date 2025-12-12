@@ -103,13 +103,12 @@ body::before {
 
 
 /* * --- VIEW TRANSITION API OVERRIDES FOR CIRCULAR REVEAL --- 
- * This CSS is crucial for the animation defined in themetoggle.tsx to work.
- * It disables the browser's default fade and manages the layer stacking.
+ * This CSS is crucial for the animation to work and targets 'page-content'.
 */
 
-/* 1. Reset default View Transition animations */
-::view-transition-old(root),
-::view-transition-new(root) {
+/* 1. Reset default View Transition animations using the specific name */
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
   animation: none; /* Disable browser's default cross-fade */
   mix-blend-mode: normal; 
 }
@@ -117,26 +116,26 @@ body::before {
 /* 2. Set Z-index for the transition elements */
 
 /* Default (Light to Dark) - The NEW (dark) content grows on top */
-:root:not(.dark)::view-transition-new(root) {
+:root:not(.dark)::view-transition-new(page-content) {
   z-index: 1; /* New content (Dark) is on top */
 }
 
-:root:not(.dark)::view-transition-old(root) {
+:root:not(.dark)::view-transition-old(page-content) {
   z-index: 0; /* Old content (Light) is underneath */
 }
 
 /* Dark mode (Dark to Light) - The NEW (light) content grows on top */
-.dark::view-transition-new(root) {
+.dark::view-transition-new(page-content) {
   z-index: 1; /* New content (Light) is on top */
 }
 
-.dark::view-transition-old(root) {
+.dark::view-transition-old(page-content) {
   z-index: 0; /* Old content (Dark) is underneath */
 }
 
 /* 3. Ensure full-screen coverage */
-::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
   object-fit: cover;
   position: absolute; /* Ensures they cover the viewport */
   top: 0;
