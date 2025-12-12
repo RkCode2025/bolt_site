@@ -10,6 +10,20 @@ export function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true);
+    
+    // ⚠️ CRITICAL: Set the view-transition-name to match your CSS file (page-content)
+    // Use 'as any' to avoid TypeScript errors on the new property
+    const htmlStyle = document.documentElement.style as any;
+
+    if (htmlStyle.viewTransitionName !== undefined) {
+        htmlStyle.viewTransitionName = 'page-content';
+    }
+
+    return () => {
+        if (htmlStyle.viewTransitionName !== undefined) {
+            htmlStyle.viewTransitionName = '';
+        }
+    };
   }, []);
 
   const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -17,7 +31,7 @@ export function ThemeToggle() {
     const newTheme = isDark ? 'light' : 'dark';
 
     // 1. Check if the browser supports View Transitions
-    // @ts-ignore: specific browser API check
+    // @ts-ignore
     if (!document.startViewTransition) {
       setTheme(newTheme);
       return;
@@ -43,8 +57,6 @@ export function ThemeToggle() {
         `circle(${endRadius}px at ${x}px ${y}px)`,
       ];
 
-      // Note: We use document.documentElement.animate, and the pseudoElement 
-      // is correctly set to '::view-transition-new(root)'
       document.documentElement.animate(
         {
           clipPath: clipPath,
@@ -52,13 +64,15 @@ export function ThemeToggle() {
         {
           duration: 500,
           easing: 'ease-in-out',
-          pseudoElement: '::view-transition-new(root)',
+          // Now targets 'page-content' to match the CSS
+          pseudoElement: '::view-transition-new(page-content)',
         }
       );
     });
   };
 
   if (!mounted) {
+    // ... (rest of the component remains the same)
     return (
       <button className="relative w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center">
         <div className="w-5 h-5" />
