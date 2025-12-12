@@ -1,23 +1,43 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-
-// NOTE: You must have 'profile.jpg' in the root of your project
-// or update the import path accordingly.
-import profilePic from 'profile.jpg';
+import profilePic from 'profile.jpg'; // NOTE: Ensure this path is correct
 
 /*
  * ====================================================================
- * 1. TECH STACK DATA
+ * 1. TYPESCRIPT INTERFACES
+ * ====================================================================
+ */
+
+// 1. Interface for a single tool object
+interface TechTool {
+  name: string;
+  logoPath: string; // This is a string because the logos are public assets (string URL)
+}
+
+// 2. Interface for ToolCard props
+interface ToolCardProps {
+  name: string;
+  logoPath: string;
+}
+
+// 3. Interface for TechStackSlider props
+interface TechStackSliderProps {
+  tools: TechTool[];
+}
+
+
+/*
+ * ====================================================================
+ * 2. TECH STACK DATA & CONFIG
  * ====================================================================
  */
 
 // Define the tech stack with names and local image paths for logos
-// NOTE: For this to work, create a 'public/logos/' directory and place
-// the corresponding SVG or PNG files there (e.g., public/logos/python.svg).
-const techStackTools = [
+// NOTE: Logos must be accessible via the public folder (e.g., /public/logos/python.svg)
+const techStackTools: TechTool[] = [
   { name: 'Python', logoPath: '/logos/python.svg' },
   { name: 'PyTorch', logoPath: '/logos/pytorch.svg' },
   { name: 'TensorFlow', logoPath: '/logos/tensorflow.svg' },
@@ -33,12 +53,12 @@ const sliderAnimationDuration = 30; // 30 seconds for one full loop
 
 /*
  * ====================================================================
- * 2. SLIDER SUB-COMPONENTS
+ * 3. SLIDER SUB-COMPONENTS
  * ====================================================================
  */
 
 // Helper component for each tech tool card
-function ToolCard({ name, logoPath }) {
+function ToolCard({ name, logoPath }: ToolCardProps) {
   return (
     <div
       className="flex flex-col items-center justify-center p-4 min-w-[120px] h-[100px] border rounded-lg
@@ -60,7 +80,7 @@ function ToolCard({ name, logoPath }) {
 }
 
 // Component to handle the infinite sliding animation
-function TechStackSlider({ tools }) {
+function TechStackSlider({ tools }: TechStackSliderProps) {
   // To create the infinite loop effect, we duplicate the array.
   const duplicatedTools = [...tools, ...tools];
 
@@ -70,14 +90,20 @@ function TechStackSlider({ tools }) {
       <div 
         className="flex w-[200%] slider-track gap-6" 
         // Use inline style to pass the CSS variable for animation duration
-        style={{ '--animation-duration': `${sliderAnimationDuration}s` }}
+        // We use 'as React.CSSProperties' to correctly type the custom CSS variable
+        style={{ '--animation-duration': `${sliderAnimationDuration}s` } as React.CSSProperties}
       >
         {duplicatedTools.map((tool, index) => (
-          <ToolCard key={`tool-${tool.name}-${index}`} name={tool.name} logoPath={tool.logoPath} />
+          // Use a combined key for uniqueness across the duplicated list
+          <ToolCard 
+            key={`tool-${tool.name}-${index}`} 
+            name={tool.name} 
+            logoPath={tool.logoPath} 
+          />
         ))}
       </div>
 
-      {/* Fading edges to make the slider look infinite */}
+      {/* Fading edges to mask the loop start/end */}
       <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white dark:from-black/90 to-transparent pointer-events-none"></div>
       <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white dark:from-black/90 to-transparent pointer-events-none"></div>
     </div>
@@ -86,7 +112,7 @@ function TechStackSlider({ tools }) {
 
 /*
  * ====================================================================
- * 3. MAIN HERO SECTION COMPONENT
+ * 4. MAIN HERO SECTION COMPONENT
  * ====================================================================
  */
 
@@ -101,7 +127,6 @@ export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Small timeout to ensure the image transition runs after component mounts
     const timer = setTimeout(() => setLoaded(true), 50);
     return () => clearTimeout(timer);
   }, []);
@@ -163,7 +188,7 @@ export function HeroSection() {
             } hover:scale-105 hover:shadow-2xl`}
           >
             <Image
-              src={profilePic}
+              src={profilePic as StaticImageData}
               alt="Syphax"
               width={400}
               height={400}
