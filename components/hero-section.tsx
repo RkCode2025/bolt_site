@@ -1,120 +1,11 @@
 'use client';
 
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import profilePic from 'profile.jpg'; // NOTE: Ensure this path is correct
 
-/*
- * ====================================================================
- * 1. TYPESCRIPT INTERFACES
- * ====================================================================
- */
-
-// 1. Interface for a single tool object
-interface TechTool {
-  name: string;
-  logoPath: string; // This is a string because the logos are public assets (string URL)
-}
-
-// 2. Interface for ToolCard props
-interface ToolCardProps {
-  name: string;
-  logoPath: string;
-}
-
-// 3. Interface for TechStackSlider props
-interface TechStackSliderProps {
-  tools: TechTool[];
-}
-
-
-/*
- * ====================================================================
- * 2. TECH STACK DATA & CONFIG
- * ====================================================================
- */
-
-// Define the tech stack with names and local image paths for logos
-// NOTE: Logos must be accessible via the public folder (e.g., /public/logos/python.svg)
-const techStackTools: TechTool[] = [
-  { name: 'Python', logoPath: '/logos/python.svg' },
-  { name: 'PyTorch', logoPath: '/logos/pytorch.svg' },
-  { name: 'TensorFlow', logoPath: '/logos/tensorflow.svg' },
-  { name: 'NumPy', logoPath: '/logos/numpy.svg' },
-  { name: 'Scikit-learn', logoPath: '/logos/scikit-learn.svg' },
-  { name: 'Pandas', logoPath: '/logos/pandas.svg' },
-  // Duplicate a few tools for better seamless transition in the loop
-  { name: 'Python', logoPath: '/logos/python.svg' },
-  { name: 'PyTorch', logoPath: '/logos/pytorch.svg' },
-];
-
-const sliderAnimationDuration = 30; // 30 seconds for one full loop
-
-/*
- * ====================================================================
- * 3. SLIDER SUB-COMPONENTS
- * ====================================================================
- */
-
-// Helper component for each tech tool card
-function ToolCard({ name, logoPath }: ToolCardProps) {
-  return (
-    <div
-      className="flex flex-col items-center justify-center p-4 min-w-[120px] h-[100px] border rounded-lg
-                 shadow-md bg-neutral-100 border-neutral-300
-                 dark:bg-neutral-900/60 dark:border-neutral-700 hover:shadow-lg transition-shadow duration-300"
-    >
-      <Image
-        src={logoPath}
-        alt={`${name} Logo`}
-        width={48}
-        height={48}
-        className="h-12 w-12 object-contain"
-      />
-      <span className="mt-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
-        {name}
-      </span>
-    </div>
-  );
-}
-
-// Component to handle the infinite sliding animation
-function TechStackSlider({ tools }: TechStackSliderProps) {
-  // To create the infinite loop effect, we duplicate the array.
-  const duplicatedTools = [...tools, ...tools];
-
-  return (
-    <div className="relative w-full overflow-hidden py-4">
-      {/* Container for the sliding content */}
-      <div 
-        className="flex w-[200%] slider-track gap-6" 
-        // Use inline style to pass the CSS variable for animation duration
-        // We use 'as React.CSSProperties' to correctly type the custom CSS variable
-        style={{ '--animation-duration': `${sliderAnimationDuration}s` } as React.CSSProperties}
-      >
-        {duplicatedTools.map((tool, index) => (
-          // Use a combined key for uniqueness across the duplicated list
-          <ToolCard 
-            key={`tool-${tool.name}-${index}`} 
-            name={tool.name} 
-            logoPath={tool.logoPath} 
-          />
-        ))}
-      </div>
-
-      {/* Fading edges to mask the loop start/end */}
-      <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white dark:from-black/90 to-transparent pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white dark:from-black/90 to-transparent pointer-events-none"></div>
-    </div>
-  );
-}
-
-/*
- * ====================================================================
- * 4. MAIN HERO SECTION COMPONENT
- * ====================================================================
- */
+// Replace with your actual image path (public folder or remote URL)
+import profilePic from '/profile.jpg';
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -131,11 +22,12 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
+  const techStack = ['Python', 'PyTorch', 'TensorFlow', 'NumPy', 'Scikit-learn', 'Pandas'];
+
   return (
     <section className="w-full pt-10 pb-2">
       <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
-        
-        {/* Left Column: Text and Slider */}
+        {/* Text Content */}
         <div className="flex-1 max-w-2xl">
           <motion.div {...fadeUp}>
             <motion.h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
@@ -152,7 +44,6 @@ export function HeroSection() {
             </motion.p>
           </motion.div>
 
-          {/* About Section */}
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
             <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
               About
@@ -165,16 +56,31 @@ export function HeroSection() {
             </motion.p>
           </motion.div>
 
-          {/* Tech Stack Slider Section */}
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
             <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
             </motion.h2>
-            <TechStackSlider tools={techStackTools} />
+            <div className="flex flex-wrap gap-3 mt-4">
+              {techStack.map((tech, idx) => (
+                <motion.span
+                  key={tech}
+                  className="font-info px-3 py-1 rounded-md text-sm border
+                    bg-neutral-100 text-neutral-700 border-neutral-300
+                    dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700
+                    transition"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.05 * idx }}
+                >
+                  {tech}
+                </motion.span>
+              ))}
+            </div>
           </motion.div>
         </div>
 
-        {/* Right Column: Profile Picture */}
+        {/* Profile Picture */}
         <motion.div
           className="shrink-0 flex items-start pt-1 md:-ml-10"
           initial={{ opacity: 0, y: 20 }}
@@ -188,7 +94,7 @@ export function HeroSection() {
             } hover:scale-105 hover:shadow-2xl`}
           >
             <Image
-              src={profilePic as StaticImageData}
+              src={profilePic}
               alt="Syphax"
               width={400}
               height={400}
