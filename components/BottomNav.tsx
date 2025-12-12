@@ -1,27 +1,83 @@
-"use client";
+'use client';
 
-import { useTheme } from "next-themes";
+import { useTheme } from 'next-themes';
 import {
   Home,
-  BookOpen,     // journey
-  FolderKanban,  // projects
-  Users,         // social
+  BookOpen, // journey
+  FolderKanban, // projects
+  Users, // social
   Sun,
   Moon,
-} from "lucide-react";
-import { useEffect, useState } from "react";
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function BottomNav() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    // Ensure the HTML tag has the view-transition-name property for the CSS to target
+    document.documentElement.style.viewTransitionName = 'page-content';
+    
+    return () => {
+        document.documentElement.style.viewTransitionName = '';
+    }
+  }, []);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  /**
+   * New function to handle theme toggle with circular reveal animation.
+   */
+  const handleThemeToggle = (e: React.MouseEvent<SVGSVGElement>) => {
+    const isDark = theme === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+
+    // @ts-ignore: specific browser API check
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    // 1. Get the position of the click event
+    const x = e.clientX;
+    const y = e.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // 2. Start the transition
+    // @ts-ignore
+    const transition = document.startViewTransition(() => {
+      setTheme(newTheme); // Update the theme inside the transition scope
+    });
+
+    // 3. Define the animation
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: clipPath,
+        },
+        {
+          duration: 500,
+          easing: 'ease-in-out',
+          // Target the new content pseudo-element with the specific name
+          pseudoElement: '::view-transition-new(page-content)',
+        }
+      );
+    });
   };
 
   if (!mounted) return null;
@@ -36,41 +92,35 @@ export default function BottomNav() {
           transition-all duration-300 hover:bg-white/40 dark:hover:bg-neutral-900/40
         "
       >
-        {/* Hero */}
+        {/* Navigation links (No change here) */}
         <Home
-          onClick={() => scrollToSection("hero")}
+          onClick={() => scrollToSection('hero')}
           className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
-
-        {/* Journey */}
         <BookOpen
-          onClick={() => scrollToSection("journey")}
+          onClick={() => scrollToSection('journey')}
           className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
-
-        {/* Projects */}
         <FolderKanban
-          onClick={() => scrollToSection("projects")}
+          onClick={() => scrollToSection('projects')}
           className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
-
-        {/* Social */}
         <Users
-          onClick={() => scrollToSection("socials")}
+          onClick={() => scrollToSection('socials')}
           className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
 
         <div className="w-px h-5 bg-neutral-300 dark:bg-neutral-700" />
 
-        {/* Theme toggle */}
-        {theme === "light" ? (
+        {/* Theme toggle - Now uses the handleThemeToggle function */}
+        {theme === 'light' ? (
           <Moon
-            onClick={() => setTheme("dark")}
+            onClick={handleThemeToggle} // Use the new handler
             className="w-5 h-5 text-black hover:scale-110 transition-transform cursor-pointer"
           />
         ) : (
           <Sun
-            onClick={() => setTheme("light")}
+            onClick={handleThemeToggle} // Use the new handler
             className="w-5 h-5 text-white hover:scale-110 transition-transform cursor-pointer"
           />
         )}
