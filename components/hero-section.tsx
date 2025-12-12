@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import profilePic from '𝘔𝘪𝘺𝘢𝘮𝘰𝘵𝘰 𝘔𝘶𝘴𝘢𝘴𝘩𝘪.jpg';
+import profilePic from 'profile.jpg';
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
