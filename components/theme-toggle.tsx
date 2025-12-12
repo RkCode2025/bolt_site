@@ -43,6 +43,8 @@ export function ThemeToggle() {
         `circle(${endRadius}px at ${x}px ${y}px)`,
       ];
 
+      // Note: We use document.documentElement.animate, and the pseudoElement 
+      // is correctly set to '::view-transition-new(root)'
       document.documentElement.animate(
         {
           clipPath: clipPath,
@@ -50,7 +52,6 @@ export function ThemeToggle() {
         {
           duration: 500,
           easing: 'ease-in-out',
-          // We always animate the "new" view growing on top of the old one
           pseudoElement: '::view-transition-new(root)',
         }
       );
