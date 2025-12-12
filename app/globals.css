@@ -81,7 +81,9 @@
   }
 }
 
-/* LEFT VERTICAL LINE */
+/* --- UTILITIES & CUSTOM STYLES --- */
+
+/* LEFT VERTICAL LINE (DESIGN ELEMENT) */
 body::before {
   content: "";
   position: fixed;
@@ -99,6 +101,30 @@ body::before {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* --- INFINITE SLIDER ANIMATION CSS --- */
+/* This is essential for the TechStackSlider component to loop seamlessly. */
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Translates by exactly 50% of the 200% wide container for a perfect loop */
+    transform: translateX(-50%);
+  }
+}
+
+.slider-track {
+  /* The variable --animation-duration is set via inline style in the React component */
+  animation: slide var(--animation-duration) linear infinite;
+  /* Add padding to the start to center the first item correctly */
+  padding-left: 1.5rem; 
+}
+
+/* Optional: Pause animation on hover */
+.slider-track:hover {
+  animation-play-state: paused;
 }
 
 
