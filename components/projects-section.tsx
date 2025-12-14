@@ -19,10 +19,10 @@ const projects: Project[] = [
     github: 'https://github.com/rkcode2025/Hand_Digit_Recognition_with_Multilayer_Perceptron',
   },
   {
-    title: 'Loan Approval Probability Classification',
-    description: 'Classification of probability of Bank Loan Approval.',
-    tags: ['Numpy', 'Xgboost', 'Scikit Learn'],
-    github: 'https://github.com/RkCode2025/Loan-Approval-Classification',
+    title: 'CPU Optimized Machine Learning Framework',
+    description: 'Worked with github.com/old-droid on XTRAIN, a CPU focused Library.',
+    tags: ['Deep learning', 'Numpy', 'Collaboration'],
+    github: 'https://github.com/old-droid/XTRAIN',
   },
   {
     title: 'Analysis of Amazon Bestsellers',
@@ -37,7 +37,7 @@ export function ProjectsSection() {
     <section className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="font-heading text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
+          className="font-heading text-4xl md:text-5xl font-semibold mb-1 tracking-tight" // Adjusted mb-16 to mb-1 to allow text to be close
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -45,6 +45,17 @@ export function ProjectsSection() {
         >
           Projects
         </motion.h2>
+        {/* ADDED TEXT HERE */}
+        <motion.p
+          className="text-sm md:text-md text-muted-foreground mb-16" // Added styling for small text and re-introduced margin
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          Made/Collaborated
+        </motion.p>
+        {/* END OF ADDED TEXT */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
