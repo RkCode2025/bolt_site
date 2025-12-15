@@ -1,10 +1,7 @@
-/* --- LOCAL FONTS IMPORT --- */
 @font-face {
-  /* You can name the font anything you like here */
   font-family: 'Garamond Nova Pro Condensed';
-  /* The path is relative to this CSS file */
-  src: url('./fonts.com-garamond_nova_pro_cd-regular.otf') format('opentype');
-  /* Specify the weight and style of this particular file */
+  /* CORRECTED PATH: Use '/' to reference the file in the Public/ directory */
+  src: url('/fonts.com-garamond_nova_pro_cd-regular.otf') format('opentype');
   font-weight: 400; 
   font-style: normal;
 }
