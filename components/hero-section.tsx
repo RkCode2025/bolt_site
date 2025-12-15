@@ -30,7 +30,7 @@ export function HeroSection() {
         {/* Text Content */}
         <div className="flex-1 max-w-2xl">
           <motion.div {...fadeUp}>
-            <motion.h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
+            <motion.h1 className="font-heading text-5xl md:text-6xl font-normal mb-4 tracking-tight">
               Hi, I'm Syphax
             </motion.h1>
 
@@ -45,7 +45,7 @@ export function HeroSection() {
           </motion.div>
 
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+            <motion.h2 className="font-heading text-lg md:text-xl font-normal tracking-tight">
               About
             </motion.h2>
             <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
@@ -57,7 +57,7 @@ export function HeroSection() {
           </motion.div>
 
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
-            <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+            <motion.h2 className="font-heading text-lg md:text-xl font-normal tracking-tight">
               Tech Stack
             </motion.h2>
             <div className="flex flex-wrap gap-3 mt-4">
