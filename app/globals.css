@@ -1,15 +1,5 @@
-/* --- LOCAL FONT DEFINITION --- */
-@font-face {
-  font-family: 'ITC Garamond Std';
-  /* Assumes the file is located at public/itc-garamond-std-book-narrow.otf */
-  src: url('/itc-garamond-std-book-narrow.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* --- GOOGLE FONTS IMPORT --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -73,8 +63,7 @@
   }
 
   .font-heading {
-    /* Replaced Playfair Display with ITC Garamond */
-    font-family: 'ITC Garamond Std', serif;
+    font-family: 'Playfair Display', serif;
   }
 
   .font-info {
@@ -96,13 +85,13 @@ body::before {
   left: 0;
   width: 2px;
   height: 100vh;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   z-index: 9999;
   pointer-events: none;
 }
 
-.dark body.dark::before {
-  background: rgba(255,255,255,0.12);
+.dark body::before {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* Utilities */
