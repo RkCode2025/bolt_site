@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 // Replace with your actual image path (public folder or remote URL)
-import profilePic from '/profile.jpg';
+import profilePic from '/profile.png';
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
