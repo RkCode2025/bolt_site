@@ -30,7 +30,9 @@ export default function Experience() {
 
   const BriefcaseIcon = (
     <svg
-      className="w-5 h-5 text-blue-600 dark:text-green-400"
+      className="w-5 h-5 dark:text-green-400"
+      /* Applied hex color directly to style for precise matching */
+      style={{ color: '#C15F3C' }} 
       fill="currentColor"
       viewBox="0 0 20 20"
     >
@@ -41,7 +43,8 @@ export default function Experience() {
 
   const GithubIcon = (
     <svg
-      className="w-5 h-5 cursor-pointer text-neutral-700 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-green-400 transition"
+      /* Replaced hover:text-blue-600 with custom hover style */
+      className="w-5 h-5 cursor-pointer text-neutral-700 dark:text-neutral-300 dark:hover:text-green-400 transition hover:text-[#C15F3C]"
       fill="currentColor"
       viewBox="0 0 24 24"
     >
@@ -76,7 +79,8 @@ export default function Experience() {
                 <div className="space-y-1">
                   <h3 className="font-heading text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                     {exp.role}{' '}
-                    <span className="text-sm text-blue-600 dark:text-green-400 font-semibold">
+                    {/* Replaced text-blue-600 with text-[#C15F3C] */}
+                    <span className="text-sm text-[#C15F3C] dark:text-green-400 font-semibold">
                       ({exp.date})
                     </span>
                   </h3>
