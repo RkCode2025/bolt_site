@@ -3,9 +3,9 @@
 import { useTheme } from 'next-themes';
 import {
   Home,
-  BookOpen, // journey
-  FolderKanban, // projects
-  Users, // social
+  BookOpen,
+  FolderKanban,
+  Users,
   Sun,
   Moon,
 } from 'lucide-react';
@@ -14,22 +14,34 @@ import { useEffect, useState } from 'react';
 export default function BottomNav() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    
-    // FIX: Use 'as any' and bracket notation to bypass TypeScript errors 
-    // on the new 'viewTransitionName' property.
-    const htmlStyle = document.documentElement.style as any;
 
+    // 1. View Transition Logic
+    const htmlStyle = document.documentElement.style as any;
     if (htmlStyle.viewTransitionName !== undefined) {
-        htmlStyle.viewTransitionName = 'page-content';
+      htmlStyle.viewTransitionName = 'page-content';
     }
 
+    // 2. Scroll Logic to detect footer proximity
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollPos = window.innerHeight + window.scrollY;
+      
+      // Threshold: Adjust '120' to match the height of your footer
+      const threshold = 120; 
+      setIsAtBottom(scrollHeight - scrollPos < threshold);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
     return () => {
-        if (htmlStyle.viewTransitionName !== undefined) {
-            htmlStyle.viewTransitionName = '';
-        }
+      window.removeEventListener('scroll', handleScroll);
+      if (htmlStyle.viewTransitionName !== undefined) {
+        htmlStyle.viewTransitionName = '';
+      }
     };
   }, []);
 
@@ -40,20 +52,16 @@ export default function BottomNav() {
     }
   };
 
-  /**
-   * Function to handle theme toggle with circular reveal animation.
-   */
   const handleThemeToggle = (e: React.MouseEvent<SVGSVGElement>) => {
     const isDark = theme === 'dark';
     const newTheme = isDark ? 'light' : 'dark';
 
-    // @ts-ignore: specific browser API check
+    // @ts-ignore
     if (!document.startViewTransition) {
       setTheme(newTheme);
       return;
     }
 
-    // 1. Get the position of the click event
     const x = e.clientX;
     const y = e.clientY;
     const endRadius = Math.hypot(
@@ -61,13 +69,11 @@ export default function BottomNav() {
       Math.max(y, window.innerHeight - y)
     );
 
-    // 2. Start the transition
     // @ts-ignore
     const transition = document.startViewTransition(() => {
-      setTheme(newTheme); // Update the theme inside the transition scope
+      setTheme(newTheme);
     });
 
-    // 3. Define the animation
     transition.ready.then(() => {
       const clipPath = [
         `circle(0px at ${x}px ${y}px)`,
@@ -75,13 +81,10 @@ export default function BottomNav() {
       ];
 
       document.documentElement.animate(
-        {
-          clipPath: clipPath,
-        },
+        { clipPath: clipPath },
         {
           duration: 500,
           easing: 'ease-in-out',
-          // Target the new content pseudo-element with the specific name
           pseudoElement: '::view-transition-new(page-content)',
         }
       );
@@ -91,7 +94,15 @@ export default function BottomNav() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div 
+      className={`
+        fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out
+        ${isAtBottom 
+          ? 'bottom-12 scale-90 opacity-60 blur-[0.5px]' // The "Folded" state
+          : 'bottom-6 scale-100 opacity-100'            // The Floating state
+        }
+      `}
+    >
       <div
         className="
           flex items-center justify-center gap-6
@@ -100,7 +111,6 @@ export default function BottomNav() {
           transition-all duration-300 hover:bg-white/40 dark:hover:bg-neutral-900/40
         "
       >
-        {/* Navigation links */}
         <Home
           onClick={() => scrollToSection('hero')}
           className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
@@ -120,15 +130,14 @@ export default function BottomNav() {
 
         <div className="w-px h-5 bg-neutral-300 dark:bg-neutral-700" />
 
-        {/* Theme toggle - Now uses the handleThemeToggle function */}
         {theme === 'light' ? (
           <Moon
-            onClick={handleThemeToggle} // Use the new handler
+            onClick={(e: any) => handleThemeToggle(e)}
             className="w-5 h-5 text-black hover:scale-110 transition-transform cursor-pointer"
           />
         ) : (
           <Sun
-            onClick={handleThemeToggle} // Use the new handler
+            onClick={(e: any) => handleThemeToggle(e)}
             className="w-5 h-5 text-white hover:scale-110 transition-transform cursor-pointer"
           />
         )}
