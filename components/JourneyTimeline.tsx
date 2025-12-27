@@ -57,7 +57,7 @@ export default function Experience() {
   return (
     <section className="max-w-6xl mx-auto px-6 sm:px-8 md:px-10 mt-14">
       <h2
-        className={`font-heading text-4xl md:text-5xl font-semibold mb-10 transition-all duration-700 ${
+        className={`font-info text-2xl md:text-3xl font-semibold tracking-wide uppercase text-neutral-800 dark:text-neutral-200 mb-10 transition-all duration-700 ${
           mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
         }`}
       >
@@ -76,9 +76,8 @@ export default function Experience() {
               <div className="flex items-center gap-4">
                 {BriefcaseIcon}
                 <div className="space-y-1">
-                  <h3 className="font-heading text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                  <h3 className="font-info text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                     {exp.role}{' '}
-                    {/* Updated text color for the date */}
                     <span className="text-sm text-[#C15F3C] dark:text-green-400 font-semibold">
                       ({exp.date})
                     </span>

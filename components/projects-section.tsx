@@ -37,7 +37,7 @@ export function ProjectsSection() {
     <section className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="font-heading text-4xl md:text-5xl font-semibold mb-1 tracking-tight" // Adjusted mb-16 to mb-1 to allow text to be close
+          className="font-info text-2xl md:text-3xl font-semibold tracking-wide uppercase text-neutral-800 dark:text-neutral-200 mb-1"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -45,9 +45,8 @@ export function ProjectsSection() {
         >
           Projects
         </motion.h2>
-        {/* ADDED TEXT HERE */}
         <motion.p
-          className="text-sm md:text-md text-muted-foreground mb-16" // Added styling for small text and re-introduced margin
+          className="text-sm md:text-md text-muted-foreground mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -55,7 +54,6 @@ export function ProjectsSection() {
         >
           Made/Collaborated
         </motion.p>
-        {/* END OF ADDED TEXT */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
@@ -74,7 +72,7 @@ export function ProjectsSection() {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative z-10 flex-1 flex flex-col">
-                  <h3 className="font-heading text-xl font-semibold mb-3">{project.title}</h3>
+                  <h3 className="font-info text-xl font-semibold mb-3">{project.title}</h3>
                   <p className="font-info text-muted-foreground mb-4 flex-1">{project.description}</p>
 
                   <div className="flex flex-wrap gap-2 mb-4">

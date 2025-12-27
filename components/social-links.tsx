@@ -24,7 +24,7 @@ export function SocialLinks() {
       <div className="max-w-4xl mx-auto">
         {/* Heading */}
         <motion.h2
-          className="font-heading text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
+          className="font-info text-2xl md:text-3xl font-semibold tracking-wide uppercase text-neutral-800 dark:text-neutral-200 mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -65,7 +65,7 @@ export function SocialLinks() {
 
               {/* Text */}
               <div className="relative z-10 flex-1">
-                <h3 className="font-heading text-xl font-semibold mb-1">{link.name}</h3>
+                <h3 className="font-info text-xl font-semibold mb-1">{link.name}</h3>
                 <p className="font-info text-sm text-muted-foreground">{link.username}</p>
               </div>
 
