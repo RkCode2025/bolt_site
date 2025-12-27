@@ -6,124 +6,112 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Main Background: #ECE9E6 (More neutral, less "sandy") */
-    --background: 30 12% 91%;
-    --foreground: 0 0% 3.9%;
-    
-    /* Surfaces: Slightly lighter for subtle elevation */
-    --card: 30 12% 93%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 30 12% 93%;
-    --popover-foreground: 0 0% 3.9%;
-    
-    /* Primary brand colors */
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    
-    /* Muted/Secondary: Desaturated to match the cleaner background */
-    --secondary: 30 5% 85%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 30 5% 85%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 30 5% 85%;
-    --accent-foreground: 0 0% 9%;
-    
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    
-    /* Borders: Subtle neutral gray-beige */
-    --border: 30 5% 80%;
-    --input: 30 5% 80%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
-  }
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
+  }
 
-  .dark {
-    /* Your original dark mode preserved */
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
 
-  * {
-    @apply border-border;
-  }
+  * {
+    @apply border-border;
+  }
 
-  body {
-    @apply bg-background text-foreground min-h-screen;
-    font-family: 'Inter', sans-serif;
-    padding-left: 16px !important;
-    position: relative;
-  }
+  body {
+    @apply bg-background text-foreground min-h-screen;
+    font-family: 'Inter', sans-serif;
+    padding-left: 16px !important;
+    position: relative;
+  }
 
-  .font-heading {
-    font-family: 'Playfair Display', serif;
-  }
+  .font-heading {
+    font-family: 'Playfair Display', serif;
+  }
 
-  .font-info {
-    font-family: 'Inter', sans-serif;
-  }
+  .font-info {
+    font-family: 'Inter', sans-serif;
+  }
 
-  code,
-  pre,
-  kbd {
-    font-family: 'Inter', monospace;
-  }
+  code,
+  pre,
+  kbd {
+    font-family: 'Inter', monospace;
+  }
 }
 
 /* LEFT VERTICAL LINE */
 body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 100vh;
-  /* Soft grey-tinted line for light mode */
-  background: rgba(0, 0, 0, 0.06);
-  z-index: 9999;
-  pointer-events: none;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100vh;
+  background: rgba(255,255,255,0.12);
+  z-index: 9999;
+  pointer-events: none;
 }
 
-.dark body::before {
-  background: rgba(255, 255, 255, 0.12);
+.dark body.dark::before {
+  background: rgba(255,255,255,0.12);
 }
 
 /* Utilities */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 /* View Transition API - Circular Reveal Optimizations */
 ::view-transition-old(page-content),
 ::view-transition-new(page-content) {
-  animation: none;
-  mix-blend-mode: normal;
-  will-change: transform, opacity, clip-path;
-  contain: layout style;
+  animation: none;
+  mix-blend-mode: normal;
+  will-change: transform, opacity, clip-path;
+  contain: layout style;
 }
 
 html {
-  will-change: background-color, color;
+  will-change: background-color, color;
 }
 
 :root:not(.dark)::view-transition-new(page-content) { z-index: 1; }
@@ -133,9 +121,9 @@ html {
 
 ::view-transition-old(page-content),
 ::view-transition-new(page-content) {
-  object-fit: cover;
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
 }
