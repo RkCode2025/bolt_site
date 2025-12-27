@@ -30,7 +30,6 @@ export default function Experience() {
 
   const BriefcaseIcon = (
     <svg
-      /* Updated: Specific hex for light mode, green for dark mode */
       className="w-5 h-5 text-[#C15F3C] dark:text-green-400"
       fill="currentColor"
       viewBox="0 0 20 20"
@@ -42,7 +41,6 @@ export default function Experience() {
 
   const GithubIcon = (
     <svg
-      /* Updated hover behavior to match */
       className="w-5 h-5 cursor-pointer text-neutral-700 dark:text-neutral-300 hover:text-[#C15F3C] dark:hover:text-green-400 transition"
       fill="currentColor"
       viewBox="0 0 24 24"
@@ -78,7 +76,6 @@ export default function Experience() {
                 <div className="space-y-1">
                   <h3 className="font-heading text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                     {exp.role}{' '}
-                    {/* Updated text color for the date */}
                     <span className="text-sm text-[#C15F3C] dark:text-green-400 font-semibold">
                       ({exp.date})
                     </span>
