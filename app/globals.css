@@ -1,5 +1,12 @@
-/* --- GOOGLE FONTS IMPORT --- */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+/* --- FONT IMPORTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'ITC Garamond Std';
+  src: url('/itc-garamond-std-book-narrow.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
@@ -74,7 +81,7 @@
   }
 
   .font-heading {
-    font-family: 'Playfair Display', serif;
+    font-family: 'ITC Garamond Std', serif;
   }
 
   .font-info {
