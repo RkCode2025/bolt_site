@@ -13,7 +13,8 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        <main className="flex-1 flex items-center justify-center px-5 sm:px-8 py-10">
+        {/* Removed all vertical padding (pt-0 pb-0) */}
+        <main className="flex-1 flex items-start justify-center px-5 sm:px-8 py-0">
           <div
             id="content-card"
             className="
@@ -27,35 +28,34 @@ export default function Home() {
               flex flex-col
             "
           >
-            {/* Hero - Removed top padding */}
+            {/* Hero - Flush Top */}
             <section id="hero" className="pt-0 scroll-mt-20">
               <HeroSection />
             </section>
 
-            {/* Journey - Small gap only between components */}
+            {/* Internal Sections with tight spacing */}
             <section id="journey" className="mt-4 scroll-mt-20">
               <JourneyTimeline />
             </section>
 
-            {/* Projects - Small gap only between components */}
             <section id="projects" className="mt-4 scroll-mt-20">
               <ProjectsSection />
             </section>
 
-            {/* Socials - Small gap only between components, no bottom padding */}
-            <section id="socials" className="mt-4 pb-0 scroll-mt-20">
+            <section id="socials" className="mt-4 scroll-mt-20">
               <SocialLinks />
             </section>
 
-            {/* Footer */}
-            <footer className="text-center text-sm text-muted-foreground pb-10 pt-8 border-t border-border/5">
+            {/* Footer - Reduced bottom padding to keep it tight */}
+            <footer className="text-center text-sm text-muted-foreground pb-4 pt-8 border-t border-border/5">
               <p className="mb-[2px]">Built with Next.js 14, Tailwind & Framer Motion</p>
               <p>© 2025 — Always learning, always building</p>
             </footer>
           </div>
         </main>
 
-        <div className="pb-6">
+        {/* Removed pb-6 to bring BottomNav closer to the content card */}
+        <div className="pb-0">
           <BottomNav />
         </div>
       </div>
