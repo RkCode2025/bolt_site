@@ -15,7 +15,7 @@ const projects: Project[] = [
   {
     title: 'Neural Network from Scratch',
     description: 'Recreating a Multilayer Perceptron Neural Network from scratch.',
-    tags: ['Python', 'Neural Nets', 'Numpy'],
+    tags: ['Python', 'Scikit-Learn', 'Numpy'],
     github: 'https://github.com/rkcode2025/Hand_Digit_Recognition_with_Multilayer_Perceptron',
   },
   {
@@ -27,7 +27,7 @@ const projects: Project[] = [
   {
     title: 'Analysis of Amazon Bestsellers',
     description: 'Detailed analysis of Amazon Bestsellers from 2009-2019.',
-    tags: ['Numpy', 'Plotly', 'Data Science'],
+    tags: ['Numpy', 'Scikit-Learn', 'Plotly'],
     github: 'https://github.com/RkCode2025/Amazon-Bestseller-Books-2009-2019-Analysis',
   },
 ];
