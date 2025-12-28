@@ -9,7 +9,7 @@ const socialLinks = [
   { name: 'Email', url: 'mailto:syphaxtwt2025@gmail.com', icon: Mail },
 ];
 
-export function ContactSection() {
+export function SocialLinks() {
   return (
     <section className="px-6 py-20 bg-black text-white">
       <div className="max-w-3xl mx-auto">
