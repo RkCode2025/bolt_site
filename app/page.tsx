@@ -13,8 +13,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Added py-20 to main to give space at the very top and bottom of the scroll */}
-        <main className="flex-1 flex items-center justify-center px-5 sm:px-8 py-20">
+        <main className="flex-1 flex items-center justify-center px-5 sm:px-8 py-10">
           <div
             id="content-card"
             className="
@@ -26,38 +25,38 @@ export default function Home() {
               shadow-xl ring-0
               transition-all duration-500
               flex flex-col
-              space-y-24          /* This adds consistent air between every section */
+              space-y-8          /* Reduced from 24 to 8 for a subtle gap */
             "
           >
             {/* Hero */}
-            <section id="hero" className="pt-10">
+            <section id="hero" className="pt-4 scroll-mt-20">
               <HeroSection />
             </section>
 
             {/* Journey */}
-            <section id="journey">
+            <section id="journey" className="scroll-mt-20">
               <JourneyTimeline />
             </section>
 
             {/* Projects */}
-            <section id="projects">
+            <section id="projects" className="scroll-mt-20">
               <ProjectsSection />
             </section>
 
             {/* Socials */}
-            <section id="socials">
+            <section id="socials" className="scroll-mt-20 pb-8">
               <SocialLinks />
             </section>
 
             {/* Footer */}
-            <footer className="text-center text-sm text-muted-foreground pb-12 pt-8 border-t border-border/10">
+            <footer className="text-center text-sm text-muted-foreground pb-10 pt-4 border-t border-border/5">
               <p className="mb-[2px]">Built with Next.js 14, Tailwind & Framer Motion</p>
               <p>© 2025 — Always learning, always building</p>
             </footer>
           </div>
         </main>
 
-        <div className="pb-0">
+        <div className="pb-6">
           <BottomNav />
         </div>
       </div>
