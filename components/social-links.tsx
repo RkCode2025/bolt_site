@@ -22,21 +22,20 @@ export function SocialLinks() {
   return (
     <section className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
-        {/* Header aligned with ProjectsSection */}
+        {/* Header - Using animate instead of whileInView to prevent repeat */}
         <motion.h2
           className="font-heading text-4xl md:text-5xl font-semibold mb-1 tracking-tight"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           Contact
         </motion.h2>
+        
         <motion.p
           className="text-sm md:text-md text-muted-foreground mb-12"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           Get in touch / Reach out
@@ -55,8 +54,8 @@ export function SocialLinks() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/30 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all font-info text-sm group"
                   initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
                 >
                   <link.icon className="w-4 h-4 group-hover:text-primary transition-colors" />
                   <span>{link.name}</span>
@@ -65,15 +64,13 @@ export function SocialLinks() {
             </div>
           </div>
 
-          {/* Right Side: Smaller, Modular Form Card */}
+          {/* Right Side: Contact Form Card */}
           <motion.div
             className="lg:col-span-2 group relative bg-secondary/30 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border/50"
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            
             <div className="relative z-10 space-y-6">
               <div className="grid grid-cols-1 gap-6">
                 <div className="space-y-2">
@@ -102,7 +99,7 @@ export function SocialLinks() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={handleSend}
-                className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-lg shadow-primary/10"
+                className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
               >
                 <Send className="w-4 h-4" />
                 Send Message
