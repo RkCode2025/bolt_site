@@ -39,8 +39,8 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               I'm an AI/ML developer currently learning Pytorch and deep learning.
-              I specialize in NLP with focus on Research with new LLM architecture
-              as well as implementing new designs for Large Language Models.
+              I specialize in NLP with focus on Research with
+              implementing new designs for Large Language Models.
             </motion.p>
           </motion.div>
 
