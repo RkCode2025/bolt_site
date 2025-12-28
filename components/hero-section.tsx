@@ -3,8 +3,16 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+// Icons for your specific AI/ML stack
+import { 
+  SiPython, 
+  SiPytorch, 
+  SiTensorflow, 
+  SiNumpy, 
+  SiScikitlearn, 
+  SiPandas 
+} from 'react-icons/si';
 
-// Replace with your actual image path (public folder or remote URL)
 import profilePic from '/profile.png';
 
 const fadeUp = {
@@ -22,7 +30,15 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  const techStack = ['Python', 'PyTorch', 'TensorFlow', 'NumPy', 'Scikit-learn', 'Pandas'];
+  // Updated techStack with icon components
+  const techStack = [
+    { name: 'Python', icon: <SiPython className="text-blue-400" /> },
+    { name: 'PyTorch', icon: <SiPytorch className="text-orange-600" /> },
+    { name: 'TensorFlow', icon: <SiTensorflow className="text-orange-400" /> },
+    { name: 'NumPy', icon: <SiNumpy className="text-blue-500" /> },
+    { name: 'Scikit-learn', icon: <SiScikitlearn className="text-orange-500" /> },
+    { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
+  ];
 
   return (
     <section className="w-full pt-10 pb-2">
@@ -62,19 +78,20 @@ export function HeroSection() {
             </motion.h2>
             <div className="flex flex-wrap gap-3 mt-4">
               {techStack.map((tech, idx) => (
-                <motion.span
-                  key={tech}
-                  className="font-info px-3 py-1 rounded-md text-sm border
+                <motion.div
+                  key={tech.name}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
                     bg-neutral-100 text-neutral-700 border-neutral-300
-                    dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-700
-                    transition"
+                    dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
+                    transition hover:bg-neutral-200 dark:hover:bg-neutral-800"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.05 * idx }}
                 >
-                  {tech}
-                </motion.span>
+                  <span className="text-lg">{tech.icon}</span>
+                  <span className="font-info text-sm font-medium">{tech.name}</span>
+                </motion.div>
               ))}
             </div>
           </motion.div>
