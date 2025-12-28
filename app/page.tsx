@@ -13,42 +13,44 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        <main className="flex-1 flex items-center justify-center px-5 sm:px-8">
+        {/* Added py-20 to main to give space at the very top and bottom of the scroll */}
+        <main className="flex-1 flex items-center justify-center px-5 sm:px-8 py-20">
           <div
             id="content-card"
             className="
               w-full
               max-w-4xl
               mx-auto
-              px-5 sm:px-8 lg:px-10      /* SIDE SPACING KEPT */
-              py-0
+              px-5 sm:px-8 lg:px-10
               backdrop-blur-xl bg-background/60
-              shadow-xl ring-0          /* REMOVE CARD BORDER/RING */
+              shadow-xl ring-0
               transition-all duration-500
+              flex flex-col
+              space-y-24          /* This adds consistent air between every section */
             "
           >
             {/* Hero */}
-            <section id="hero" className="py-0">
+            <section id="hero" className="pt-10">
               <HeroSection />
             </section>
 
             {/* Journey */}
-            <section id="journey" className="py-0">
+            <section id="journey">
               <JourneyTimeline />
             </section>
 
             {/* Projects */}
-            <section id="projects" className="py-0">
+            <section id="projects">
               <ProjectsSection />
             </section>
 
             {/* Socials */}
-            <section id="socials" className="py-0">
+            <section id="socials">
               <SocialLinks />
             </section>
 
             {/* Footer */}
-            <footer className="text-center text-sm text-muted-foreground py-4">
+            <footer className="text-center text-sm text-muted-foreground pb-12 pt-8 border-t border-border/10">
               <p className="mb-[2px]">Built with Next.js 14, Tailwind & Framer Motion</p>
               <p>© 2025 — Always learning, always building</p>
             </footer>
