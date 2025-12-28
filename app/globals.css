@@ -7,11 +7,11 @@
 
 @layer base {
   :root {
-    /* Main Background: #ECE9E6 */
+    /* Main Background: #ECE9E6 (More neutral, less "sandy") */
     --background: 30 12% 91%;
     --foreground: 0 0% 3.9%;
     
-    /* Surfaces */
+    /* Surfaces: Slightly lighter for subtle elevation */
     --card: 30 12% 93%;
     --card-foreground: 0 0% 3.9%;
     --popover: 30 12% 93%;
@@ -21,7 +21,7 @@
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
     
-    /* Muted/Secondary */
+    /* Muted/Secondary: Desaturated to match the cleaner background */
     --secondary: 30 5% 85%;
     --secondary-foreground: 0 0% 9%;
     --muted: 30 5% 85%;
@@ -32,7 +32,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
-    /* Borders */
+    /* Borders: Subtle neutral gray-beige */
     --border: 30 5% 80%;
     --input: 30 5% 80%;
     --ring: 0 0% 3.9%;
@@ -40,6 +40,7 @@
   }
 
   .dark {
+    /* Your original dark mode preserved */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -95,6 +96,7 @@ body::before {
   left: 0;
   width: 2px;
   height: 100vh;
+  /* Soft grey-tinted line for light mode */
   background: rgba(0, 0, 0, 0.06);
   z-index: 9999;
   pointer-events: none;
@@ -111,33 +113,29 @@ body::before {
   }
 }
 
-/* --- VIEW TRANSITION API SETTINGS --- */
-
-/* 1. Disable default animations so our JS takes over */
-::view-transition-old(root),
-::view-transition-new(root) {
+/* View Transition API - Circular Reveal Optimizations */
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
   animation: none;
   mix-blend-mode: normal;
-  display: block;
-  height: 100%;
+  will-change: transform, opacity, clip-path;
+  contain: layout style;
 }
 
-/* 2. Layering: The 'Old' theme stays at the bottom to blur and fade */
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-/* 3. Layering: The 'New' theme circle expands on TOP of the blur */
-::view-transition-new(root) {
-  z-index: 2;
-}
-
-/* 4. Fix to ensure content doesn't jump during transition */
-::view-transition-group(root) {
-  z-index: auto;
-}
-
-/* Optimization for smooth rendering */
 html {
-  will-change: background-color;
+  will-change: background-color, color;
+}
+
+:root:not(.dark)::view-transition-new(page-content) { z-index: 1; }
+:root:not(.dark)::view-transition-old(page-content) { z-index: 0; }
+.dark::view-transition-new(page-content) { z-index: 1; }
+.dark::view-transition-old(page-content) { z-index: 0; }
+
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
+  object-fit: cover;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
 }
