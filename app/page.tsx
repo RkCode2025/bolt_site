@@ -25,31 +25,30 @@ export default function Home() {
               shadow-xl ring-0
               transition-all duration-500
               flex flex-col
-              space-y-8          /* Reduced from 24 to 8 for a subtle gap */
             "
           >
-            {/* Hero */}
-            <section id="hero" className="pt-4 scroll-mt-20">
+            {/* Hero - Removed top padding */}
+            <section id="hero" className="pt-0 scroll-mt-20">
               <HeroSection />
             </section>
 
-            {/* Journey */}
-            <section id="journey" className="scroll-mt-20">
+            {/* Journey - Small gap only between components */}
+            <section id="journey" className="mt-4 scroll-mt-20">
               <JourneyTimeline />
             </section>
 
-            {/* Projects */}
-            <section id="projects" className="scroll-mt-20">
+            {/* Projects - Small gap only between components */}
+            <section id="projects" className="mt-4 scroll-mt-20">
               <ProjectsSection />
             </section>
 
-            {/* Socials */}
-            <section id="socials" className="scroll-mt-20 pb-8">
+            {/* Socials - Small gap only between components, no bottom padding */}
+            <section id="socials" className="mt-4 pb-0 scroll-mt-20">
               <SocialLinks />
             </section>
 
             {/* Footer */}
-            <footer className="text-center text-sm text-muted-foreground pb-10 pt-4 border-t border-border/5">
+            <footer className="text-center text-sm text-muted-foreground pb-10 pt-8 border-t border-border/5">
               <p className="mb-[2px]">Built with Next.js 14, Tailwind & Framer Motion</p>
               <p>© 2025 — Always learning, always building</p>
             </footer>
