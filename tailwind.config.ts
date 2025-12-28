@@ -13,7 +13,7 @@ const config: Config = {
          FONTS (HEADINGS / BODY / MONO)
       ----------------------------------- */
       fontFamily: {
-        heading: ['"ITC Garamond Std"', 'serif'],
+        heading: ['"Playfair Display"', 'serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
         jetbrains: ['var(--font-jetbrains)', 'monospace'],
