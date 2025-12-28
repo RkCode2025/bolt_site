@@ -71,6 +71,14 @@
     font-family: 'Inter', sans-serif;
     padding-left: 16px !important;
     position: relative;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   .font-heading {
@@ -124,6 +132,12 @@ body::before {
 
 html {
   will-change: background-color, color;
+  /* Ensure html also hides scrollbar to prevent double bars */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 :root:not(.dark)::view-transition-new(page-content) { z-index: 1; }
