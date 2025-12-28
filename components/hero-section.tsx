@@ -62,7 +62,7 @@ export function HeroSection() {
 
           {/* About Section - Restored */}
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <motion.h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
+            <motion.h2 className="font-heading text-sm md:text-base font-medium tracking-tight">
               About
             </motion.h2>
             <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
