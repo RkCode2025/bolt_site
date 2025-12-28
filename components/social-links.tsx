@@ -1,110 +1,76 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Twitter, Mail } from 'lucide-react';
+import { Github, Twitter, Mail, Send } from 'lucide-react';
 
 const socialLinks = [
-  {
-    name: 'X (Twitter)',
-    url: 'https://x.com/syphax_twt',
-    icon: Twitter,
-    username: '@syphax_twt',
-  },
-  {
-    name: 'GitHub',
-    url: 'https://github.com/rkcode2025',
-    icon: Github,
-    username: 'rkcode2025',
-  },
+  { name: 'GitHub', url: 'https://github.com/rkcode2025', icon: Github },
+  { name: 'X (Twitter)', url: 'https://x.com/syphax_twt', icon: Twitter },
+  { name: 'Email', url: 'mailto:syphaxtwt2025@gmail.com', icon: Mail },
 ];
 
-export function SocialLinks() {
+export function ContactSection() {
   return (
-    <section className="px-6 md:px-12 pt-0 relative">
-      <div className="max-w-4xl mx-auto">
-        {/* Heading */}
-        <motion.h2
-          className="font-heading text-4xl md:text-5xl font-semibold mb-16 tracking-tight"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          Connect
-        </motion.h2>
+    <section className="px-6 py-20 bg-black text-white">
+      <div className="max-w-3xl mx-auto">
+        {/* Header Section */}
+        <header className="mb-10">
+          <p className="text-muted-foreground uppercase tracking-widest text-xs mb-2 font-mono">Contact</p>
+          <h2 className="text-5xl font-bold mb-4 font-heading">Find me here!</h2>
+          <p className="text-muted-foreground text-lg">
+            Send me a message or reach out through my accounts.
+          </p>
+        </header>
 
-        {/* Social Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {socialLinks.map((link, index) => (
-            <motion.a
+        {/* Social Badges */}
+        <div className="flex flex-wrap gap-3 mb-12">
+          {socialLinks.map((link) => (
+            <a
               key={link.name}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative bg-secondary/30 backdrop-blur-sm rounded-2xl p-8 border border-border/50 flex items-center gap-6 overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#111] border border-white/10 hover:border-white/20 transition-all hover:bg-[#181818] font-mono text-sm"
             >
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              {/* Icon with shake */}
-              <motion.div
-                className="relative z-10 p-4 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors"
-                initial={{ rotate: 0 }}
-                whileHover={{
-                  rotate: [0, -10, 10, -10, 0],
-                }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-              >
-                <link.icon className="w-8 h-8" />
-              </motion.div>
-
-              {/* Text */}
-              <div className="relative z-10 flex-1">
-                <h3 className="font-heading text-xl font-semibold mb-1">{link.name}</h3>
-                <p className="font-info text-sm text-muted-foreground">{link.username}</p>
-              </div>
-
-              {/* Arrow animation */}
-              <motion.div
-                className="relative z-10 text-muted-foreground"
-                initial={{ x: 0 }}
-                whileHover={{ x: 5 }}
-                transition={{ duration: 0.2, ease: 'easeInOut' }}
-              >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </motion.div>
-            </motion.a>
+              <link.icon className="w-4 h-4" />
+              {link.name}
+            </a>
           ))}
         </div>
 
-        {/* Footer */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+        {/* Contact Form Card */}
+        <motion.div 
+          className="bg-[#0A0A0A] border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="font-info text-muted-foreground mb-2">Open to collaborations and new ideas</p>
-          <a
-            href="mailto:syphaxtwt2025@gmail.com"
-            className="inline-flex items-center gap-2 text-sm hover:text-foreground transition-colors font-info"
-          >
-            <Mail className="w-4 h-4" /> Get in touch
-          </a>
+          <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+            {/* Name Input */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-gray-400 ml-1">Name</label>
+              <input 
+                type="text" 
+                placeholder="Enter your name"
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+              />
+            </div>
+
+            {/* Message Input */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-gray-400 ml-1">Message</label>
+              <textarea 
+                rows={5}
+                placeholder="Write your message here..."
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none placeholder:text-gray-600"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button className="w-full bg-[#583AFE] hover:bg-[#472ee0] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+              Send Message
+            </button>
+          </form>
         </motion.div>
       </div>
     </section>
