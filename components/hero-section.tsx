@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-// Icons for your specific AI/ML stack
+// These logos are imported from Simple Icons via react-icons
 import { 
   SiPython, 
   SiPytorch, 
@@ -30,48 +30,30 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Updated techStack with icon components
   const techStack = [
-    { name: 'Python', icon: <SiPython className="text-blue-400" /> },
-    { name: 'PyTorch', icon: <SiPytorch className="text-orange-600" /> },
-    { name: 'TensorFlow', icon: <SiTensorflow className="text-orange-400" /> },
-    { name: 'NumPy', icon: <SiNumpy className="text-blue-500" /> },
-    { name: 'Scikit-learn', icon: <SiScikitlearn className="text-orange-500" /> },
-    { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
+    { name: 'Python', icon: <SiPython className="text-[#3776AB]" /> },
+    { name: 'PyTorch', icon: <SiPytorch className="text-[#EE4C2C]" /> },
+    { name: 'TensorFlow', icon: <SiTensorflow className="text-[#FF6F00]" /> },
+    { name: 'NumPy', icon: <SiNumpy className="text-[#013243]" /> },
+    { name: 'Scikit-learn', icon: <SiScikitlearn className="text-[#F7931E]" /> },
+    { name: 'Pandas', icon: <SiPandas className="text-[#150458]" /> },
   ];
 
   return (
     <section className="w-full pt-10 pb-2">
       <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
-        {/* Text Content */}
         <div className="flex-1 max-w-2xl">
           <motion.div {...fadeUp}>
             <motion.h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
               Hi, I'm Syphax
             </motion.h1>
-
-            <motion.p
-              className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+            <motion.p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
               I'm an AI/ML developer currently learning Pytorch and deep learning.
-              I specialize in NLP with focus on Research with
-              implementing new designs for Large Language Models.
+              I specialize in NLP with focus on Research with implementing new designs for Large Language Models.
             </motion.p>
           </motion.div>
 
-          <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <motion.h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
-              About
-            </motion.h2>
-            <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              I started coding and quickly found it both fun and interesting. I’m driven
-              by the desire to build things that make a real impact. My interests lie
-              primarily in Research and modern AI — especially NLP with PyTorch
-              and TensorFlow.
-            </motion.p>
-          </motion.div>
-
+          {/* TECH STACK SECTION */}
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
             <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
@@ -83,7 +65,7 @@ export function HeroSection() {
                   className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
                     bg-neutral-100 text-neutral-700 border-neutral-300
                     dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
-                    transition hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                    transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -97,27 +79,9 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Profile Picture */}
-        <motion.div
-          className="shrink-0 flex items-start pt-1 md:-ml-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-        >
-          <div
-            className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
-              loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'
-            } hover:scale-105 hover:shadow-2xl`}
-          >
-            <Image
-              src={profilePic}
-              alt="Syphax"
-              width={400}
-              height={400}
-              className="object-cover w-full h-full"
-              priority
-            />
+        <motion.div className="shrink-0 flex items-start pt-1 md:-ml-10" {...fadeUp}>
+          <div className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ${loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+            <Image src={profilePic} alt="Syphax" width={400} height={400} className="object-cover w-full h-full" priority />
           </div>
         </motion.div>
       </div>
