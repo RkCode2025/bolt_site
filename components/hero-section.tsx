@@ -62,7 +62,7 @@ export function HeroSection() {
 
           {/* About Section - Heading updated to text-sm md:text-base */}
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <motion.h2 className="font-heading text-sm md:text-base font-medium tracking-tight">
+            <motion.h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
               About
             </motion.h2>
             <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
@@ -75,7 +75,7 @@ export function HeroSection() {
 
           {/* Tech Stack Section - Heading updated to text-sm md:text-base */}
           <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
-            <motion.h2 className="font-heading text-sm md:text-base font-medium tracking-tight">
+            <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
               Tech Stack
             </motion.h2>
             <div className="flex flex-wrap gap-3 mt-4">
