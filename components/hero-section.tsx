@@ -38,9 +38,9 @@ export function HeroSection() {
               className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              Developer passionate about learning, improving, and adapting every day.
-              I’m deeply interested in Machine Learning, Artificial Intelligence, and
-              software architecture.
+              I'm an AI/ML developer currently learning Pytorch and deep learning.
+              I specialize in NLP with focus on Research with new LLM architecture
+              as well as implementing new designs for Large Language Models.
             </motion.p>
           </motion.div>
 
@@ -51,7 +51,7 @@ export function HeroSection() {
             <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
               I started coding and quickly found it both fun and interesting. I’m driven
               by the desire to build things that make a real impact. My interests lie
-              primarily in backend systems and modern AI — especially NLP with PyTorch
+              primarily in Research and modern AI — especially NLP with PyTorch
               and TensorFlow.
             </motion.p>
           </motion.div>
