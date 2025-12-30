@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import BlurFade from '@/components/blurfade';
 // Icons for your specific AI/ML stack
 import { 
   SiPython, 
@@ -15,12 +16,7 @@ import {
 
 import profilePic from '/profile.png';
 
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6 },
-};
+const BLUR_FADE_DELAY = 0.04;
 
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
@@ -30,7 +26,6 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Tech stack with logos
   const techStack = [
     { name: 'Python', icon: <SiPython className="text-blue-400" /> },
     { name: 'PyTorch', icon: <SiPytorch className="text-orange-600" /> },
@@ -41,87 +36,89 @@ export function HeroSection() {
   ];
 
   return (
-    <section className="w-full pt-10 pb-2">
+    <section id="hero" className="w-full pt-10 pb-2">
       <div className="max-w-6xl mx-auto px-10 md:px-22 flex flex-col md:flex-row items-start gap-3 md:gap-4">
+        
         {/* Text Content */}
         <div className="flex-1 max-w-2xl">
-          <motion.div {...fadeUp}>
-            <motion.h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
+          <BlurFade delay={BLUR_FADE_DELAY}>
+            <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
               Hi, I'm Syphax
-            </motion.h1>
+            </h1>
+          </BlurFade>
 
-            <motion.p
-              className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg"
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+          <BlurFade delay={BLUR_FADE_DELAY * 2}>
+            <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
               I'm an AI/ML developer currently learning Pytorch and deep learning.
               I specialize in NLP with focus on Research with
               implementing new designs for Large Language Models.
-            </motion.p>
-          </motion.div>
+            </p>
+          </BlurFade>
 
-          {/* About Section - Heading updated to text-sm md:text-base */}
-          <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <motion.h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
-              About
-            </motion.h2>
-            <motion.p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              I started coding and quickly found it both fun and interesting. I’m driven
-              by the desire to build things that make a real impact. My interests lie
-              primarily in Research and modern AI — especially NLP with PyTorch
-              and TensorFlow.
-            </motion.p>
-          </motion.div>
+          {/* About Section */}
+          <div className="mt-10">
+            <BlurFade delay={BLUR_FADE_DELAY * 3}>
+              <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
+                About
+              </h2>
+            </BlurFade>
+            <BlurFade delay={BLUR_FADE_DELAY * 4}>
+              <p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                I started coding and quickly found it both fun and interesting. I’m driven
+                by the desire to build things that make a real impact. My interests lie
+                primarily in Research and modern AI — especially NLP with PyTorch
+                and TensorFlow.
+              </p>
+            </BlurFade>
+          </div>
 
-          {/* Tech Stack Section - Heading updated to text-sm md:text-base */}
-          <motion.div className="mt-10" {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
-            <motion.h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
-              Tech Stack
-            </motion.h2>
+          {/* Tech Stack Section */}
+          <div className="mt-10">
+            <BlurFade delay={BLUR_FADE_DELAY * 5}>
+              <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+                Tech Stack
+              </h2>
+            </BlurFade>
+            
             <div className="flex flex-wrap gap-3 mt-4">
               {techStack.map((tech, idx) => (
-                <motion.div
-                  key={tech.name}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
+                <BlurFade 
+                  key={tech.name} 
+                  delay={BLUR_FADE_DELAY * 6 + idx * 0.05} 
+                  inView
+                >
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
                     bg-neutral-100 text-neutral-700 border-neutral-300
                     dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
-                    transition hover:bg-neutral-200 dark:hover:bg-neutral-800"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.05 * idx }}
-                >
-                  <span className="text-lg">{tech.icon}</span>
-                  <span className="font-info text-sm font-medium">{tech.name}</span>
-                </motion.div>
+                    transition-all duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:scale-105">
+                    <span className="text-lg">{tech.icon}</span>
+                    <span className="font-info text-sm font-medium">{tech.name}</span>
+                  </div>
+                </BlurFade>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Profile Picture */}
-        <motion.div
-          className="shrink-0 flex items-start pt-1 md:-ml-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-        >
-          <div
-            className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
-              loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'
-            } hover:scale-105 hover:shadow-2xl`}
-          >
-            <Image
-              src={profilePic}
-              alt="Syphax"
-              width={400}
-              height={400}
-              className="object-cover w-full h-full"
-              priority
-            />
-          </div>
-        </motion.div>
+        <div className="shrink-0 flex items-start pt-1 md:-ml-10">
+          <BlurFade delay={BLUR_FADE_DELAY * 8}>
+            <div
+              className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
+                loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'
+              } hover:scale-110 hover:rotate-2 hover:shadow-2xl`}
+            >
+              <Image
+                src={profilePic}
+                alt="Syphax"
+                width={400}
+                height={400}
+                className="object-cover w-full h-full"
+                priority
+              />
+            </div>
+          </BlurFade>
+        </div>
       </div>
     </section>
   );
