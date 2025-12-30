@@ -21,10 +21,10 @@ export default function Experience() {
   const experiences: ExperienceItem[] = [
     {
       role: "AI/ML Developer",
-      company: "Fiberr",
+      company: "Fiberr.co",
       date: "Nov 2025 – Present",
       // Updated to match your renamed file
-      logo: "/fib.jpeg", 
+      logo: "/fiberr.jpeg", 
       githubUrl: "https://github.com/old-droid",
     },
   ];
