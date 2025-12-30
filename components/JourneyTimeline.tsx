@@ -1,5 +1,7 @@
 'use client';
+
 import { useEffect, useState } from 'react';
+import BlurFade from '@/components/blurfade';
 
 interface ExperienceItem {
   role: string;
@@ -8,14 +10,9 @@ interface ExperienceItem {
   description: string;
 }
 
+const BLUR_FADE_DELAY = 0.04;
+
 export default function Experience() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
-
   const experiences: ExperienceItem[] = [
     {
       role: "AI/ML Developer",
@@ -41,7 +38,7 @@ export default function Experience() {
 
   const GithubIcon = (
     <svg
-      className="w-5 h-5 cursor-pointer text-neutral-700 dark:text-neutral-300 hover:text-[#C15F3C] dark:hover:text-green-400 transition"
+      className="w-5 h-5 cursor-pointer text-neutral-700 dark:text-neutral-300 hover:text-[#C15F3C] dark:hover:text-green-400 transition-all duration-300 hover:scale-110"
       fill="currentColor"
       viewBox="0 0 24 24"
     >
@@ -53,50 +50,57 @@ export default function Experience() {
   );
 
   return (
-    <section className="max-w-6xl mx-auto px-6 sm:px-8 md:px-10 mt-14">
-      <h2
-        className={`font-heading text-4xl md:text-5xl font-semibold mb-10 transition-all duration-700 ${
-          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
-        }`}
-      >
-        Experience
-      </h2>
+    <section id="journey" className="max-w-6xl mx-auto px-6 sm:px-8 md:px-10 mt-14 mb-20">
+      <BlurFade delay={BLUR_FADE_DELAY} inView>
+        <h2 className="font-heading text-4xl md:text-5xl font-semibold mb-10 tracking-tight">
+          Experience
+        </h2>
+      </BlurFade>
 
       <div className="space-y-14">
         {experiences.map((exp, i) => (
-          <div
-            key={i}
-            className={`transition-all duration-700 ${
-              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
-            }`}
+          <BlurFade 
+            key={i} 
+            delay={BLUR_FADE_DELAY * 2 + i * 0.05} 
+            inView
           >
-            <div className="flex justify-between items-start mb-2">
-              <div className="flex items-center gap-4">
-                {BriefcaseIcon}
-                <div className="space-y-1">
-                  <h3 className="font-heading text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-                    {exp.role}{' '}
-                    <span className="text-sm text-[#C15F3C] dark:text-green-400 font-semibold">
-                      ({exp.date})
-                    </span>
-                  </h3>
-                  <p className="font-info text-base text-neutral-600 dark:text-neutral-400 font-medium">
-                    {exp.company}
-                  </p>
+            <div className="group">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center gap-4">
+                  <div className="transition-transform duration-300 group-hover:scale-110">
+                    {BriefcaseIcon}
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="font-heading text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                      {exp.role}{' '}
+                      <span className="text-sm text-[#C15F3C] dark:text-green-400 font-semibold ml-1">
+                        ({exp.date})
+                      </span>
+                    </h3>
+                    <p className="font-info text-base text-neutral-600 dark:text-neutral-400 font-medium">
+                      {exp.company}
+                    </p>
+                  </div>
                 </div>
+
+                <a 
+                  href={githubUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-1"
+                >
+                  {GithubIcon}
+                </a>
               </div>
 
-              <a href={githubUrl} target="_blank" rel="noopener noreferrer">
-                {GithubIcon}
-              </a>
+              {/* Decorative Line */}
+              <div className="ml-9 h-px bg-neutral-300 dark:bg-neutral-700 mb-4 transition-all duration-500 group-hover:bg-[#C15F3C]/50 dark:group-hover:bg-green-400/50"></div>
+
+              <p className="ml-9 font-info text-base text-neutral-700 dark:text-neutral-300 leading-relaxed max-w-3xl">
+                {exp.description}
+              </p>
             </div>
-
-            <div className="ml-9 h-px bg-neutral-300 dark:bg-neutral-700 mb-4"></div>
-
-            <p className="ml-9 font-info text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">
-              {exp.description}
-            </p>
-          </div>
+          </BlurFade>
         ))}
       </div>
     </section>
