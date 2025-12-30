@@ -23,8 +23,8 @@ export default function Experience() {
       role: "AI/ML Developer",
       company: "Fiberr",
       date: "Nov 2025 – Present",
-      // If profile.png works as "/profile.png", this MUST be "/fib.png"
-      logo: "/fib.png", 
+      // Updated to match your renamed file
+      logo: "/fib.jpeg", 
       githubUrl: "https://github.com/old-droid",
     },
   ];
@@ -44,15 +44,18 @@ export default function Experience() {
             delay={BLUR_FADE_DELAY * 2 + i * 0.05} 
             inView
           >
-            <div className="flex items-center justify-between group p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 backdrop-blur-sm transition-all hover:border-neutral-300 dark:hover:border-neutral-700">
+            {/* Background color set to #ECE9E6 for light mode */}
+            <div 
+              className="flex items-center justify-between group p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#ECE9E6] dark:bg-neutral-900/50 backdrop-blur-sm transition-all hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-sm"
+            >
               
               <div className="flex items-center gap-4">
                 {/* Logo Container */}
-                <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-full border border-neutral-100 dark:border-neutral-800 bg-neutral-100 dark:bg-black flex items-center justify-center">
+                <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-full border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-black flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                   {!imageError ? (
                     <Image
                       src={exp.logo}
-                      alt={exp.company}
+                      alt={`${exp.company} logo`}
                       fill
                       className="object-cover p-1"
                       unoptimized
@@ -60,11 +63,14 @@ export default function Experience() {
                       priority
                     />
                   ) : (
-                    // Fallback if image still won't load
-                    <span className="text-xs font-bold text-neutral-400">FB</span>
+                    /* Fallback Circle if image fails */
+                    <div className="w-full h-full bg-neutral-300 dark:bg-neutral-800 flex items-center justify-center">
+                       <span className="text-xs font-bold text-neutral-600 dark:text-neutral-400">FB</span>
+                    </div>
                   )}
                 </div>
 
+                {/* Info Column */}
                 <div className="flex flex-col">
                   <h3 className="font-heading text-lg font-bold text-black dark:text-white leading-tight">
                     {exp.company}
@@ -75,6 +81,7 @@ export default function Experience() {
                 </div>
               </div>
 
+              {/* Right Side: Date & GitHub Link */}
               <div className="flex items-center gap-6">
                 <div className="hidden sm:block text-sm font-info text-neutral-500 dark:text-neutral-500 tabular-nums">
                   {exp.date}
@@ -84,9 +91,10 @@ export default function Experience() {
                   href={exp.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-400 hover:text-black dark:hover:text-white"
+                  className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-neutral-800 transition-colors text-neutral-400 hover:text-black dark:hover:text-white"
+                  aria-label="View on GitHub"
                 >
-                  <Github className="w-5 h-5 transition-transform group-hover:scale-110" />
+                  <Github className="w-5 h-5 transition-transform group-hover:rotate-12" />
                 </a>
               </div>
             </div>
