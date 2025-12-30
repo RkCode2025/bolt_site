@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { Send } from 'lucide-react'; // Keeping Send for the button
 import { useState } from 'react';
 import BlurFade from '@/components/blurfade';
 
@@ -9,20 +9,20 @@ const socialLinks = [
   { 
     name: 'GitHub', 
     url: 'https://github.com/rkcode2025', 
-    // Uses the official black color (181717)
-    logo: 'https://cdn.simpleicons.org/github/181717' 
+    // Official GitHub logo from Simple Icons
+    logo: 'https://cdn.simpleicons.org/github/white' 
   },
   { 
     name: 'X (Twitter)', 
     url: 'https://x.com/syphax_twt', 
-    // Uses black (000000)
-    logo: 'https://cdn.simpleicons.org/x/000000' 
+    // Official X logo
+    logo: 'https://cdn.simpleicons.org/x/white' 
   },
   { 
     name: 'Gmail', 
     url: 'mailto:syphaxtwt2025@gmail.com', 
-    // Using a dark version of the Gmail red or pure black
-    logo: 'https://cdn.simpleicons.org/gmail/000000' 
+    // Official Gmail logo (using color version for Gmail usually looks better)
+    logo: 'https://cdn.simpleicons.org/gmail/EA4335' 
   },
 ];
 
@@ -54,6 +54,7 @@ export function SocialLinks() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           
+          {/* Left Side: Brand Badge Links */}
           <div className="lg:col-span-1 space-y-4">
             <BlurFade delay={BLUR_FADE_DELAY * 3} inView>
               <p className="font-info text-sm text-muted-foreground mb-4">Find me here!</p>
@@ -72,11 +73,10 @@ export function SocialLinks() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/30 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all font-info text-sm group"
                   >
-                    {/* The icons are now forced to black/dark via the URL */}
                     <img 
                       src={link.logo} 
                       alt={`${link.name} logo`}
-                      className="w-4 h-4 object-contain transition-transform group-hover:scale-110 grayscale brightness-0" 
+                      className="w-4 h-4 object-contain transition-transform group-hover:scale-110" 
                     />
                     <span>{link.name}</span>
                   </a>
@@ -85,6 +85,7 @@ export function SocialLinks() {
             </div>
           </div>
 
+          {/* Right Side: Contact Form Card */}
           <div className="lg:col-span-2">
             <BlurFade delay={BLUR_FADE_DELAY * 6} inView>
               <div className="group relative bg-secondary/30 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border/50 transition-all hover:border-border/80">
