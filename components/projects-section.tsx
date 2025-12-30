@@ -6,9 +6,9 @@ import BlurFade from '@/components/blurfade';
 import Image from 'next/image';
 
 // Assuming these are exported from your constants or local assets
-import neuralNetImg from '@/public/bolt_site/e.jpg';
-import xtrainImg from '@/public/bolt_site/pr.jpeg';
-import amazonImg from '@/public/bolt_site/s.jpg';
+import neuralNetImg from '/e.jpg';
+import xtrainImg from '/pr.jpeg';
+import amazonImg from '/s.jpg';
 
 interface Project {
   title: string;
