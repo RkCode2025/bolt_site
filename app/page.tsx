@@ -7,8 +7,8 @@ import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
 import JourneyTimeline from '@/components/JourneyTimeline';
 import BottomNav from '@/components/BottomNav';
-import BlurFade from '@/components/magicui/blur-fade';
-import { ProgressiveBlur } from '@/registry/magicui/progressive-blur'; // Added import
+import BlurFade from '@/components//blurfade';
+import { ProgressiveBlur } from '@/components/progblur'; // Added import
 
 const LiveClock = () => {
   const [time, setTime] = useState<string>('');
