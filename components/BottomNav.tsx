@@ -19,7 +19,7 @@ export default function BottomNav() {
   useEffect(() => {
     setMounted(true);
 
-    // 1. View Transition Logic initialization
+    // 1. View Transition Logic
     const htmlStyle = document.documentElement.style as any;
     if (htmlStyle.viewTransitionName !== undefined) {
       htmlStyle.viewTransitionName = 'page-content';
@@ -29,6 +29,8 @@ export default function BottomNav() {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollPos = window.innerHeight + window.scrollY;
+      
+      // Threshold: Adjust '120' to match the height of your footer
       const threshold = 120; 
       setIsAtBottom(scrollHeight - scrollPos < threshold);
     };
@@ -54,7 +56,7 @@ export default function BottomNav() {
     const isDark = theme === 'dark';
     const newTheme = isDark ? 'light' : 'dark';
 
-    // @ts-ignore - Check for browser support
+    // @ts-ignore
     if (!document.startViewTransition) {
       setTheme(newTheme);
       return;
@@ -67,7 +69,7 @@ export default function BottomNav() {
       Math.max(y, window.innerHeight - y)
     );
 
-    // @ts-ignore - Start the transition
+    // @ts-ignore
     const transition = document.startViewTransition(() => {
       setTheme(newTheme);
     });
@@ -81,8 +83,8 @@ export default function BottomNav() {
       document.documentElement.animate(
         { clipPath: clipPath },
         {
-          duration: 500,
-          easing: 'ease-in-out',
+          duration: 600,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
           pseudoElement: '::view-transition-new(page-content)',
         }
       );
@@ -91,74 +93,60 @@ export default function BottomNav() {
 
   if (!mounted) return null;
 
-  // Shared icon styling for responsiveness
-  const iconClasses = "w-5 h-5 text-black dark:text-white transition-all duration-300 hover:scale-125 hover:-translate-y-1.5 active:scale-90 cursor-pointer";
+  // Reduced scale and duration for a smoother feel
+  const iconClasses = "w-5 h-5 text-black dark:text-white transition-all duration-500 ease-out hover:scale-110 active:scale-95 cursor-pointer opacity-70 hover:opacity-100";
 
   return (
     <div 
       className={`
         fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-in-out
         ${isAtBottom 
-          ? 'bottom-10 scale-90 opacity-40 blur-[1px] pointer-events-none' 
-          : 'bottom-6 scale-100 opacity-100' 
+          ? 'bottom-10 scale-95 opacity-20 blur-[2px] pointer-events-none' 
+          : 'bottom-8 scale-100 opacity-100' 
         }
       `}
     >
       <nav
         className="
-          group flex items-center justify-center gap-3 md:gap-6
-          backdrop-blur-xl bg-white/30 dark:bg-neutral-900/40 shadow-2xl rounded-full
-          px-6 py-3 border border-white/20 dark:border-neutral-700/40
-          transition-all duration-300 hover:bg-white/50 dark:hover:bg-neutral-800/60
-          hover:px-10 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]
+          flex items-center justify-center gap-8
+          backdrop-blur-xl bg-white/20 dark:bg-neutral-900/30 shadow-2xl rounded-full
+          px-10 py-4 border border-white/20 dark:border-neutral-700/30
+          transition-all duration-500 ease-out
+          hover:bg-white/30 dark:hover:bg-neutral-800/40
+          hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]
         "
       >
-        <NavItem 
-          icon={<Home className={iconClasses} />} 
-          label="Home" 
-          onClick={() => scrollToSection('hero')} 
+        <Home
+          onClick={() => scrollToSection('hero')}
+          className={iconClasses}
         />
-        <NavItem 
-          icon={<BookOpen className={iconClasses} />} 
-          label="Journey" 
-          onClick={() => scrollToSection('journey')} 
+        <BookOpen
+          onClick={() => scrollToSection('journey')}
+          className={iconClasses}
         />
-        <NavItem 
-          icon={<FolderKanban className={iconClasses} />} 
-          label="Projects" 
-          onClick={() => scrollToSection('projects')} 
+        <FolderKanban
+          onClick={() => scrollToSection('projects')}
+          className={iconClasses}
         />
-        <NavItem 
-          icon={<Users className={iconClasses} />} 
-          label="Socials" 
-          onClick={() => scrollToSection('socials')} 
+        <Users
+          onClick={() => scrollToSection('socials')}
+          className={iconClasses}
         />
 
-        <div className="w-px h-5 bg-neutral-400/40 dark:bg-neutral-600/50 mx-1" />
+        <div className="w-px h-4 bg-neutral-400/20 dark:bg-neutral-600/40 mx-[-4px]" />
 
-        <div className="relative flex flex-col items-center group/item">
-           {theme === 'light' ? (
-            <Moon onClick={handleThemeToggle} className={iconClasses} />
-          ) : (
-            <Sun onClick={handleThemeToggle} className={iconClasses} />
-          )}
-          <span className="absolute -top-12 scale-0 transition-all duration-200 rounded-lg bg-neutral-900 dark:bg-white px-2 py-1 text-[10px] text-white dark:text-black group-hover/item:scale-100">
-            Theme
-          </span>
-        </div>
+        {theme === 'light' ? (
+          <Moon
+            onClick={(e: any) => handleThemeToggle(e)}
+            className={iconClasses}
+          />
+        ) : (
+          <Sun
+            onClick={(e: any) => handleThemeToggle(e)}
+            className={iconClasses}
+          />
+        )}
       </nav>
-    </div>
-  );
-}
-
-// Helper component for tooltips and hover logic
-function NavItem({ icon, label, onClick }: { icon: React.ReactNode, label: string, onClick: () => void }) {
-  return (
-    <div className="relative flex flex-col items-center group/item" onClick={onClick}>
-      {icon}
-      <span className="absolute -top-12 scale-0 transition-all duration-200 rounded-lg bg-neutral-900 dark:bg-white px-2 py-1 text-[10px] font-medium text-white dark:text-black group-hover/item:scale-100 shadow-xl">
-        {label}
-      </span>
     </div>
   );
 }
