@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import BlurFade from '@/components/blurfade';
 // Icons for your specific AI/ML stack
 import { 
@@ -88,9 +87,9 @@ export function HeroSection() {
                   inView
                 >
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
-                    bg-neutral-100 text-neutral-700 border-neutral-300
+                    bg-secondary/50 text-secondary-foreground border-border/50
                     dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
-                    transition-all duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:scale-105">
+                    transition-all duration-300 hover:bg-secondary/80 dark:hover:bg-neutral-800 hover:scale-105">
                     <span className="text-lg">{tech.icon}</span>
                     <span className="font-info text-sm font-medium">{tech.name}</span>
                   </div>
