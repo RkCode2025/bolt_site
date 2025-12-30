@@ -52,7 +52,7 @@ export default function BottomNav() {
     }
   };
 
-  const handleThemeToggle = (e: React.MouseEvent) => {
+  const handleThemeToggle = (e: React.MouseEvent<SVGSVGElement>) => {
     const isDark = theme === 'dark';
     const newTheme = isDark ? 'light' : 'dark';
 
@@ -83,8 +83,8 @@ export default function BottomNav() {
       document.documentElement.animate(
         { clipPath: clipPath },
         {
-          duration: 600,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          duration: 500,
+          easing: 'ease-in-out',
           pseudoElement: '::view-transition-new(page-content)',
         }
       );
@@ -93,60 +93,55 @@ export default function BottomNav() {
 
   if (!mounted) return null;
 
-  // Reduced scale and duration for a smoother feel
-  const iconClasses = "w-5 h-5 text-black dark:text-white transition-all duration-500 ease-out hover:scale-110 active:scale-95 cursor-pointer opacity-70 hover:opacity-100";
-
   return (
     <div 
       className={`
-        fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-in-out
+        fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out
         ${isAtBottom 
-          ? 'bottom-10 scale-95 opacity-20 blur-[2px] pointer-events-none' 
-          : 'bottom-8 scale-100 opacity-100' 
+          ? 'bottom-12 scale-90 opacity-60 blur-[0.5px]' // The "Folded" state
+          : 'bottom-6 scale-100 opacity-100'            // The Floating state
         }
       `}
     >
-      <nav
+      <div
         className="
-          flex items-center justify-center gap-8
-          backdrop-blur-xl bg-white/20 dark:bg-neutral-900/30 shadow-2xl rounded-full
-          px-10 py-4 border border-white/20 dark:border-neutral-700/30
-          transition-all duration-500 ease-out
-          hover:bg-white/30 dark:hover:bg-neutral-800/40
-          hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]
+          flex items-center justify-center gap-6
+          backdrop-blur-lg bg-white/30 dark:bg-neutral-900/30 shadow-xl rounded-full
+          px-6 py-3 border border-white/20 dark:border-neutral-700/40
+          transition-all duration-300 hover:bg-white/40 dark:hover:bg-neutral-900/40
         "
       >
         <Home
           onClick={() => scrollToSection('hero')}
-          className={iconClasses}
+          className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
         <BookOpen
           onClick={() => scrollToSection('journey')}
-          className={iconClasses}
+          className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
         <FolderKanban
           onClick={() => scrollToSection('projects')}
-          className={iconClasses}
+          className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
         <Users
           onClick={() => scrollToSection('socials')}
-          className={iconClasses}
+          className="w-5 h-5 text-black dark:text-white hover:scale-110 transition-transform cursor-pointer"
         />
 
-        <div className="w-px h-4 bg-neutral-400/20 dark:bg-neutral-600/40 mx-[-4px]" />
+        <div className="w-px h-5 bg-neutral-300 dark:bg-neutral-700" />
 
         {theme === 'light' ? (
           <Moon
             onClick={(e: any) => handleThemeToggle(e)}
-            className={iconClasses}
+            className="w-5 h-5 text-black hover:scale-110 transition-transform cursor-pointer"
           />
         ) : (
           <Sun
             onClick={(e: any) => handleThemeToggle(e)}
-            className={iconClasses}
+            className="w-5 h-5 text-white hover:scale-110 transition-transform cursor-pointer"
           />
         )}
-      </nav>
+      </div>
     </div>
   );
 }
