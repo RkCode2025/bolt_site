@@ -4,6 +4,7 @@ import Image from 'next/image';
 import BlurFade from '@/components/blurfade';
 import { Github } from 'lucide-react';
 
+
 // 1. IMPORT the logo as a module, just like you did with profile.png
 // This ensures Next.js finds the file during the build process.
 import fibLogo from '/fib.png'; 
