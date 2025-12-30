@@ -24,7 +24,7 @@ export default function Experience() {
       company: "Fiberr.co",
       date: "Nov 2025 – Present",
       // Updated to match your renamed file
-      logo: "/Public/fiberr.jpeg", 
+      logo: "/fib.png", 
       githubUrl: "https://github.com/old-droid",
     },
   ];
