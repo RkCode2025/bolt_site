@@ -1,28 +1,30 @@
 'use client';
 
+import Image from 'next/image';
 import BlurFade from '@/components/blurfade';
 import { Github } from 'lucide-react';
-import { useState } from 'react';
+
+// 1. IMPORT the logo as a module, just like you did with profile.png
+// This ensures Next.js finds the file during the build process.
+import fibLogo from '/fib.png'; 
 
 interface ExperienceItem {
   role: string;
   company: string;
   date: string;
-  logo: string;
+  logo: any; // Changed to any to support imported static images
   githubUrl: string;
 }
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function Experience() {
-  const [imageError, setImageError] = useState(false);
-
   const experiences: ExperienceItem[] = [
     {
       role: "AI/ML Developer",
       company: "Fiberr",
       date: "Nov 2025 – Present",
-      logo: "/fib.png", // Paths starting with / look into the Public folder
+      logo: fibLogo, // Use the imported variable here
       githubUrl: "https://github.com/old-droid",
     },
   ];
@@ -42,23 +44,19 @@ export default function Experience() {
             delay={BLUR_FADE_DELAY * 2 + i * 0.05} 
             inView
           >
+            {/* Background set to your requested #ECE9E6 color */}
             <div className="flex items-center justify-between group p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#ECE9E6] dark:bg-neutral-900/50 backdrop-blur-sm transition-all hover:border-neutral-300 dark:hover:border-neutral-700">
               
               <div className="flex items-center gap-4">
                 {/* Logo Container */}
                 <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-full border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-black flex items-center justify-center">
-                  {!imageError ? (
-                    <img
-                      src={exp.logo}
-                      alt={exp.company}
-                      className="w-full h-full object-cover p-1"
-                      onError={() => setImageError(true)}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-neutral-300 dark:bg-neutral-800 flex items-center justify-center">
-                       <span className="text-xs font-bold text-neutral-500">FB</span>
-                    </div>
-                  )}
+                  {/* Using the Next.js Image component with the imported module */}
+                  <Image
+                    src={exp.logo}
+                    alt={exp.company}
+                    className="w-full h-full object-cover p-1"
+                    priority
+                  />
                 </div>
 
                 <div className="flex flex-col">
