@@ -1,14 +1,29 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Twitter, Mail, Send } from 'lucide-react';
+import { Send } from 'lucide-react'; // Keeping Send for the button
 import { useState } from 'react';
 import BlurFade from '@/components/blurfade';
 
 const socialLinks = [
-  { name: 'GitHub', url: 'https://github.com/rkcode2025', icon: Github },
-  { name: 'X (Twitter)', url: 'https://x.com/syphax_twt', icon: Twitter },
-  { name: 'Email', url: 'mailto:syphaxtwt2025@gmail.com', icon: Mail },
+  { 
+    name: 'GitHub', 
+    url: 'https://github.com/rkcode2025', 
+    // Official GitHub logo from Simple Icons
+    logo: 'https://cdn.simpleicons.org/github/white' 
+  },
+  { 
+    name: 'X (Twitter)', 
+    url: 'https://x.com/syphax_twt', 
+    // Official X logo
+    logo: 'https://cdn.simpleicons.org/x/white' 
+  },
+  { 
+    name: 'Gmail', 
+    url: 'mailto:syphaxtwt2025@gmail.com', 
+    // Official Gmail logo (using color version for Gmail usually looks better)
+    logo: 'https://cdn.simpleicons.org/gmail/EA4335' 
+  },
 ];
 
 const BLUR_FADE_DELAY = 0.04;
@@ -25,7 +40,6 @@ export function SocialLinks() {
   return (
     <section id="socials" className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
         <BlurFade delay={BLUR_FADE_DELAY} inView>
           <h2 className="font-heading text-4xl md:text-5xl font-semibold mb-1 tracking-tight">
             Contact
@@ -40,7 +54,7 @@ export function SocialLinks() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           
-          {/* Left Side: Badge Links */}
+          {/* Left Side: Brand Badge Links */}
           <div className="lg:col-span-1 space-y-4">
             <BlurFade delay={BLUR_FADE_DELAY * 3} inView>
               <p className="font-info text-sm text-muted-foreground mb-4">Find me here!</p>
@@ -59,7 +73,11 @@ export function SocialLinks() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/30 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all font-info text-sm group"
                   >
-                    <link.icon className="w-4 h-4 group-hover:text-primary transition-colors" />
+                    <img 
+                      src={link.logo} 
+                      alt={`${link.name} logo`}
+                      className="w-4 h-4 object-contain transition-transform group-hover:scale-110" 
+                    />
                     <span>{link.name}</span>
                   </a>
                 </BlurFade>
