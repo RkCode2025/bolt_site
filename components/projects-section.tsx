@@ -47,7 +47,7 @@ const BLUR_FADE_DELAY = 0.2;
 export function ProjectsSection() {
   return (
     <section id="projects" className="px-6 md:px-22 pt-8 pb-16 relative">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <BlurFade delay={BLUR_FADE_DELAY} inView>
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight">
             Projects
