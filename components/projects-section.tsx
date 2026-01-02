@@ -9,12 +9,11 @@ import Image from 'next/image';
 import neuralNetImg from '/e.jpg';
 import xtrainImg from '/pr.jpeg';
 import amazonImg from '/t.jpg';
-
 interface Project {
   title: string;
   description: string;
   tags: string[];
-  image: any; 
+  image: any; // Using 'any' for imported static assets
   github?: string;
   demo?: string;
 }
@@ -47,9 +46,8 @@ const BLUR_FADE_DELAY = 0.2;
 
 export function ProjectsSection() {
   return (
-    // max-w-7xl ensures the row is physically wider across the screen
-    <section id="projects" className="px-4 md:px-8 pt-8 pb-16 relative w-full">
-      <div className="max-w-7xl mx-auto">
+    <section id="projects" className="px-6 md:px-22 pt-8 pb-16 relative">
+      <div className="max-w-6xl mx-auto">
         <BlurFade delay={BLUR_FADE_DELAY} inView>
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight">
             Projects
@@ -57,13 +55,12 @@ export function ProjectsSection() {
         </BlurFade>
 
         <BlurFade delay={BLUR_FADE_DELAY * 1.5} inView>
-          <p className="text-sm text-muted-foreground mb-10">
+          <p className="text-sm text-muted-foreground mb-12">
             Made / Collaborated
           </p>
         </BlurFade>
 
-        {/* 3 columns on large screens, gap-4 to keep it tight */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <BlurFade 
               key={project.title} 
@@ -71,12 +68,12 @@ export function ProjectsSection() {
               inView
             >
               <motion.div
-                className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 overflow-hidden flex flex-col h-auto"
+                className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden"
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
               >
-                {/* Image Section - Reduced height from h-44 to h-32 to make it "less long" */}
-                <div className="relative h-32 w-full overflow-hidden bg-muted">
+                {/* Image Section - Upper Half */}
+                <div className="relative h-44 w-full overflow-hidden bg-muted">
                   <Image
                     src={project.image}
                     alt={project.title}
@@ -85,38 +82,36 @@ export function ProjectsSection() {
                   />
                 </div>
 
-                {/* Content Section - Tighter padding to keep the box short */}
-                <div className="p-4 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-heading text-base font-bold mb-1 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    
-                    <p className="text-[12px] text-muted-foreground mb-3 line-clamp-2 leading-snug">
-                      {project.description}
-                    </p>
+                {/* Content Section - Lower Half */}
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className="font-heading text-lg font-bold mb-2 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-xs text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+                    {project.description}
+                  </p>
 
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground border border-border/50"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-secondary text-secondary-foreground border border-border/50"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     {project.github && (
                       <a
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-foreground text-background text-[10px] font-medium hover:opacity-90 transition-opacity"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-[10px] font-medium hover:opacity-90 transition-opacity"
                       >
-                        <Github className="w-3 h-3" /> 
+                        <Github className="w-3.5 h-3.5" /> 
                         Source
                       </a>
                     )}
@@ -125,9 +120,9 @@ export function ProjectsSection() {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-secondary border border-border text-[10px] font-medium hover:bg-secondary/80 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary border border-border text-[10px] font-medium hover:bg-secondary/80 transition-colors"
                       >
-                        <ExternalLink className="w-3 h-3" /> 
+                        <ExternalLink className="w-3.5 h-3.5" /> 
                         Website
                       </a>
                     )}
