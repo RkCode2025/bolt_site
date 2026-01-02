@@ -9,7 +9,6 @@ import Image from 'next/image';
 import neuralNetImg from '/e.jpg';
 import xtrainImg from '/pr.jpeg';
 import amazonImg from '/s.jpg';
-
 interface Project {
   title: string;
   description: string;
@@ -20,6 +19,13 @@ interface Project {
 }
 
 const projects: Project[] = [
+  {
+    title: 'Efficient MoE Transformer',
+    description: 'A compact 109M MoE transformer benchmarking on Wikitext-2.',
+    tags: ['Pytorch', 'Transformer', 'Research'],
+    image: amazonImg,
+    github: 'https://github.com/rkcode2025/wikitext-MoE-40M',
+  },
   {
     title: 'Neural Network from Scratch',
     description: 'Recreating a Multilayer Perceptron Neural Network from scratch.',
@@ -33,13 +39,6 @@ const projects: Project[] = [
     tags: ['Deep learning', 'Numpy', 'Collaboration'],
     image: xtrainImg,
     github: 'https://github.com/old-droid/XTRAIN',
-  },
-  {
-    title: 'Analysis of Amazon Bestsellers',
-    description: 'Detailed analysis of Amazon Bestsellers from 2009-2019.',
-    tags: ['Numpy', 'Scikit-Learn', 'Plotly'],
-    image: amazonImg,
-    github: 'https://github.com/RkCode2025/Amazon-Bestseller-Books-2009-2019-Analysis',
   },
 ];
 
