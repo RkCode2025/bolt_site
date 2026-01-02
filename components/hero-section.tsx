@@ -35,8 +35,8 @@ export function HeroSection() {
 
   return (
     <section id="hero" className="w-full pt-10 pb-2">
-      {/* Increased max-w and adjusted padding to provide more horizontal room */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-start gap-6 md:gap-10">
+      {/* Changed max-w-6xl to 7xl to match your wider projects section */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start gap-8">
         
         {/* Text Content */}
         <div className="flex-1">
@@ -54,15 +54,15 @@ export function HeroSection() {
             </p>
           </BlurFade>
 
-          {/* About Section */}
-          <div className="mt-10">
+          {/* About Section - Reduced margin from mt-10 to mt-6 to fix the gap */}
+          <div className="mt-6">
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
               <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
                 About
               </h2>
             </BlurFade>
             <BlurFade delay={BLUR_FADE_DELAY * 4}>
-              <p className="font-info mt-3 text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl">
+              <p className="font-info mt-2 text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl">
                 I started coding and quickly found it both fun and interesting. I’m driven
                 by the desire to build things that make a real impact. My interests lie
                 primarily in Research and modern AI — especially NLP with PyTorch
@@ -71,23 +71,23 @@ export function HeroSection() {
             </BlurFade>
           </div>
 
-          {/* Tech Stack Section */}
-          <div className="mt-10">
+          {/* Tech Stack Section - Reduced margin from mt-10 to mt-6 */}
+          <div className="mt-6">
             <BlurFade delay={BLUR_FADE_DELAY * 5}>
               <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
                 Tech Stack
               </h2>
             </BlurFade>
             
-            {/* Added w-full and used a tighter gap (gap-2) to ensure items fit on one line */}
-            <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-4 w-full">
+            {/* Removed width constraints here to let them sit on one line */}
+            <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
               {techStack.map((tech, idx) => (
                 <BlurFade 
                   key={tech.name} 
                   delay={BLUR_FADE_DELAY * 6 + idx * 0.05} 
                   inView
                 >
-                  <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border 
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
                     bg-secondary/50 text-secondary-foreground border-border/50
                     dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
                     transition-all duration-300 hover:bg-secondary/80 dark:hover:bg-neutral-800 hover:scale-105 whitespace-nowrap">
@@ -101,10 +101,10 @@ export function HeroSection() {
         </div>
 
         {/* Profile Picture */}
-        <div className="shrink-0 flex items-start pt-1">
+        <div className="shrink-0 pt-2">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <div
-              className={`w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
+              className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
                 loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'
               } hover:scale-110 hover:rotate-2 hover:shadow-2xl`}
             >
