@@ -8,7 +8,7 @@ import Image from 'next/image';
 // Assuming these are exported from your constants or local assets
 import neuralNetImg from '/e.jpg';
 import xtrainImg from '/pr.jpeg';
-import amazonImg from '/s.jpg';
+import amazonImg from '/t.jpg';
 interface Project {
   title: string;
   description: string;
