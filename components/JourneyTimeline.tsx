@@ -33,7 +33,7 @@ export default function Experience() {
   return (
     <section id="journey" className="max-w-6xl mx-auto px-10 md:px-22 mt-14 mb-20">
       <BlurFade delay={BLUR_FADE_DELAY} inView>
-        <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight">
+        <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight text-black dark:text-white">
           Work Experience
         </h2>
       </BlurFade>
