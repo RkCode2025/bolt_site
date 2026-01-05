@@ -14,7 +14,7 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
-  image: any;
+  image: any; // Using 'any' for imported static assets
   github?: string;
   demo?: string;
 }
@@ -45,10 +45,11 @@ const projects: Project[] = [
 
 const BLUR_FADE_DELAY = 0.2;
 
-// Shared transition for perfect synchronization
+// Fixed TypeScript error by adding 'as const'
+// This ensures the transition and timing are identical for all child animations
 const SHARED_TRANSITION = {
   duration: 0.4,
-  ease: [0.25, 1, 0.5, 1], // Custom cubic-bezier for a smoother, "stable" feel
+  ease: [0.25, 1, 0.5, 1] as const, 
 };
 
 export function ProjectsSection() {
@@ -81,7 +82,7 @@ export function ProjectsSection() {
                 className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden will-change-transform"
                 variants={{
                   initial: { y: 0 },
-                  hover: { y: -8 } // Slightly increased for a more premium feel
+                  hover: { y: -8 }
                 }}
                 transition={SHARED_TRANSITION}
               >
