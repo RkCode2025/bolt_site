@@ -9,11 +9,12 @@ import Image from 'next/image';
 import neuralNetImg from '/e.jpg';
 import xtrainImg from '/pr.jpeg';
 import amazonImg from '/t.jpg';
+
 interface Project {
   title: string;
   description: string;
   tags: string[];
-  image: any; // Using 'any' for imported static assets
+  image: any;
   github?: string;
   demo?: string;
 }
@@ -44,6 +45,12 @@ const projects: Project[] = [
 
 const BLUR_FADE_DELAY = 0.2;
 
+// Shared transition for perfect synchronization
+const SHARED_TRANSITION = {
+  duration: 0.4,
+  ease: [0.25, 1, 0.5, 1], // Custom cubic-bezier for a smoother, "stable" feel
+};
+
 export function ProjectsSection() {
   return (
     <section id="projects" className="px-6 md:px-22 pt-8 pb-16 relative">
@@ -68,23 +75,39 @@ export function ProjectsSection() {
               inView
             >
               <motion.div
-                className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden"
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                initial="initial"
+                whileHover="hover"
+                animate="initial"
+                className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden will-change-transform"
+                variants={{
+                  initial: { y: 0 },
+                  hover: { y: -8 } // Slightly increased for a more premium feel
+                }}
+                transition={SHARED_TRANSITION}
               >
                 {/* Image Section - Upper Half */}
                 <div className="relative h-44 w-full overflow-hidden bg-muted">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  <motion.div 
+                    className="w-full h-full"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { scale: 1.05 }
+                    }}
+                    transition={SHARED_TRANSITION}
+                  >
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                      priority={index < 3}
+                    />
+                  </motion.div>
                 </div>
 
                 {/* Content Section - Lower Half */}
                 <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-heading text-lg font-bold mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-heading text-lg font-bold mb-2 group-hover:text-primary transition-colors duration-300">
                     {project.title}
                   </h3>
                   
