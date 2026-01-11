@@ -1,11 +1,11 @@
-'use client';
+]'use client';
 
 import { motion } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
 import BlurFade from '@/components/blurfade';
 import Image from 'next/image';
 
-// Image imports
+// Assuming these are exported from your constants or local assets
 import neuralNetImg from '/e.jpg';
 import xtrainImg from '/pr.jpeg';
 import amazonImg from '/t.jpg';
@@ -14,7 +14,7 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
-  image: any; 
+  image: any; // Using 'any' for imported static assets
   github?: string;
   demo?: string;
 }
@@ -44,6 +44,9 @@ const projects: Project[] = [
 ];
 
 const BLUR_FADE_DELAY = 0.2;
+
+// Fixed TypeScript error by adding 'as const'
+// This ensures the transition and timing are identical for all child animations
 const SHARED_TRANSITION = {
   duration: 0.4,
   ease: [0.25, 1, 0.5, 1] as const, 
@@ -51,22 +54,21 @@ const SHARED_TRANSITION = {
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="pt-4 pb-12 relative">
-      <div className="max-w-3xl mx-auto"> {/* Constrained width to keep cards from stretching */}
+    <section id="projects" className="px-6 md:px-22 pt-8 pb-16 relative">
+      <div className="max-w-6xl mx-auto">
         <BlurFade delay={BLUR_FADE_DELAY} inView>
-          <h2 className="font-heading text-2xl md:text-3xl font-bold mb-1 tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight">
             Projects
           </h2>
         </BlurFade>
 
         <BlurFade delay={BLUR_FADE_DELAY * 1.5} inView>
-          <p className="text-xs text-muted-foreground mb-8">
+          <p className="text-sm text-muted-foreground mb-12">
             Made / Collaborated
           </p>
         </BlurFade>
 
-        {/* Grid: 2 columns, but with a smaller gap and max-width */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <BlurFade 
               key={project.title} 
@@ -77,54 +79,64 @@ export function ProjectsSection() {
                 initial="initial"
                 whileHover="hover"
                 animate="initial"
-                className="group relative bg-secondary/10 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden"
+                className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden will-change-transform"
                 variants={{
                   initial: { y: 0 },
-                  hover: { y: -4 } // Subtle lift
+                  hover: { y: -8 }
                 }}
                 transition={SHARED_TRANSITION}
               >
-                {/* Image Section - Much shorter height */}
-                <div className="relative h-32 w-full overflow-hidden bg-muted">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                  />
+                {/* Image Section - Upper Half */}
+                <div className="relative h-44 w-full overflow-hidden bg-muted">
+                  <motion.div 
+                    className="w-full h-full"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { scale: 1.05 }
+                    }}
+                    transition={SHARED_TRANSITION}
+                  >
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                      priority={index < 3}
+                    />
+                  </motion.div>
                 </div>
 
-                {/* Content Section - Tightened padding */}
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="text-sm font-bold mb-1 group-hover:text-primary transition-colors">
+                {/* Content Section - Lower Half */}
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className="font-heading text-lg font-bold mb-2 group-hover:text-primary transition-colors duration-300">
                     {project.title}
                   </h3>
                   
-                  <p className="text-[11px] text-muted-foreground mb-3 line-clamp-2 leading-snug">
+                  <p className="text-xs text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
                     {project.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1 mb-4 mt-auto">
+                  <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[8px] uppercase font-semibold px-1.5 py-0.5 rounded bg-secondary/50 text-muted-foreground border border-border/20"
+                        className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-secondary text-secondary-foreground border border-border/50"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     {project.github && (
                       <a
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-foreground text-background hover:opacity-80 transition-opacity"
-                        title="Source Code"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-[10px] font-medium hover:opacity-90 transition-opacity"
                       >
                         <Github className="w-3.5 h-3.5" /> 
+                        Source
                       </a>
                     )}
                     {project.demo && (
@@ -132,10 +144,10 @@ export function ProjectsSection() {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-secondary border border-border hover:bg-secondary/80 transition-colors"
-                        title="Live Demo"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary border border-border text-[10px] font-medium hover:bg-secondary/80 transition-colors"
                       >
                         <ExternalLink className="w-3.5 h-3.5" /> 
+                        Website
                       </a>
                     )}
                   </div>
