@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useTheme } from 'next-themes'; // Assuming you use next-themes for the toggle
 import BlurFade from '@/components/blurfade';
 import { 
   SiPython, 
@@ -18,8 +19,12 @@ const BLUR_FADE_DELAY = 0.04;
 
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
+  const { resolvedTheme } = useTheme(); // Detects if the current system/app is dark or light
+  const [mounted, setMounted] = useState(false);
 
+  // Prevent hydration mismatch for the theme-specific image
   useEffect(() => {
+    setMounted(true);
     const timer = setTimeout(() => setLoaded(true), 50);
     return () => clearTimeout(timer);
   }, []);
@@ -33,9 +38,13 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
+  // GitHub Chart URLs
+  const githubUsername = "rkcode2025";
+  const lightChart = `https://ghchart.rshah.org/2563eb/${githubUsername}`; // Blue-ish theme for light
+  const darkChart = `https://ghchart.rshah.org/5cffad/${githubUsername}`; // Green-ish theme for dark
+
   return (
-    <section id="hero" className="w-full pt-10 pb-2">
-      {/* Changed max-w-6xl to 7xl to match your wider projects section */}
+    <section id="hero" className="w-full pt-10 pb-12">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start gap-8">
         
         {/* Text Content */}
@@ -54,7 +63,7 @@ export function HeroSection() {
             </p>
           </BlurFade>
 
-          {/* About Section - Reduced margin from mt-10 to mt-6 to fix the gap */}
+          {/* About Section */}
           <div className="mt-6">
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
               <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
@@ -71,15 +80,13 @@ export function HeroSection() {
             </BlurFade>
           </div>
 
-          {/* Tech Stack Section - Reduced margin from mt-10 to mt-6 */}
+          {/* Tech Stack Section */}
           <div className="mt-6">
             <BlurFade delay={BLUR_FADE_DELAY * 5}>
               <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
                 Tech Stack
               </h2>
             </BlurFade>
-            
-            {/* Removed width constraints here to let them sit on one line */}
             <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
               {techStack.map((tech, idx) => (
                 <BlurFade 
@@ -97,6 +104,25 @@ export function HeroSection() {
                 </BlurFade>
               ))}
             </div>
+          </div>
+
+          {/* --- GitHub Commitment Chart Section --- */}
+          <div className="mt-12 w-full">
+            <BlurFade delay={BLUR_FADE_DELAY * 9}>
+              <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
+                Contributions
+              </h2>
+              <div className="p-4 rounded-xl border border-border/50 bg-secondary/20 dark:bg-neutral-900/40 overflow-hidden">
+                {mounted && (
+                  <img
+                    src={resolvedTheme === 'dark' ? darkChart : lightChart}
+                    alt="GitHub Contributions"
+                    className="w-full h-auto filter dark:brightness-110"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+            </BlurFade>
           </div>
         </div>
 
