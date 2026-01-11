@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
+import GitHubCalendar from 'react-github-calendar';
 import BlurFade from '@/components/blurfade';
 import { 
   SiPython, 
@@ -28,6 +29,13 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Theme configuration
+  // Light mode uses your requested RGB(193, 95, 60) which is #C15F3C
+  const calendarTheme = {
+    light: ['#f0f0f0', '#e5b19b', '#d88c6e', '#c15f3c', '#a54b2d'],
+    dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+  };
+
   const techStack = [
     { name: 'Python', icon: <SiPython className="text-blue-400" /> },
     { name: 'PyTorch', icon: <SiPytorch className="text-orange-600" /> },
@@ -37,15 +45,12 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
-  const githubUsername = "rkcode2025";
-  // Updated themes: Green for Dark mode, Blue for Light mode
-  const lightChart = `https://ghchart.rshah.org/2563eb/${githubUsername}`;
-  const darkChart = `https://ghchart.rshah.org/5cffad/${githubUsername}`;
-
   return (
-    <section id="hero" className="w-full pt-10 pb-12">
+    <section id="hero" className="w-full pt-10 pb-0">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start gap-8">
-        <div className="flex-1">
+        
+        <div className="flex-1 w-full">
+          {/* Intro */}
           <BlurFade delay={BLUR_FADE_DELAY}>
             <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
               Hi, I'm Syphax
@@ -60,6 +65,7 @@ export function HeroSection() {
             </p>
           </BlurFade>
 
+          {/* About */}
           <div className="mt-6">
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
               <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
@@ -76,6 +82,7 @@ export function HeroSection() {
             </BlurFade>
           </div>
 
+          {/* Tech Stack */}
           <div className="mt-6">
             <BlurFade delay={BLUR_FADE_DELAY * 5}>
               <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
@@ -89,7 +96,10 @@ export function HeroSection() {
                   delay={BLUR_FADE_DELAY * 6 + idx * 0.05} 
                   inView
                 >
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border bg-secondary/50 text-secondary-foreground border-border/50 dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800 transition-all duration-300 hover:bg-secondary/80 dark:hover:bg-neutral-800 hover:scale-105 whitespace-nowrap">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
+                    bg-secondary/50 text-secondary-foreground border-border/50
+                    dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
+                    transition-all duration-300 hover:bg-secondary/80 dark:hover:bg-neutral-800 hover:scale-105 whitespace-nowrap">
                     <span className="text-lg shrink-0">{tech.icon}</span>
                     <span className="font-info text-xs md:text-sm font-medium">{tech.name}</span>
                   </div>
@@ -98,27 +108,34 @@ export function HeroSection() {
             </div>
           </div>
 
+          {/* Large GitHub Contribution Chart */}
           <div className="mt-12 w-full">
-            <BlurFade delay={BLUR_FADE_DELAY * 9}>
+            <BlurFade delay={BLUR_FADE_DELAY * 8}>
               <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
                 Contributions
               </h2>
-              <div className="p-4 rounded-xl border border-border/50 bg-secondary/20 dark:bg-neutral-900/40 overflow-hidden">
-                {mounted && (
-                  <img
-                    src={resolvedTheme === 'dark' ? darkChart : lightChart}
-                    alt="GitHub Contributions"
-                    className="w-full h-auto filter dark:brightness-110"
-                    loading="lazy"
-                  />
-                )}
+              <div className="p-4 md:p-8 rounded-3xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 flex justify-center items-center overflow-hidden">
+                <div className="w-full scale-100 md:scale-110 origin-center">
+                  {mounted && (
+                    <GitHubCalendar 
+                      username="rkcode2025"
+                      blockSize={14} 
+                      blockMargin={4}
+                      fontSize={14}
+                      theme={calendarTheme}
+                      loading={false}
+                      colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
+                    />
+                  )}
+                </div>
               </div>
             </BlurFade>
           </div>
         </div>
 
-        <div className="shrink-0 pt-2">
-          <BlurFade delay={BLUR_FADE_DELAY * 8}>
+        {/* Profile Picture */}
+        <div className="shrink-0 pt-2 hidden md:block">
+          <BlurFade delay={BLUR_FADE_DELAY * 7}>
             <div
               className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
                 loaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90'
