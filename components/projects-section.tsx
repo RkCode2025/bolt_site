@@ -14,7 +14,7 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
-  image: any; // Using 'any' for imported static assets
+  image: any; 
   github?: string;
   demo?: string;
 }
@@ -45,8 +45,6 @@ const projects: Project[] = [
 
 const BLUR_FADE_DELAY = 0.2;
 
-// Fixed TypeScript error by adding 'as const'
-// This ensures the transition and timing are identical for all child animations
 const SHARED_TRANSITION = {
   duration: 0.4,
   ease: [0.25, 1, 0.5, 1] as const, 
@@ -54,7 +52,7 @@ const SHARED_TRANSITION = {
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="px-6 md:px-22 pt-8 pb-16 relative">
+    <section id="projects" className="px-2 md:px-4 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
         <BlurFade delay={BLUR_FADE_DELAY} inView>
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight">
@@ -68,7 +66,8 @@ export function ProjectsSection() {
           </p>
         </BlurFade>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Updated Grid: Changed from lg:grid-cols-3 to md:grid-cols-2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
             <BlurFade 
               key={project.title} 
@@ -79,15 +78,15 @@ export function ProjectsSection() {
                 initial="initial"
                 whileHover="hover"
                 animate="initial"
-                className="group relative bg-secondary/20 backdrop-blur-sm rounded-xl border border-border/40 h-full flex flex-col overflow-hidden will-change-transform"
+                className="group relative bg-secondary/20 backdrop-blur-sm rounded-2xl border border-border/40 h-full flex flex-col overflow-hidden will-change-transform"
                 variants={{
                   initial: { y: 0 },
                   hover: { y: -8 }
                 }}
                 transition={SHARED_TRANSITION}
               >
-                {/* Image Section - Upper Half */}
-                <div className="relative h-44 w-full overflow-hidden bg-muted">
+                {/* Image Section */}
+                <div className="relative h-52 w-full overflow-hidden bg-muted">
                   <motion.div 
                     className="w-full h-full"
                     variants={{
@@ -101,26 +100,26 @@ export function ProjectsSection() {
                       alt={project.title}
                       fill
                       className="object-cover"
-                      priority={index < 3}
+                      priority={index < 2}
                     />
                   </motion.div>
                 </div>
 
-                {/* Content Section - Lower Half */}
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-heading text-lg font-bold mb-2 group-hover:text-primary transition-colors duration-300">
+                {/* Content Section */}
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="font-heading text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
                     {project.title}
                   </h3>
                   
-                  <p className="text-xs text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
                     {project.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
+                  <div className="flex flex-wrap gap-1.5 mb-6 mt-auto">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-secondary text-secondary-foreground border border-border/50"
+                        className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md bg-secondary text-secondary-foreground border border-border/50"
                       >
                         {tag}
                       </span>
@@ -133,9 +132,9 @@ export function ProjectsSection() {
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-[10px] font-medium hover:opacity-90 transition-opacity"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground text-background text-xs font-medium hover:opacity-90 transition-opacity"
                       >
-                        <Github className="w-3.5 h-3.5" /> 
+                        <Github className="w-4 h-4" /> 
                         Source
                       </a>
                     )}
@@ -144,9 +143,9 @@ export function ProjectsSection() {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary border border-border text-[10px] font-medium hover:bg-secondary/80 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-secondary border border-border text-xs font-medium hover:bg-secondary/80 transition-colors"
                       >
-                        <ExternalLink className="w-3.5 h-3.5" /> 
+                        <ExternalLink className="w-4 h-4" /> 
                         Website
                       </a>
                     )}
