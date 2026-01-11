@@ -126,25 +126,25 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Small Green GitHub Chart (No months, No legend, No scroll) */}
+        {/* Green GitHub Chart: Wide, Months enabled, No Legend, No Scroll */}
         <div className="mt-12 w-full max-w-fit">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
             </h2>
             <div className="p-4 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 inline-flex items-center justify-center overflow-hidden">
-                {mounted && (
-                  <GitHubCalendar 
-                    username="rkcode2025"
-                    blockSize={10} 
-                    blockMargin={3}
-                    theme={calendarTheme}
-                    hideMonthLabels
-                    hideColorLegend
-                    hideTotalCount
-                    colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
-                  />
-                )}
+                <div className="scale-x-105 md:scale-x-110 origin-left">
+                  {mounted && (
+                    <GitHubCalendar 
+                      username="rkcode2025"
+                      blockSize={10} 
+                      blockMargin={3}
+                      theme={calendarTheme}
+                      hideColorLegend
+                      colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
+                    />
+                  )}
+                </div>
             </div>
           </BlurFade>
         </div>
