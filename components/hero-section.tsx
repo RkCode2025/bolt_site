@@ -15,13 +15,17 @@ import {
 } from 'react-icons/si';
 
 import profilePic from '/profile1.jpg';
+import profilePic2 from '/profile2.jpg';
 
 const BLUR_FADE_DELAY = 0.04;
 
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
-  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  // State to toggle between the two profile pictures
+  const [isProfileAlt, setIsProfileAlt] = useState(false);
+  
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -105,35 +109,49 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture */}
+          {/* Profile Picture with Click Transition */}
           <div className="shrink-0 pt-2 hidden md:block">
-            <BlurFade delay={BLUR_FADE_DELAY * 7}>
-              <div
-                className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
-                  loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                } hover:scale-110 hover:rotate-2`}
+            <div 
+              className="cursor-pointer group relative"
+              onClick={() => setIsProfileAlt(!isProfileAlt)}
+            >
+              <BlurFade 
+                key={isProfileAlt ? 'alt' : 'primary'} 
+                delay={0} 
+                duration={0.4}
               >
-                <Image
-                  src={profilePic}
-                  alt="Syphax"
-                  width={400}
-                  height={400}
-                  className="object-cover w-full h-full"
-                  priority
-                />
+                <div
+                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
+                    loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                  } group-hover:scale-105 group-active:scale-95`}
+                >
+                  <Image
+                    src={isProfileAlt ? profilePic2 : profilePic}
+                    alt="Syphax Profile"
+                    width={400}
+                    height={400}
+                    className="object-cover w-full h-full select-none"
+                    priority
+                  />
+                </div>
+              </BlurFade>
+              
+              {/* Optional: Subtle hint to click */}
+              <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
+                <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
               </div>
-            </BlurFade>
+            </div>
           </div>
         </div>
 
-        {/* Updated GitHub Chart: Removed scale cutoff and added better responsiveness */}
-        <div className="mt-12 w-full max-w-4xl">
+        {/* GitHub Chart */}
+        <div className="mt-16 w-full max-w-4xl">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
             </h2>
             <div className="p-6 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 w-full overflow-hidden">
-               <div className="overflow-x-auto custom-scrollbar">
+                <div className="overflow-x-auto custom-scrollbar">
                 {mounted && (
                   <GitHubCalendar 
                     username="rkcode2025"
@@ -144,7 +162,7 @@ export function HeroSection() {
                     colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
                   />
                 )}
-               </div>
+                </div>
             </div>
           </BlurFade>
         </div>
