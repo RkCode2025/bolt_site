@@ -50,19 +50,19 @@ export function HeroSection() {
     <section id="hero" className="w-full pt-10 pb-0 relative overflow-hidden">
       
       {/* --- FIXED BANNER IMAGE --- */}
-      <div className="absolute top-0 right-0 w-full md:w-[70%] h-[500px] pointer-events-none z-0">
+      <div className="absolute top-0 right-0 w-full md:w-[60%] h-[450px] pointer-events-none z-0">
         <BlurFade delay={0.2}>
           <div className="relative w-full h-full">
-            <Image
+            <img 
               src="https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg"
-              alt="Banner Background"
-              fill
-              priority
-              className="object-cover opacity-40 dark:opacity-30 transition-opacity duration-500"
+              alt="Background Banner"
+              className="w-full h-full object-cover opacity-45 dark:opacity-30 transition-opacity duration-500"
               style={{
-                // Adjusted mask: Increased the 'black' (visible) area so it's not hidden
-                maskImage: 'radial-gradient(circle at center, black 30%, transparent 90%)',
-                WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 90%)',
+                // Fades the image out towards the left and bottom to blend with the page
+                WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+                maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+                WebkitMaskComposite: 'source-in',
+                maskComposite: 'intersect',
               }}
             />
           </div>
