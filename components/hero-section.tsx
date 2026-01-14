@@ -22,7 +22,6 @@ const BLUR_FADE_DELAY = 0.04;
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // State to toggle between the two profile pictures
   const [isProfileAlt, setIsProfileAlt] = useState(false);
   
   const { resolvedTheme } = useTheme();
@@ -33,7 +32,6 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Updated Theme: Green palette for both Light and Dark modes
   const calendarTheme = {
     light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
     dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
@@ -49,10 +47,24 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="w-full pt-10 pb-0">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="hero" className="w-full pt-0 pb-0 relative overflow-hidden">
+      {/* Banner Image Container */}
+      <div className="absolute top-0 left-0 w-full h-[300px] -z-10 opacity-60 pointer-events-none">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `url('https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            maskImage: 'radial-gradient(circle, black 30%, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(circle, black 30%, transparent 80%)',
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20">
         {/* Main Grid: Text and Image */}
-        <div className="flex flex-col md:flex-row items-start gap-8">
+        <div className="flex flex-col md:flex-row items-start gap-8 relative">
           <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
               <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
@@ -64,7 +76,7 @@ export function HeroSection() {
               <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
                 I'm an AI/ML developer currently learning Pytorch and deep learning.
                 I specialize in NLP with focus on Research with
-                implementing new designs for Large Language Models.
+                implement new designs for Large Language Models.
               </p>
             </BlurFade>
 
@@ -109,8 +121,8 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture with Click Transition */}
-          <div className="shrink-0 pt-2 hidden md:block">
+          {/* Profile Picture Section */}
+          <div className="shrink-0 pt-2 hidden md:block relative z-10">
             <div 
               className="cursor-pointer group relative"
               onClick={() => setIsProfileAlt(!isProfileAlt)}
@@ -121,7 +133,7 @@ export function HeroSection() {
                 duration={0.4}
               >
                 <div
-                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
+                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border-4 border-background transform transition-all duration-700 ease-out ${
                     loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                   } group-hover:scale-105 group-active:scale-95`}
                 >
@@ -136,7 +148,6 @@ export function HeroSection() {
                 </div>
               </BlurFade>
               
-              {/* Optional: Subtle hint to click */}
               <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
                 <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
               </div>
@@ -145,7 +156,7 @@ export function HeroSection() {
         </div>
 
         {/* GitHub Chart */}
-        <div className="mt-16 w-full max-w-4xl">
+        <div className="mt-16 w-full max-w-4xl relative z-10">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
