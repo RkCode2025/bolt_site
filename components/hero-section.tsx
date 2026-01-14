@@ -47,32 +47,32 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="w-full pt-0 pb-0 relative min-h-[700px]">
+    <section id="hero" className="w-full pt-10 pb-0 relative">
       
-      {/* --- BANNER IMAGE SECTION --- */}
-      {/* Positioned absolute to the top-right to avoid the text on the left */}
-      <div className="absolute top-0 right-0 w-full md:w-[65%] h-[450px] pointer-events-none overflow-hidden z-0">
-        <BlurFade delay={0.2} duration={1.2}>
+      {/* --- BANNER IMAGE --- */}
+      {/* We use a container that is right-aligned to keep it away from text */}
+      <div className="absolute top-0 right-0 w-full md:w-[60%] h-[400px] pointer-events-none z-0">
+        <BlurFade delay={0.1}>
           <div 
-            className="w-full h-full opacity-70 dark:opacity-50 transition-opacity duration-1000"
+            className="w-full h-full opacity-60 dark:opacity-45 transition-opacity duration-500"
             style={{
               backgroundImage: `url('https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              /* This creates a clean "vignette" blur on all sides */
-              maskImage: 'radial-gradient(circle at center, black 30%, transparent 90%)',
-              WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 90%)',
+              /* This creates the blurred edges on all sides */
+              maskImage: 'radial-gradient(ellipse at center, black 20%, transparent 80%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 20%, transparent 80%)',
             }}
           />
         </BlurFade>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 relative z-10">
-        {/* Main Grid */}
-        <div className="flex flex-col md:flex-row items-start gap-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Main Grid: Text and Image */}
+        <div className="flex flex-col md:flex-row items-start gap-8">
           
-          {/* Text Content */}
-          <div className="flex-1 w-full">
+          {/* Text Content - z-20 puts it safely above the banner */}
+          <div className="flex-1 w-full z-20">
             <BlurFade delay={BLUR_FADE_DELAY}>
               <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
                 Hi, I'm Syphax
@@ -87,7 +87,7 @@ export function HeroSection() {
               </p>
             </BlurFade>
 
-            <div className="mt-8">
+            <div className="mt-6">
               <BlurFade delay={BLUR_FADE_DELAY * 3}>
                 <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
                   About
@@ -102,13 +102,13 @@ export function HeroSection() {
               </BlurFade>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6">
               <BlurFade delay={BLUR_FADE_DELAY * 5}>
                 <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
                   Tech Stack
                 </h2>
               </BlurFade>
-              <div className="flex flex-wrap items-center gap-2 mt-4">
+              <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
                 {techStack.map((tech, idx) => (
                   <BlurFade 
                     key={tech.name} 
@@ -128,19 +128,19 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture Section */}
-          <div className="shrink-0 pt-2 hidden md:block">
+          {/* Profile Picture Section - z-30 ensures it sits slightly in front of the banner */}
+          <div className="shrink-0 pt-2 hidden md:block z-30">
             <div 
-              className="cursor-pointer group relative z-20"
+              className="cursor-pointer group relative"
               onClick={() => setIsProfileAlt(!isProfileAlt)}
             >
               <BlurFade 
                 key={isProfileAlt ? 'alt' : 'primary'} 
-                delay={0.1} 
+                delay={0} 
                 duration={0.4}
               >
                 <div
-                  className={`w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden shadow-2xl border-4 border-background transform transition-all duration-700 ease-out ${
+                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border-4 border-background transform transition-all duration-700 ease-out ${
                     loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                   } group-hover:scale-105 group-active:scale-95`}
                 >
@@ -155,7 +155,7 @@ export function HeroSection() {
                 </div>
               </BlurFade>
               
-              <div className="absolute -bottom-8 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
+              <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
                 <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
               </div>
             </div>
@@ -163,7 +163,7 @@ export function HeroSection() {
         </div>
 
         {/* GitHub Chart */}
-        <div className="mt-24 w-full max-w-4xl relative z-10">
+        <div className="mt-16 w-full max-w-4xl relative z-10">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
