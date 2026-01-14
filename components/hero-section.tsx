@@ -5,14 +5,7 @@ import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import GitHubCalendar from 'react-github-calendar';
 import BlurFade from '@/components/blurfade';
-import { 
-  SiPython, 
-  SiPytorch, 
-  SiTensorflow, 
-  SiNumpy, 
-  SiScikitlearn, 
-  SiPandas 
-} from 'react-icons/si';
+import { TechStackMarquee } from './stack';
 
 import profilePic from '/profile1.jpg';
 import profilePic2 from '/profile2.jpg';
@@ -22,7 +15,6 @@ const BLUR_FADE_DELAY = 0.04;
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // State to toggle between the two profile pictures
   const [isProfileAlt, setIsProfileAlt] = useState(false);
   
   const { resolvedTheme } = useTheme();
@@ -33,25 +25,14 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Updated Theme: Green palette for both Light and Dark modes
   const calendarTheme = {
     light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
     dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
   };
 
-  const techStack = [
-    { name: 'Python', icon: <SiPython className="text-blue-400" /> },
-    { name: 'PyTorch', icon: <SiPytorch className="text-orange-600" /> },
-    { name: 'TensorFlow', icon: <SiTensorflow className="text-orange-400" /> },
-    { name: 'NumPy', icon: <SiNumpy className="text-blue-500" /> },
-    { name: 'Scikit-learn', icon: <SiScikitlearn className="text-orange-500" /> },
-    { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
-  ];
-
   return (
     <section id="hero" className="w-full pt-10 pb-0">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Main Grid: Text and Image */}
         <div className="flex flex-col md:flex-row items-start gap-8">
           <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
@@ -83,33 +64,18 @@ export function HeroSection() {
               </BlurFade>
             </div>
 
-            <div className="mt-6">
+            {/* Tech Stack Marquee Integrated Here */}
+            <div className="mt-8">
               <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+                <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
                   Tech Stack
                 </h2>
+                <TechStackMarquee />
               </BlurFade>
-              <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
-                {techStack.map((tech, idx) => (
-                  <BlurFade 
-                    key={tech.name} 
-                    delay={BLUR_FADE_DELAY * 6 + idx * 0.05} 
-                    inView
-                  >
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
-                      bg-secondary/50 text-secondary-foreground border-border/50
-                      dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
-                      transition-all duration-300 hover:scale-105 whitespace-nowrap">
-                      <span className="text-lg shrink-0">{tech.icon}</span>
-                      <span className="font-info text-xs md:text-sm font-medium">{tech.name}</span>
-                    </div>
-                  </BlurFade>
-                ))}
-              </div>
             </div>
           </div>
 
-          {/* Profile Picture with Click Transition */}
+          {/* Profile Picture Section */}
           <div className="shrink-0 pt-2 hidden md:block">
             <div 
               className="cursor-pointer group relative"
@@ -135,8 +101,6 @@ export function HeroSection() {
                   />
                 </div>
               </BlurFade>
-              
-              {/* Optional: Subtle hint to click */}
               <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
                 <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
               </div>
