@@ -50,26 +50,28 @@ export function HeroSection() {
     <section id="hero" className="w-full pt-6 pb-0 relative">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
-        {/* --- FIXED MINI BANNER (Ultra-wide YouTube Style) --- */}
+        {/* --- YOUTUBE STYLE MINI BANNER --- */}
         <BlurFade delay={0.1}>
-          <div className="w-full mb-8 relative group">
-            {/* Ambient Glow effect behind the banner */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-75 transition duration-500" />
+          <div className="w-full mb-10 relative h-32 md:h-44 overflow-hidden rounded-[2.5rem]">
+            {/* The Image */}
+            <img 
+              src="https://i.pinimg.com/736x/a4/f4/53/a4f4538c5f2e5087dbc8e5086a6ee5b1.jpg"
+              alt="Background Banner"
+              className="w-full h-full object-cover opacity-90"
+            />
             
+            {/* THE BLUR OVERLAY - Creates the feathered "Fade to Black" edges */}
             <div 
-              className="relative w-full h-32 md:h-44 overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl"
+              className="absolute inset-0 pointer-events-none backdrop-blur-[2px]"
               style={{
-                /* This creates the "feathered" blur on all sides inside the container */
-                maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 100%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at center, black 50%, transparent 100%)',
+                /* Radial gradient mask: Solid in center, transparent at edges */
+                maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 90%)',
+                WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 90%)',
               }}
-            >
-              <img 
-                src="https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg"
-                alt="Background Banner"
-                className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700 ease-out opacity-80"
-              />
-            </div>
+            />
+            
+            {/* Inset Shadow for depth - ensures it blends with dark backgrounds */}
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(0,0,0,1)]" />
           </div>
         </BlurFade>
 
@@ -92,7 +94,7 @@ export function HeroSection() {
               </p>
             </BlurFade>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <BlurFade delay={BLUR_FADE_DELAY * 3}>
                 <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
                   About
@@ -107,7 +109,7 @@ export function HeroSection() {
               </BlurFade>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <BlurFade delay={BLUR_FADE_DELAY * 5}>
                 <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
                   Tech Stack
