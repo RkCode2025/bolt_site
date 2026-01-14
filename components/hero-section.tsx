@@ -50,19 +50,26 @@ export function HeroSection() {
     <section id="hero" className="w-full pt-6 pb-0 relative">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
-        {/* --- NEW TOP BANNER (16:9 Ratio) --- */}
+        {/* --- FIXED MINI BANNER (Ultra-wide YouTube Style) --- */}
         <BlurFade delay={0.1}>
-          <div className="w-full mb-10 overflow-hidden rounded-3xl relative aspect-video">
-            <img 
-              src="https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg"
-              alt="Background Banner"
-              className="w-full h-full object-cover opacity-90 dark:opacity-80 transition-opacity duration-500"
+          <div className="w-full mb-8 relative group">
+            {/* Ambient Glow effect behind the banner */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-75 transition duration-500" />
+            
+            <div 
+              className="relative w-full h-32 md:h-44 overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl"
               style={{
-                /* Radial mask to blur all edges */
-                WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
-                maskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
+                /* This creates the "feathered" blur on all sides inside the container */
+                maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 100%)',
+                WebkitMaskImage: 'radial-gradient(ellipse at center, black 50%, transparent 100%)',
               }}
-            />
+            >
+              <img 
+                src="https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg"
+                alt="Background Banner"
+                className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700 ease-out opacity-80"
+              />
+            </div>
           </div>
         </BlurFade>
 
@@ -72,7 +79,7 @@ export function HeroSection() {
           {/* Text Content */}
           <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
-              <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
+              <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-2 tracking-tight">
                 Hi, I'm Syphax
               </h1>
             </BlurFade>
