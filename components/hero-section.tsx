@@ -47,27 +47,29 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="w-full pt-0 pb-0 relative overflow-hidden min-h-[600px]">
+    <section id="hero" className="w-full pt-0 pb-0 relative min-h-[700px]">
       
-      {/* --- BANNER IMAGE --- */}
-      <div className="absolute top-0 right-0 w-full md:w-[75%] h-[400px] pointer-events-none -z-10">
-        <BlurFade delay={BLUR_FADE_DELAY} duration={1}>
+      {/* --- BANNER IMAGE SECTION --- */}
+      {/* Positioned absolute to the top-right to avoid the text on the left */}
+      <div className="absolute top-0 right-0 w-full md:w-[65%] h-[450px] pointer-events-none overflow-hidden z-0">
+        <BlurFade delay={0.2} duration={1.2}>
           <div 
-            className="w-full h-full opacity-60 dark:opacity-40 transition-opacity duration-1000"
+            className="w-full h-full opacity-70 dark:opacity-50 transition-opacity duration-1000"
             style={{
               backgroundImage: `url('https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              /* Single radial mask for 4-side blur - very compatible */
-              maskImage: 'radial-gradient(ellipse at center, black 20%, transparent 75%)',
-              WebkitMaskImage: 'radial-gradient(ellipse at center, black 20%, transparent 75%)',
+              /* This creates a clean "vignette" blur on all sides */
+              maskImage: 'radial-gradient(circle at center, black 30%, transparent 90%)',
+              WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 90%)',
             }}
           />
         </BlurFade>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24 relative z-10">
-        <div className="flex flex-col md:flex-row items-start gap-8">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 relative z-10">
+        {/* Main Grid */}
+        <div className="flex flex-col md:flex-row items-start gap-12">
           
           {/* Text Content */}
           <div className="flex-1 w-full">
@@ -106,7 +108,7 @@ export function HeroSection() {
                   Tech Stack
                 </h2>
               </BlurFade>
-              <div className="flex flex-wrap items-center gap-2 mt-4 overflow-visible">
+              <div className="flex flex-wrap items-center gap-2 mt-4">
                 {techStack.map((tech, idx) => (
                   <BlurFade 
                     key={tech.name} 
@@ -127,18 +129,18 @@ export function HeroSection() {
           </div>
 
           {/* Profile Picture Section */}
-          <div className="shrink-0 pt-2 hidden md:block relative">
+          <div className="shrink-0 pt-2 hidden md:block">
             <div 
               className="cursor-pointer group relative z-20"
               onClick={() => setIsProfileAlt(!isProfileAlt)}
             >
               <BlurFade 
                 key={isProfileAlt ? 'alt' : 'primary'} 
-                delay={0.2} 
+                delay={0.1} 
                 duration={0.4}
               >
                 <div
-                  className={`w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden shadow-2xl border-4 border-background transform transition-all duration-700 ease-out ${
+                  className={`w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden shadow-2xl border-4 border-background transform transition-all duration-700 ease-out ${
                     loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                   } group-hover:scale-105 group-active:scale-95`}
                 >
@@ -161,7 +163,7 @@ export function HeroSection() {
         </div>
 
         {/* GitHub Chart */}
-        <div className="mt-20 w-full max-w-4xl relative z-10">
+        <div className="mt-24 w-full max-w-4xl relative z-10">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
