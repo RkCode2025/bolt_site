@@ -47,33 +47,30 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="w-full pt-10 pb-0 relative overflow-hidden">
-      
-      {/* --- FIXED BANNER IMAGE --- */}
-      <div className="absolute top-0 right-0 w-full md:w-[60%] h-[450px] pointer-events-none z-0">
-        <BlurFade delay={0.2}>
-          <div className="relative w-full h-full">
+    <section id="hero" className="w-full pt-6 pb-0 relative">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        
+        {/* --- NEW TOP BANNER (16:9 Ratio) --- */}
+        <BlurFade delay={0.1}>
+          <div className="w-full mb-10 overflow-hidden rounded-3xl relative aspect-video">
             <img 
               src="https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg"
               alt="Background Banner"
-              className="w-full h-full object-cover opacity-45 dark:opacity-30 transition-opacity duration-500"
+              className="w-full h-full object-cover opacity-90 dark:opacity-80 transition-opacity duration-500"
               style={{
-                // Fades the image out towards the left and bottom to blend with the page
-                WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
-                maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
-                WebkitMaskComposite: 'source-in',
-                maskComposite: 'intersect',
+                /* Radial mask to blur all edges */
+                WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
+                maskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
               }}
             />
           </div>
         </BlurFade>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row items-start gap-8">
+        {/* Main Grid: Text and Image */}
+        <div className="flex flex-col md:flex-row items-start gap-8 relative z-10">
           
           {/* Text Content */}
-          <div className="flex-1 w-full z-20">
+          <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
               <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
                 Hi, I'm Syphax
@@ -109,7 +106,7 @@ export function HeroSection() {
                   Tech Stack
                 </h2>
               </BlurFade>
-              <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
+              <div className="flex flex-wrap items-center gap-2 mt-3">
                 {techStack.map((tech, idx) => (
                   <BlurFade 
                     key={tech.name} 
@@ -129,8 +126,8 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture */}
-          <div className="shrink-0 pt-2 hidden md:block z-30">
+          {/* Profile Picture Section */}
+          <div className="shrink-0 pt-2 hidden md:block">
             <div 
               className="cursor-pointer group relative"
               onClick={() => setIsProfileAlt(!isProfileAlt)}
@@ -164,7 +161,7 @@ export function HeroSection() {
         </div>
 
         {/* GitHub Chart */}
-        <div className="mt-16 w-full max-w-4xl relative z-10">
+        <div className="mt-16 w-full max-w-4xl relative">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
