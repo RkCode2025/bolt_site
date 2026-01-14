@@ -22,6 +22,7 @@ const BLUR_FADE_DELAY = 0.04;
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
+  // State to toggle between the two profile pictures
   const [isProfileAlt, setIsProfileAlt] = useState(false);
   
   const { resolvedTheme } = useTheme();
@@ -32,6 +33,7 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Updated Theme: Green palette for both Light and Dark modes
   const calendarTheme = {
     light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
     dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
@@ -47,41 +49,13 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="w-full pt-6 pb-0 relative">
+    <section id="hero" className="w-full pt-10 pb-0">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* --- YOUTUBE STYLE MINI BANNER --- */}
-        <BlurFade delay={0.1}>
-          <div className="w-full mb-10 relative h-32 md:h-44 overflow-hidden rounded-[2.5rem]">
-            {/* The Image */}
-            <img 
-              src="https://i.pinimg.com/736x/a4/f4/53/a4f4538c5f2e5087dbc8e5086a6ee5b1.jpg"
-              alt="Background Banner"
-              className="w-full h-full object-cover opacity-90"
-            />
-            
-            {/* THE BLUR OVERLAY - Creates the feathered "Fade to Black" edges */}
-            <div 
-              className="absolute inset-0 pointer-events-none backdrop-blur-[2px]"
-              style={{
-                /* Radial gradient mask: Solid in center, transparent at edges */
-                maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 90%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 90%)',
-              }}
-            />
-            
-            {/* Inset Shadow for depth - ensures it blends with dark backgrounds */}
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(0,0,0,1)]" />
-          </div>
-        </BlurFade>
-
         {/* Main Grid: Text and Image */}
-        <div className="flex flex-col md:flex-row items-start gap-8 relative z-10">
-          
-          {/* Text Content */}
+        <div className="flex flex-col md:flex-row items-start gap-8">
           <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
-              <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-2 tracking-tight">
+              <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
                 Hi, I'm Syphax
               </h1>
             </BlurFade>
@@ -94,7 +68,7 @@ export function HeroSection() {
               </p>
             </BlurFade>
 
-            <div className="mt-8">
+            <div className="mt-6">
               <BlurFade delay={BLUR_FADE_DELAY * 3}>
                 <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
                   About
@@ -109,13 +83,13 @@ export function HeroSection() {
               </BlurFade>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6">
               <BlurFade delay={BLUR_FADE_DELAY * 5}>
                 <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
                   Tech Stack
                 </h2>
               </BlurFade>
-              <div className="flex flex-wrap items-center gap-2 mt-3">
+              <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
                 {techStack.map((tech, idx) => (
                   <BlurFade 
                     key={tech.name} 
@@ -135,7 +109,7 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture Section */}
+          {/* Profile Picture with Click Transition */}
           <div className="shrink-0 pt-2 hidden md:block">
             <div 
               className="cursor-pointer group relative"
@@ -147,7 +121,7 @@ export function HeroSection() {
                 duration={0.4}
               >
                 <div
-                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border-4 border-background transform transition-all duration-700 ease-out ${
+                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
                     loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                   } group-hover:scale-105 group-active:scale-95`}
                 >
@@ -162,6 +136,7 @@ export function HeroSection() {
                 </div>
               </BlurFade>
               
+              {/* Optional: Subtle hint to click */}
               <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
                 <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
               </div>
@@ -170,7 +145,7 @@ export function HeroSection() {
         </div>
 
         {/* GitHub Chart */}
-        <div className="mt-16 w-full max-w-4xl relative">
+        <div className="mt-16 w-full max-w-4xl">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
