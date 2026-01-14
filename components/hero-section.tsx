@@ -48,35 +48,49 @@ export function HeroSection() {
 
   return (
     <section id="hero" className="w-full pt-0 pb-0 relative overflow-hidden">
-      {/* Banner Image Container */}
-      <div className="absolute top-0 left-0 w-full h-[300px] -z-10 opacity-60 pointer-events-none">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: `url('https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            maskImage: 'radial-gradient(circle, black 30%, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(circle, black 30%, transparent 80%)',
-          }}
-        />
+      
+      {/* --- BANNER SECTION --- */}
+      <div className="absolute top-0 right-0 w-full md:w-[70%] h-[350px] -z-10 pointer-events-none">
+        <BlurFade delay={BLUR_FADE_DELAY} duration={1}>
+          <div 
+            className="relative w-full h-full opacity-50 dark:opacity-40"
+            style={{
+              backgroundImage: `url('https://i.postimg.cc/GmKDtnqn/Itadori-Yuji-x-Ryomen-Sukuna-Banner-Wallpaper.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              /* This creates the tight blur on all 4 sides */
+              maskImage: `
+                linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
+                linear-gradient(to right, transparent, black 10%, black 90%, transparent)
+              `,
+              WebkitMaskImage: `
+                linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
+                linear-gradient(to right, transparent, black 10%, black 90%, transparent)
+              `,
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in',
+            }}
+          />
+        </BlurFade>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24">
         {/* Main Grid: Text and Image */}
         <div className="flex flex-col md:flex-row items-start gap-8 relative">
-          <div className="flex-1 w-full">
+          
+          {/* Text Content - z-20 ensures it stays above the banner blur */}
+          <div className="flex-1 w-full z-20">
             <BlurFade delay={BLUR_FADE_DELAY}>
-              <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
+              <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight drop-shadow-sm">
                 Hi, I'm Syphax
               </h1>
             </BlurFade>
 
             <BlurFade delay={BLUR_FADE_DELAY * 2}>
-              <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+              <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl bg-background/20 backdrop-blur-[2px] rounded-lg">
                 I'm an AI/ML developer currently learning Pytorch and deep learning.
                 I specialize in NLP with focus on Research with
-                implement new designs for Large Language Models.
+                implementing new designs for Large Language Models.
               </p>
             </BlurFade>
 
@@ -87,7 +101,7 @@ export function HeroSection() {
                 </h2>
               </BlurFade>
               <BlurFade delay={BLUR_FADE_DELAY * 4}>
-                <p className="font-info mt-2 text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl">
+                <p className="font-info mt-2 text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl bg-background/10 backdrop-blur-[1px]">
                   I started coding and quickly found it both fun and interesting. I’m driven
                   by the desire to build things that make a real impact. My interests lie
                   primarily in Research and modern AI.
@@ -121,8 +135,8 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture Section */}
-          <div className="shrink-0 pt-2 hidden md:block relative z-10">
+          {/* Profile Picture Section - sits slightly over the banner */}
+          <div className="shrink-0 pt-2 hidden md:block relative z-30">
             <div 
               className="cursor-pointer group relative"
               onClick={() => setIsProfileAlt(!isProfileAlt)}
@@ -133,7 +147,7 @@ export function HeroSection() {
                 duration={0.4}
               >
                 <div
-                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border-4 border-background transform transition-all duration-700 ease-out ${
+                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-2xl border-4 border-background transform transition-all duration-700 ease-out ${
                     loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                   } group-hover:scale-105 group-active:scale-95`}
                 >
