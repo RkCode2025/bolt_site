@@ -4,12 +4,16 @@ import React, { useId } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-// --- Utility ---
+// --- Utility: Tailwind Class Merger ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// --- Component: DotPattern ---
+// --- Interfaces ---
+interface AnimatedBackgroundProps {
+  className?: string;
+}
+
 interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
   width?: number;
   height?: number;
@@ -19,17 +23,17 @@ interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
   cy?: number;
   cr?: number;
   glow?: boolean;
-  className?: string;
 }
 
+// --- Internal Component: DotPattern ---
 function DotPattern({
-  width = 24,
-  height = 24,
+  width = 12,      // High density grid
+  height = 12,     // High density grid
   x = 0,
   y = 0,
   cx = 1,
   cy = 1,
-  cr = 1.2,
+  cr = 0.8,        // Small, subtle dots
   glow = true,
   className,
   ...props
@@ -42,8 +46,8 @@ function DotPattern({
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute inset-0 h-full w-full",
-        // Increased opacity for better visibility
-        "fill-neutral-600/50 dark:fill-neutral-300/60",
+        // Visibility: dark gray in light mode, off-white in dark mode
+        "fill-neutral-900/40 dark:fill-neutral-100/50",
         className,
       )}
       {...props}
@@ -52,7 +56,7 @@ function DotPattern({
         {`
           @keyframes float {
             0% { transform: translate(0, 0); }
-            50% { transform: translate(10px, 10px); }
+            50% { transform: translate(6px, 4px); }
             100% { transform: translate(0, 0); }
           }
           .animate-dot-float {
@@ -74,7 +78,7 @@ function DotPattern({
         
         {glow && (
           <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.5" result="blur" />
+            <feGaussianBlur stdDeviation="0.8" result="blur" />
             <feComponentTransfer>
               <feFuncA type="linear" slope="2.5" /> 
             </feComponentTransfer>
@@ -94,11 +98,15 @@ function DotPattern({
   );
 }
 
-// --- Main Export: AnimatedBackground ---
-export default function AnimatedBackground({ className }: { className?: string }) {
+/**
+ * --- Main Export: AnimatedBackground ---
+ * This component is imported in your page.tsx as:
+ * import AnimatedBackground from "@/components/animated-background"
+ */
+export default function AnimatedBackground({ className }: AnimatedBackgroundProps) {
   return (
     <div className={cn("relative h-full w-full overflow-hidden bg-transparent", className)}>
-      {/* Primary Dot Layer */}
+      {/* Dense Dot Layer */}
       <DotPattern
         glow={true}
         className={cn(
@@ -106,9 +114,11 @@ export default function AnimatedBackground({ className }: { className?: string }
         )}
       />
       
-      {/* Decorative Gradient for added depth */}
+      {/* Decorative center glow for depth */}
       <div 
-        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.08),transparent_70%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.15),transparent_70%)]" 
+        className="absolute inset-0 pointer-events-none 
+                   bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.06),transparent_60%)] 
+                   dark:bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.12),transparent_60%)]" 
         aria-hidden="true"
       />
     </div>
