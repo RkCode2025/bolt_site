@@ -68,7 +68,7 @@ export default function Home() {
             "
           >
             {/* Location & Clock Header */}
-            <BlurFade delay={0.1} className="pt-2 -mb-2">
+            <BlurFade delay={0.1} className="pt-6 -mb-2">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium">
                 <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Jammu & Kashmir, India • <LiveClock />
