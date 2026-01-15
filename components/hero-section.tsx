@@ -63,16 +63,16 @@ export function HeroSection() {
             <BlurFade delay={BLUR_FADE_DELAY * 2}>
               <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
                 I'm an AI/ML developer currently learning{" "}
-                <span className="underline decoration-orange-500/40 decoration-2 underline-offset-4 text-foreground/90">
+                <span className="underline decoration-white-500/40 decoration-2 underline-offset-4 text-foreground/90">
                   Pytorch
                 </span>{" "}
-                and deep learning. I specialize in{" "}
-                <span className="underline decoration-emerald-500/40 decoration-2 underline-offset-4 text-foreground/90">
-                  NLP
+                and deep learning. I am interested in{" "}
+                <span className="underline decoration-white-500/40 decoration-2 underline-offset-4 text-foreground/90">
+                  Natural Language Processing
                 </span>{" "}
                 with focus on Research with implementing new designs for{" "}
-                <span className="underline decoration-blue-500/40 decoration-2 underline-offset-4 text-foreground/90">
-                  Large Language Models
+                <span className="underline decoration-white-500/40 decoration-2 underline-offset-4 text-foreground/90">
+                  Language Models
                 </span>.
               </p>
             </BlurFade>
