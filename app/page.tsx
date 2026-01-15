@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AnimatedBackground } from '@/components/animated-background';
+import AnimatedBackground from "@/components/animated-background"
 import { HeroSection } from '@/components/hero-section';
 import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
