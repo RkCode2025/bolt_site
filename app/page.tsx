@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import AnimatedBackground from "@/components/animated-background"
+import { AnimatedBackground } from "@/components/animated-background"; 
 import { HeroSection } from '@/components/hero-section';
 import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
@@ -37,13 +37,13 @@ const LiveClock = () => {
 export default function Home() {
   return (
     <>
-      {/* Background stays OUTSIDE and fixed to the viewport */}
+      {/* Background is OUTSIDE and fills the whole screen */}
       <div className="fixed inset-0 -z-10">
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Removed py-12 to eliminate space between top/bottom of page and container */}
+        {/* main flex-1 allows the container to span full height */}
         <main className="flex-1 flex justify-center px-4 sm:px-8">
           <div
             id="content-card"
@@ -53,17 +53,13 @@ export default function Home() {
               max-w-4xl
               mx-auto
               px-6 sm:px-10 lg:px-12
-              /* Backdrop glass effect */
               backdrop-blur-xl bg-background/70
-              /* Dashed border with no rounding on top/bottom to look seamless */
-              border-x-2 border-dashed border-muted-foreground/20
-              /* Optional: add border-t-2 if you want a top edge, but removing it makes it "flow" */
-              border-t-2 border-b-2
+              /* Dashed border flush with top/bottom */
+              border-x-2 border-t-2 border-b-2 border-dashed border-muted-foreground/20
               transition-all duration-500
               flex flex-col
             "
           >
-            {/* Top Section */}
             <BlurFade delay={0.1} className="pt-10 -mb-2">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium">
                 <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -94,7 +90,6 @@ export default function Home() {
           </div>
         </main>
 
-        {/* Bottom Navigation */}
         <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
           <div className="pointer-events-auto">
             <BottomNav />
