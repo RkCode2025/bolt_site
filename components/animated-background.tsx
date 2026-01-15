@@ -9,7 +9,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// --- Component: DotPattern ---
+// --- Component: DotPattern (Internal) ---
 interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
   width?: number;
   height?: number;
@@ -22,7 +22,7 @@ interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-export function DotPattern({
+function DotPattern({
   width = 16,
   height = 16,
   x = 0,
@@ -35,6 +35,7 @@ export function DotPattern({
   ...props
 }: DotPatternProps) {
   const id = useId();
+  const filterId = useId();
 
   return (
     <svg
@@ -57,30 +58,32 @@ export function DotPattern({
           <circle id="pattern-circle" cx={cx} cy={cy} r={cr} />
         </pattern>
         {glow && (
-          <filter id="glow">
+          <filter id={filterId}>
             <feGaussianBlur stdDeviation="2" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         )}
       </defs>
-      <rect width="100%" height="100%" strokeWidth={0} fill={`url(#${id})`} 
-        style={glow ? { filter: "url(#glow)" } : {}}
+      <rect 
+        width="100%" 
+        height="100%" 
+        strokeWidth={0} 
+        fill={`url(#${id})`} 
+        style={glow ? { filter: `url(#${filterId})` } : {}}
       />
     </svg>
   );
 }
 
-// --- Demo: DotPatternWithGlowEffect ---
-export default function Animatedbackground() {
+// --- Main Export: AnimatedBackground ---
+// This matches: import AnimatedBackground from "@/components/animated-background"
+export default function AnimatedBackground({ className }: { className?: string }) {
   return (
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background">
-      <p className="z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
-        Dot Pattern
-      </p>
+    <div className={cn("relative h-full w-full overflow-hidden", className)}>
       <DotPattern
         glow={true}
         className={cn(
-          "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
+          "[mask-image:radial-gradient(ellipse_at_center,white,transparent)]",
         )}
       />
     </div>
