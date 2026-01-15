@@ -12,21 +12,14 @@ interface AnimatedBackgroundProps {
   className?: string;
 }
 
-interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
-  width?: number;
-  height?: number;
-  cr?: number;
-  glow?: boolean;
-}
-
-function DotPattern({
-  width = 12,
-  height = 12,
-  cr = 0.8,
-  glow = true,
+// Internal Dot Component
+const DotPattern = ({
   className,
-  ...props
-}: DotPatternProps) {
+  glow = true,
+}: {
+  className?: string;
+  glow?: boolean;
+}) => {
   const id = useId();
   const filterId = useId();
 
@@ -34,11 +27,9 @@ function DotPattern({
     <svg
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-0 h-full w-full",
-        "fill-neutral-900/40 dark:fill-neutral-100/50",
+        "pointer-events-none absolute inset-0 h-full w-full fill-neutral-900/40 dark:fill-neutral-100/50",
         className
       )}
-      {...props}
     >
       <style>
         {`
@@ -55,11 +46,11 @@ function DotPattern({
       <defs>
         <pattern
           id={id}
-          width={width}
-          height={height}
+          width={12}
+          height={12}
           patternUnits="userSpaceOnUse"
         >
-          <circle cx={1} cy={1} r={cr} />
+          <circle cx={1} cy={1} r={0.8} />
         </pattern>
         {glow && (
           <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
@@ -80,8 +71,9 @@ function DotPattern({
       />
     </svg>
   );
-}
+};
 
+// Named Export: This is more stable for Next.js builds
 export function AnimatedBackground({ className }: AnimatedBackgroundProps) {
   return (
     <div className={cn("relative h-full w-full overflow-hidden bg-transparent", className)}>
