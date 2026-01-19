@@ -50,7 +50,7 @@ export default function Home() {
               relative
               w-full
               /* Custom width: slightly smaller than 4xl but larger than 3xl */
-              max-w-[850px]
+              max-w-4xl
               mx-auto
               px-6 sm:px-10 lg:px-12
               /* Glassmorphism background */
