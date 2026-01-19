@@ -6,8 +6,9 @@ import { HeroSection } from '@/components/hero-section';
 import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
 import JourneyTimeline from '@/components/JourneyTimeline';
-import BottomNav from '@/components/BottomNav';
 import BlurFade from '@/components/blurfade';
+// Added ThemeToggle import - adjust path if your component is named differently (e.g. mode-toggle)
+import { ThemeToggle } from '@/components/theme-toggle'; 
 
 const LiveClock = () => {
   const [time, setTime] = useState<string>('');
@@ -67,11 +68,19 @@ export default function Home() {
               overflow-hidden
             "
           >
-            {/* Location & Clock Header */}
+            {/* Header: Location/Clock (Left) & Theme Toggle (Right) */}
             <BlurFade delay={0.1} className="pt-6 -mb-2">
-              <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium">
-                <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Jammu & Kashmir, India • <LiveClock />
+              <div className="flex items-center justify-between w-full">
+                {/* Left Side: Location & Clock */}
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium">
+                  <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Jammu & Kashmir, India • <LiveClock />
+                </div>
+
+                {/* Right Side: Theme Toggle Button */}
+                <div>
+                  <ThemeToggle />
+                </div>
               </div>
             </BlurFade>
 
@@ -99,13 +108,8 @@ export default function Home() {
             </footer>
           </div>
         </main>
-
-        {/* Floating Bottom Navigation */}
-        <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
-          <div className="pointer-events-auto">
-            <BottomNav />
-          </div>
-        </div>
+        
+        {/* Removed Floating Bottom Navigation */}
       </div>
     </>
   );
