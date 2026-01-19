@@ -7,7 +7,7 @@ import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
 import JourneyTimeline from '@/components/JourneyTimeline';
 import BlurFade from '@/components/blurfade';
-// Added ThemeToggle import - adjust path if your component is named differently (e.g. mode-toggle)
+// Added ThemeToggle import
 import { ThemeToggle } from '@/components/theme-toggle'; 
 
 const LiveClock = () => {
@@ -68,7 +68,7 @@ export default function Home() {
               overflow-hidden
             "
           >
-            {/* Header: Location/Clock (Left) & Theme Toggle (Right) */}
+            {/* Header: Location/Clock (Left) & Theme Toggle (Right - Nudged Left) */}
             <BlurFade delay={0.1} className="pt-6 -mb-2">
               <div className="flex items-center justify-between w-full">
                 {/* Left Side: Location & Clock */}
@@ -78,7 +78,8 @@ export default function Home() {
                 </div>
 
                 {/* Right Side: Theme Toggle Button */}
-                <div>
+                {/* Added 'mr-4 sm:mr-8' to bring it a bit to the left, likely above the PFP */}
+                <div className="mr-4 sm:mr-8">
                   <ThemeToggle />
                 </div>
               </div>
@@ -108,8 +109,6 @@ export default function Home() {
             </footer>
           </div>
         </main>
-        
-        {/* Removed Floating Bottom Navigation */}
       </div>
     </>
   );
