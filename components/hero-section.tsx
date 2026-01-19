@@ -46,15 +46,15 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
-  // Filters data to show exactly the last 6 months
-  const selectLastSixMonths = (contributions: any) => {
+  // Updated to 10 months to ensure the graph looks "full" across the card width
+  const selectLastTenMonths = (contributions: any) => {
     const today = new Date();
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(today.getMonth() - 6);
+    const tenMonthsAgo = new Date();
+    tenMonthsAgo.setMonth(today.getMonth() - 10);
 
     return contributions.filter((activity: any) => {
       const date = new Date(activity.date);
-      return date >= sixMonthsAgo && date <= today;
+      return date >= tenMonthsAgo && date <= today;
     });
   };
 
@@ -159,26 +159,27 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* GitHub Chart - Optimized for 6-month view */}
+        {/* GitHub Chart - Optimized for Full Width */}
         <div className="mt-16 w-full">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
             </h2>
-            <div className="p-4 sm:p-8 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 flex flex-col items-center">
+            {/* Reduced internal padding from p-8 to p-3/sm:p-5 to bring text closer to border */}
+            <div className="p-3 sm:p-5 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 flex flex-col items-center">
                 {mounted && (
-                  <div className="w-full flex justify-center scale-[0.9] sm:scale-100 origin-center">
+                  <div className="w-full flex justify-center scale-[0.95] sm:scale-100 origin-center">
                     <GitHubCalendar 
                       username="rkcode2025"
-                      // Increased blockSize to fill horizontal space now that we have fewer columns
-                      blockSize={15} 
-                      blockMargin={5}
+                      // Reduced blockSize for a cleaner look
+                      blockSize={12} 
+                      blockMargin={4}
                       theme={calendarTheme}
                       hideColorLegend
                       labels={{
-                          totalCount: "{{count}} contributions in the last 6 months",
+                          totalCount: "{{count}} contributions in the last 10 months",
                       }}
-                      transformData={selectLastSixMonths}
+                      transformData={selectLastTenMonths}
                       colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
                     />
                   </div>
