@@ -46,7 +46,7 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
-  // Function to filter data to show only the last 6 months
+  // Filters data to show exactly the last 6 months
   const selectLastSixMonths = (contributions: any) => {
     const today = new Date();
     const sixMonthsAgo = new Date();
@@ -152,7 +152,6 @@ export function HeroSection() {
                   />
                 </div>
               </BlurFade>
-              
               <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
                 <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
               </div>
@@ -160,26 +159,29 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* GitHub Chart - Optimized to fit without scrolling */}
-        <div className="mt-16 w-full max-w-4xl">
+        {/* GitHub Chart - Optimized for 6-month view */}
+        <div className="mt-16 w-full">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
             </h2>
-            <div className="p-6 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 w-full flex justify-center items-center overflow-hidden">
+            <div className="p-4 sm:p-8 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 flex flex-col items-center">
                 {mounted && (
-                  <GitHubCalendar 
-                    username="rkcode2025"
-                    blockSize={12} 
-                    blockMargin={4}
-                    theme={calendarTheme}
-                    hideColorLegend
-                    labels={{
-                        totalCount: "{{count}} contributions in the last 6 months",
-                    }}
-                    transformData={selectLastSixMonths}
-                    colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
-                  />
+                  <div className="w-full flex justify-center scale-[0.9] sm:scale-100 origin-center">
+                    <GitHubCalendar 
+                      username="rkcode2025"
+                      // Increased blockSize to fill horizontal space now that we have fewer columns
+                      blockSize={15} 
+                      blockMargin={5}
+                      theme={calendarTheme}
+                      hideColorLegend
+                      labels={{
+                          totalCount: "{{count}} contributions in the last 6 months",
+                      }}
+                      transformData={selectLastSixMonths}
+                      colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
+                    />
+                  </div>
                 )}
             </div>
           </BlurFade>
