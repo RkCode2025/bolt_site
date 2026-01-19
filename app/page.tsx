@@ -79,7 +79,7 @@ export default function Home() {
 
                 {/* Right Side: Theme Toggle Button */}
                 {/* Added 'mr-4 sm:mr-8' to bring it a bit to the left, likely above the PFP */}
-                <div className="mr-4 sm:mr-8">
+                <div className="mr-8 sm:mr-8">
                   <ThemeToggle />
                 </div>
               </div>
