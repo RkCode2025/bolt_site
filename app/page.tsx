@@ -42,8 +42,8 @@ export default function Home() {
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
 
-      <div className="relative z-10 min-h-screen flex flex-col py-8">
-        <main className="flex-1 flex justify-center px-4 sm:px-8">
+      <div className="relative z-10 min-h-screen flex flex-col py-4">
+        <main className="flex-1 flex justify-center px-4 sm:px-4">
           <div
             id="content-card"
             className="
