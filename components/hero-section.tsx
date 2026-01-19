@@ -22,7 +22,6 @@ const BLUR_FADE_DELAY = 0.04;
 export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // State to toggle between the two profile pictures
   const [isProfileAlt, setIsProfileAlt] = useState(false);
   
   const { resolvedTheme } = useTheme();
@@ -33,7 +32,6 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Updated Theme: Green palette for both Light and Dark modes
   const calendarTheme = {
     light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
     dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
@@ -48,10 +46,21 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
+  // Function to filter data to show only the last 6 months
+  const selectLastSixMonths = (contributions: any) => {
+    const today = new Date();
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(today.getMonth() - 6);
+
+    return contributions.filter((activity: any) => {
+      const date = new Date(activity.date);
+      return date >= sixMonthsAgo && date <= today;
+    });
+  };
+
   return (
     <section id="hero" className="w-full pt-10 pb-0">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Main Grid: Text and Image */}
         <div className="flex flex-col md:flex-row items-start gap-8">
           <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
@@ -118,7 +127,6 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Profile Picture with Click Transition */}
           <div className="shrink-0 pt-2 hidden md:block">
             <div 
               className="cursor-pointer group relative"
@@ -152,14 +160,13 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* GitHub Chart */}
+        {/* GitHub Chart - Optimized to fit without scrolling */}
         <div className="mt-16 w-full max-w-4xl">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
               Contributions
             </h2>
-            <div className="p-6 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 w-full overflow-hidden">
-                <div className="overflow-x-auto custom-scrollbar">
+            <div className="p-6 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 w-full flex justify-center items-center overflow-hidden">
                 {mounted && (
                   <GitHubCalendar 
                     username="rkcode2025"
@@ -167,10 +174,13 @@ export function HeroSection() {
                     blockMargin={4}
                     theme={calendarTheme}
                     hideColorLegend
+                    labels={{
+                        totalCount: "{{count}} contributions in the last 6 months",
+                    }}
+                    transformData={selectLastSixMonths}
                     colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
                   />
                 )}
-                </div>
             </div>
           </BlurFade>
         </div>
