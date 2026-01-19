@@ -51,7 +51,7 @@ export default function Home() {
             className="
               relative
               w-full
-              max-w-[820px]
+              max-w-[850px]
               mx-auto
               px-6 sm:px-10 lg:px-12
               /* Glassmorphism background */
