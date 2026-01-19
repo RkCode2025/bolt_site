@@ -7,7 +7,6 @@ import { ProjectsSection } from '@/components/projects-section';
 import { SocialLinks } from '@/components/social-links';
 import JourneyTimeline from '@/components/JourneyTimeline';
 import BlurFade from '@/components/blurfade';
-// Added ThemeToggle import
 import { ThemeToggle } from '@/components/theme-toggle'; 
 
 const LiveClock = () => {
@@ -43,32 +42,31 @@ export default function Home() {
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
 
-      <div className="relative z-10 min-h-screen flex flex-col">
-        {/* main wrapper with no top/bottom padding to keep card flush */}
+      <div className="relative z-10 min-h-screen flex flex-col py-8">
         <main className="flex-1 flex justify-center px-4 sm:px-8">
           <div
             id="content-card"
             className="
               relative
               w-full
-              max-w-4xl
+              /* Custom width: slightly smaller than 4xl but larger than 3xl */
+              max-w-[850px]
               mx-auto
               px-6 sm:px-10 lg:px-12
               /* Glassmorphism background */
               backdrop-blur-xl bg-background/70
-              /* Rounded corners added */
+              /* Rounded corners */
               rounded-3xl
               /* Dashed borders */
               border-2 border-dashed border-muted-foreground/20
-              /* Remove all shadows cast onto the background */
+              /* Shadow-free clean look */
               shadow-none ring-0
               transition-all duration-500
               flex flex-col
-              /* Ensure children don't bleed out of rounded corners */
               overflow-hidden
             "
           >
-            {/* Header: Location/Clock (Left) & Theme Toggle (Right - Nudged Left) */}
+            {/* Header: Location/Clock (Left) & Theme Toggle (Right) */}
             <BlurFade delay={0.1} className="pt-6 -mb-2">
               <div className="flex items-center justify-between w-full">
                 {/* Left Side: Location & Clock */}
@@ -78,8 +76,8 @@ export default function Home() {
                 </div>
 
                 {/* Right Side: Theme Toggle Button */}
-                {/* Added 'mr-4 sm:mr-8' to bring it a bit to the left, likely above the PFP */}
-                <div className="mr-4 sm:mr-8">
+                {/* mr-12 sm:mr-16 brings it further left to align above the PFP */}
+                <div className="mr-12 sm:mr-16">
                   <ThemeToggle />
                 </div>
               </div>
@@ -104,8 +102,8 @@ export default function Home() {
 
             {/* Footer */}
             <footer className="text-center text-sm text-muted-foreground pb-12 pt-12 border-t border-dashed border-muted-foreground/10 mt-12">
-              <p className="mb-1">Built with Next.js 14, Tailwind & Framer Motion</p>
-              <p>© 2026 — Always learning, always building</p>
+              <p className="mb-1 text-[11px] uppercase tracking-wider">Built with Next.js 14, Tailwind & Framer Motion</p>
+              <p className="opacity-70">© 2026 — Always learning, always building</p>
             </footer>
           </div>
         </main>
