@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import GitHubCalendar from 'react-github-calendar';
 import BlurFade from '@/components/blurfade';
 import { 
   SiPython, 
@@ -13,6 +12,15 @@ import {
   SiScikitlearn, 
   SiPandas 
 } from 'react-icons/si';
+import { 
+  XAxis, 
+  Tooltip, 
+  ResponsiveContainer,
+  CartesianGrid,
+  Area,
+  AreaChart
+} from 'recharts';
+import { format, parseISO } from 'date-fns';
 
 import profilePic from '/profile1.jpg';
 import profilePic2 from '/profile2.jpg';
@@ -23,19 +31,38 @@ export function HeroSection() {
   const [loaded, setLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isProfileAlt, setIsProfileAlt] = useState(false);
+  const [contributionData, setContributionData] = useState<any[]>([]);
+  const [totalContributions, setTotalContributions] = useState(0);
   
   const { resolvedTheme } = useTheme();
 
+  // Fetch GitHub Data
   useEffect(() => {
     setMounted(true);
     const timer = setTimeout(() => setLoaded(true), 50);
+    
+    const fetchContributions = async () => {
+      try {
+        // Fetch data for the last year
+        const response = await fetch('https://github-contributions-api.jogruber.de/v4/rkcode2025?y=last');
+        const data = await response.json();
+        
+        if (data?.contributions) {
+          setContributionData(data.contributions);
+          
+          // Calculate total contributions
+          const total = data.contributions.reduce((acc: number, curr: any) => acc + curr.count, 0);
+          setTotalContributions(total);
+        }
+      } catch (error) {
+        console.error("Failed to fetch github data", error);
+      }
+    };
+
+    fetchContributions();
+
     return () => clearTimeout(timer);
   }, []);
-
-  const calendarTheme = {
-    light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
-    dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
-  };
 
   const techStack = [
     { name: 'Python', icon: <SiPython className="text-blue-400" /> },
@@ -46,17 +73,24 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
-  // Updated to 10 months to ensure the graph looks "full" across the card width
-  const selectLastTenMonths = (contributions: any) => {
-    const today = new Date();
-    const tenMonthsAgo = new Date();
-    tenMonthsAgo.setMonth(today.getMonth() - 10);
-
-    return contributions.filter((activity: any) => {
-      const date = new Date(activity.date);
-      return date >= tenMonthsAgo && date <= today;
-    });
+  // Custom Tooltip for the Graph
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-popover/90 border border-border p-3 rounded-lg shadow-xl backdrop-blur-sm text-xs">
+          <p className="font-semibold mb-1">{format(parseISO(label), 'MMMM d, yyyy')}</p>
+          <p className="text-primary">
+            {payload[0].value} contributions
+          </p>
+        </div>
+      );
+    }
+    return null;
   };
+
+  // Determine chart colors based on theme
+  const chartColor = resolvedTheme === 'dark' ? '#4ade80' : '#16a34a'; // Green-400 (dark) vs Green-600 (light)
+  const gridColor = resolvedTheme === 'dark' ? '#333' : '#e5e5e5';
 
   return (
     <section id="hero" className="w-full pt-10 pb-0">
@@ -159,31 +193,59 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* GitHub Chart - Optimized for Full Width */}
+        {/* GitHub Line Graph - Replaces Calendar Box */}
         <div className="mt-16 w-full">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
-            <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight mb-4">
-              Contributions
-            </h2>
-            {/* Reduced internal padding from p-8 to p-3/sm:p-5 to bring text closer to border */}
-            <div className="p-3 sm:p-5 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 flex flex-col items-center">
-                {mounted && (
-                  <div className="w-full flex justify-center scale-[0.95] sm:scale-100 origin-center">
-                    <GitHubCalendar 
-                      username="rkcode2025"
-                      // Reduced blockSize for a cleaner look
-                      blockSize={12} 
-                      blockMargin={4}
-                      theme={calendarTheme}
-                      hideColorLegend
-                      labels={{
-                          totalCount: "{{count}} contributions in the last 10 months",
-                      }}
-                      transformData={selectLastTenMonths}
-                      colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+                Contributions
+              </h2>
+              <span className="text-xs md:text-sm text-muted-foreground font-mono">
+                {totalContributions} contributions last year
+              </span>
+            </div>
+            
+            <div className="w-full h-[250px] p-4 pt-6 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 relative overflow-hidden">
+              {mounted && contributionData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={contributionData}>
+                    <defs>
+                      <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={chartColor} stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor={chartColor} stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid 
+                      vertical={false} 
+                      strokeDasharray="3 3" 
+                      stroke={gridColor} 
+                      opacity={0.1} 
                     />
-                  </div>
-                )}
+                    <XAxis 
+                      dataKey="date" 
+                      tickLine={false}
+                      axisLine={false}
+                      minTickGap={30}
+                      tickFormatter={(str) => format(parseISO(str), 'MMM')}
+                      tick={{ fontSize: 12, fill: '#888' }}
+                      dy={10}
+                    />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: chartColor, strokeWidth: 1, strokeDasharray: '4 4' }} />
+                    <Area 
+                      type="monotone" 
+                      dataKey="count" 
+                      stroke={chartColor} 
+                      strokeWidth={2}
+                      fillOpacity={1} 
+                      fill="url(#colorCount)" 
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-muted-foreground animate-pulse">
+                  Loading contributions...
+                </div>
+              )}
             </div>
           </BlurFade>
         </div>
