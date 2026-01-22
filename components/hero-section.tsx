@@ -46,15 +46,12 @@ export function HeroSection() {
         const data = await response.json();
         
         if (data?.contributions) {
-          // Filter for the last 6 months only
           const sixMonthsAgo = subMonths(new Date(), 6);
           const filteredData = data.contributions.filter((day: any) => 
             isAfter(parseISO(day.date), sixMonthsAgo)
           );
 
           setContributionData(filteredData);
-          
-          // Calculate total for the 6-month period
           const total = filteredData.reduce((acc: number, curr: any) => acc + curr.count, 0);
           setTotalContributions(total);
         }
@@ -93,12 +90,12 @@ export function HeroSection() {
   };
 
   const chartColor = resolvedTheme === 'dark' ? '#22c55e' : '#16a34a'; 
-  const gridColor = resolvedTheme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
+  const gridColor = resolvedTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
 
   return (
-    <section id="hero" className="w-full pt-10 pb-0">
+    <section id="hero" className="w-full pt-10 pb-10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row items-start gap-8">
+        <div className="flex flex-col md:flex-row items-start gap-12">
           <div className="flex-1 w-full">
             <BlurFade delay={BLUR_FADE_DELAY}>
               <h1 className="font-heading text-5xl md:text-6xl font-semibold mb-4 tracking-tight">
@@ -109,23 +106,23 @@ export function HeroSection() {
             <BlurFade delay={BLUR_FADE_DELAY * 2}>
               <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
                 I'm an AI/ML developer currently learning{" "}
-                <span className="underline decoration-white-500/40 decoration-2 underline-offset-4 text-foreground/90">
+                <span className="underline decoration-primary/40 decoration-2 underline-offset-4 text-foreground/90 font-medium">
                   Pytorch
                 </span>{" "}
                 and deep learning. I am interested in{" "}
-                <span className="underline decoration-white-500/40 decoration-2 underline-offset-4 text-foreground/90">
+                <span className="underline decoration-primary/40 decoration-2 underline-offset-4 text-foreground/90 font-medium">
                   Natural Language Processing
                 </span>{" "}
-                with focus on Research with implementing new designs for{" "}
-                <span className="underline decoration-white-500/40 decoration-2 underline-offset-4 text-foreground/90">
+                with focus on Research and implementing new designs for{" "}
+                <span className="underline decoration-primary/40 decoration-2 underline-offset-4 text-foreground/90 font-medium">
                   Language Models
                 </span>.
               </p>
             </BlurFade>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <BlurFade delay={BLUR_FADE_DELAY * 3}>
-                <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight">
+                <h2 className="font-heading text-lg md:text-xl font-medium tracking-tight opacity-80">
                   About
                 </h2>
               </BlurFade>
@@ -138,25 +135,25 @@ export function HeroSection() {
               </BlurFade>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+                <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight opacity-80">
                   Tech Stack
                 </h2>
               </BlurFade>
-              <div className="flex flex-wrap items-center gap-2 mt-3 overflow-visible">
+              <div className="flex flex-wrap items-center gap-3 mt-4">
                 {techStack.map((tech, idx) => (
                   <BlurFade 
                     key={tech.name} 
                     delay={BLUR_FADE_DELAY * 6 + idx * 0.05} 
                     inView
                   >
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border 
-                      bg-secondary/50 text-secondary-foreground border-border/50
-                      dark:bg-neutral-900/60 dark:text-neutral-200 dark:border-neutral-800
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-xl border 
+                      bg-secondary/30 text-secondary-foreground border-border/40
+                      dark:bg-neutral-900/40 dark:text-neutral-200 dark:border-neutral-800/50
                       transition-all duration-300 hover:scale-105 whitespace-nowrap">
-                      <span className="text-lg shrink-0">{tech.icon}</span>
-                      <span className="font-info text-xs md:text-sm font-medium">{tech.name}</span>
+                      <span className="text-xl shrink-0">{tech.icon}</span>
+                      <span className="font-info text-xs md:text-sm font-semibold">{tech.name}</span>
                     </div>
                   </BlurFade>
                 ))}
@@ -164,7 +161,7 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="shrink-0 pt-2 hidden md:block">
+          <div className="shrink-0 pt-4 hidden md:block">
             <div 
               className="cursor-pointer group relative"
               onClick={() => setIsProfileAlt(!isProfileAlt)}
@@ -175,9 +172,9 @@ export function HeroSection() {
                 duration={0.4}
               >
                 <div
-                  className={`w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden shadow-xl border border-white/10 transform transition-all duration-700 ease-out ${
-                    loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                  } group-hover:scale-105 group-active:scale-95`}
+                  className={`w-32 h-32 md:w-44 md:h-44 rounded-3xl overflow-hidden shadow-2xl border border-white/5 transform transition-all duration-700 ease-out ${
+                    loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  } group-hover:rotate-2 group-hover:scale-105`}
                 >
                   <Image
                     src={isProfileAlt ? profilePic2 : profilePic}
@@ -189,43 +186,45 @@ export function HeroSection() {
                   />
                 </div>
               </BlurFade>
-              <div className="absolute -bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-60 transition-opacity duration-300">
-                <span className="text-[10px] font-medium uppercase tracking-widest">Click to flip</span>
+              <div className="absolute -bottom-8 left-0 right-0 text-center opacity-0 group-hover:opacity-40 transition-opacity duration-300">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Switch View</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Improved 6-Month Contribution Graph */}
-        <div className="mt-16 w-full">
+        {/* Improved Contribution Graph Section */}
+        <div className="mt-20 w-full">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
-            <div className="flex items-end justify-between mb-6 px-1">
-              <div>
-                <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
-                  Contributions
+            <div className="flex items-end justify-between mb-8 px-2">
+              <div className="space-y-1">
+                <h2 className="font-heading text-xl md:text-2xl font-bold tracking-tight">
+                  Activity
                 </h2>
-                <p className="text-xs text-muted-foreground">Last 6 months activity</p>
+                <p className="text-sm text-muted-foreground font-medium">GitHub contributions • Last 6 months</p>
               </div>
-              <div className="text-right">
-                <span className="text-xl md:text-2xl font-mono font-bold text-primary">
+              <div className="text-right flex flex-col items-end">
+                <span className="text-2xl md:text-3xl font-mono font-bold text-primary tabular-nums">
                   {totalContributions}
                 </span>
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Total Contributions</p>
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Total Units</p>
               </div>
             </div>
             
-            <div className="w-full h-[280px] p-6 rounded-3xl border border-border/60 bg-gradient-to-b from-secondary/20 to-transparent backdrop-blur-sm relative overflow-hidden">
+            {/* Height increased to 320px to prevent crammed feel */}
+            <div className="w-full h-[320px] p-6 pb-2 rounded-[2.5rem] border border-border/40 bg-secondary/5 dark:bg-neutral-900/20 backdrop-blur-sm relative overflow-visible">
               {mounted && contributionData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={contributionData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  {/* Added more bottom margin here to fix the text cutting off */}
+                  <AreaChart data={contributionData} margin={{ top: 10, right: 10, left: -25, bottom: 25 }}>
                     <defs>
                       <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={chartColor} stopOpacity={0.4}/>
+                        <stop offset="5%" stopColor={chartColor} stopOpacity={0.3}/>
                         <stop offset="95%" stopColor={chartColor} stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid 
-                      strokeDasharray="3 3" 
+                      strokeDasharray="4 4" 
                       vertical={true} 
                       horizontal={true}
                       stroke={gridColor} 
@@ -234,12 +233,13 @@ export function HeroSection() {
                       dataKey="date" 
                       axisLine={false}
                       tickLine={false}
-                      minTickGap={45}
+                      minTickGap={40}
                       tickFormatter={(str) => format(parseISO(str), 'MMM')}
-                      tick={{ fontSize: 12, fill: '#888', fontWeight: 500 }}
-                      dy={15}
+                      // Style adjusted for better visibility
+                      tick={{ fontSize: 12, fill: '#888', fontWeight: 600 }}
+                      dy={20} // Pushes labels down away from the grid
                     />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: chartColor, strokeWidth: 1 }} />
                     <Area 
                       type="monotone" 
                       dataKey="count" 
@@ -252,8 +252,8 @@ export function HeroSection() {
                   </AreaChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground animate-pulse font-mono text-sm">
-                  LOADING_DATA_STREAM...
+                <div className="w-full h-full flex items-center justify-center text-muted-foreground animate-pulse font-mono text-sm tracking-widest">
+                  SYNCING_GTIHUB_METRICS...
                 </div>
               )}
             </div>
