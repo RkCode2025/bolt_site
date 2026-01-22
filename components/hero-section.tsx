@@ -20,7 +20,7 @@ import {
   Area,
   AreaChart
 } from 'recharts';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, subMonths, isAfter } from 'date-fns';
 
 import profilePic from '/profile1.jpg';
 import profilePic2 from '/profile2.jpg';
@@ -36,22 +36,26 @@ export function HeroSection() {
   
   const { resolvedTheme } = useTheme();
 
-  // Fetch GitHub Data
   useEffect(() => {
     setMounted(true);
     const timer = setTimeout(() => setLoaded(true), 50);
     
     const fetchContributions = async () => {
       try {
-        // Fetch data for the last year
         const response = await fetch('https://github-contributions-api.jogruber.de/v4/rkcode2025?y=last');
         const data = await response.json();
         
         if (data?.contributions) {
-          setContributionData(data.contributions);
+          // Filter for the last 6 months only
+          const sixMonthsAgo = subMonths(new Date(), 6);
+          const filteredData = data.contributions.filter((day: any) => 
+            isAfter(parseISO(day.date), sixMonthsAgo)
+          );
+
+          setContributionData(filteredData);
           
-          // Calculate total contributions
-          const total = data.contributions.reduce((acc: number, curr: any) => acc + curr.count, 0);
+          // Calculate total for the 6-month period
+          const total = filteredData.reduce((acc: number, curr: any) => acc + curr.count, 0);
           setTotalContributions(total);
         }
       } catch (error) {
@@ -60,7 +64,6 @@ export function HeroSection() {
     };
 
     fetchContributions();
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -73,14 +76,15 @@ export function HeroSection() {
     { name: 'Pandas', icon: <SiPandas className="text-indigo-400" /> },
   ];
 
-  // Custom Tooltip for the Graph
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-popover/90 border border-border p-3 rounded-lg shadow-xl backdrop-blur-sm text-xs">
-          <p className="font-semibold mb-1">{format(parseISO(label), 'MMMM d, yyyy')}</p>
-          <p className="text-primary">
-            {payload[0].value} contributions
+        <div className="bg-background/95 border border-border px-3 py-2 rounded-lg shadow-2xl backdrop-blur-md">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">
+            {format(parseISO(label), 'MMM d, yyyy')}
+          </p>
+          <p className="text-sm font-semibold text-foreground">
+            {payload[0].value} Contributions
           </p>
         </div>
       );
@@ -88,9 +92,8 @@ export function HeroSection() {
     return null;
   };
 
-  // Determine chart colors based on theme
-  const chartColor = resolvedTheme === 'dark' ? '#4ade80' : '#16a34a'; // Green-400 (dark) vs Green-600 (light)
-  const gridColor = resolvedTheme === 'dark' ? '#333' : '#e5e5e5';
+  const chartColor = resolvedTheme === 'dark' ? '#22c55e' : '#16a34a'; 
+  const gridColor = resolvedTheme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
 
   return (
     <section id="hero" className="w-full pt-10 pb-0">
@@ -193,57 +196,64 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* GitHub Line Graph - Replaces Calendar Box */}
+        {/* Improved 6-Month Contribution Graph */}
         <div className="mt-16 w-full">
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
-                Contributions
-              </h2>
-              <span className="text-xs md:text-sm text-muted-foreground font-mono">
-                {totalContributions} contributions last year
-              </span>
+            <div className="flex items-end justify-between mb-6 px-1">
+              <div>
+                <h2 className="font-heading text-lg md:text-xl font-semibold tracking-tight">
+                  Contributions
+                </h2>
+                <p className="text-xs text-muted-foreground">Last 6 months activity</p>
+              </div>
+              <div className="text-right">
+                <span className="text-xl md:text-2xl font-mono font-bold text-primary">
+                  {totalContributions}
+                </span>
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Total Contributions</p>
+              </div>
             </div>
             
-            <div className="w-full h-[250px] p-4 pt-6 rounded-2xl border border-border/50 bg-secondary/10 dark:bg-neutral-900/40 relative overflow-hidden">
+            <div className="w-full h-[280px] p-6 rounded-3xl border border-border/60 bg-gradient-to-b from-secondary/20 to-transparent backdrop-blur-sm relative overflow-hidden">
               {mounted && contributionData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={contributionData}>
+                  <AreaChart data={contributionData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={chartColor} stopOpacity={0.3}/>
+                        <stop offset="5%" stopColor={chartColor} stopOpacity={0.4}/>
                         <stop offset="95%" stopColor={chartColor} stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid 
-                      vertical={false} 
                       strokeDasharray="3 3" 
+                      vertical={true} 
+                      horizontal={true}
                       stroke={gridColor} 
-                      opacity={0.1} 
                     />
                     <XAxis 
                       dataKey="date" 
-                      tickLine={false}
                       axisLine={false}
-                      minTickGap={30}
+                      tickLine={false}
+                      minTickGap={45}
                       tickFormatter={(str) => format(parseISO(str), 'MMM')}
-                      tick={{ fontSize: 12, fill: '#888' }}
-                      dy={10}
+                      tick={{ fontSize: 12, fill: '#888', fontWeight: 500 }}
+                      dy={15}
                     />
-                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: chartColor, strokeWidth: 1, strokeDasharray: '4 4' }} />
+                    <Tooltip content={<CustomTooltip />} />
                     <Area 
                       type="monotone" 
                       dataKey="count" 
                       stroke={chartColor} 
-                      strokeWidth={2}
+                      strokeWidth={3}
                       fillOpacity={1} 
-                      fill="url(#colorCount)" 
+                      fill="url(#colorCount)"
+                      animationDuration={1500}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground animate-pulse">
-                  Loading contributions...
+                <div className="w-full h-full flex items-center justify-center text-muted-foreground animate-pulse font-mono text-sm">
+                  LOADING_DATA_STREAM...
                 </div>
               )}
             </div>
