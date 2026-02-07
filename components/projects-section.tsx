@@ -6,7 +6,7 @@ import BlurFade from '@/components/blurfade';
 import Image from 'next/image';
 
 // Assuming these are exported from your constants or local assets
-import neuralNetImg from '/e.jpg';
+import neuralNetImg from '/e.png';
 import xtrainImg from '/pr.jpeg';
 import amazonImg from '/t.jpg';
 
