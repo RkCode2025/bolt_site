@@ -28,11 +28,12 @@ const projects: Project[] = [
     github: 'https://github.com/rkcode2025/wikitext-MoE-40M',
   },
   {
-    title: 'Neural Network from Scratch',
-    description: 'Recreating a Multilayer Perceptron Neural Network from scratch.',
-    tags: ['Python', 'Scikit-Learn', 'Numpy'],
+    title: 'AI Image Authentication',
+    description: 'A forensic CNN tool to detect AI-generated imagery with 94.7% accuracy.',
+    tags: ['PyTorch', 'CNN', 'Gradio'],
     image: neuralNetImg,
-    github: 'https://github.com/rkcode2025/Hand_Digit_Recognition_with_Multilayer_Perceptron',
+    github: 'https://github.com/rkcode2025/AiAuth',
+    demo: 'https://tinyurl.com/syphaxauth',
   },
   {
     title: 'XTRAIN',
@@ -45,8 +46,7 @@ const projects: Project[] = [
 
 const BLUR_FADE_DELAY = 0.2;
 
-// Fixed TypeScript error by adding 'as const'
-// This ensures the transition and timing are identical for all child animations
+// Shared animation transition for consistency
 const SHARED_TRANSITION = {
   duration: 0.4,
   ease: [0.25, 1, 0.5, 1] as const, 
@@ -56,6 +56,7 @@ export function ProjectsSection() {
   return (
     <section id="projects" className="px-6 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
+        {/* Section Header */}
         <BlurFade delay={BLUR_FADE_DELAY} inView>
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-1 tracking-tight">
             Projects
@@ -68,6 +69,7 @@ export function ProjectsSection() {
           </p>
         </BlurFade>
 
+        {/* Project Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <BlurFade 
@@ -116,6 +118,7 @@ export function ProjectsSection() {
                     {project.description}
                   </p>
 
+                  {/* Tags */}
                   <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
                     {project.tags.map((tag) => (
                       <span
@@ -127,6 +130,7 @@ export function ProjectsSection() {
                     ))}
                   </div>
 
+                  {/* Action Buttons */}
                   <div className="flex gap-3">
                     {project.github && (
                       <a
