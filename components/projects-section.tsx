@@ -22,7 +22,7 @@ interface Project {
 const projects: Project[] = [
   {
     title: 'Efficient MoE Transformer',
-    description: 'A compact 109M MoE transformer benchmarking on Wikitext-2.',
+    description: 'Compact Transformer benchmarking on Wikitext-2.',
     tags: ['Pytorch', 'Transformer', 'Research'],
     image: amazonImg,
     github: 'https://github.com/rkcode2025/wikitext-MoE-40M',
