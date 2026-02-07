@@ -29,10 +29,10 @@ const projects: Project[] = [
   },
   {
     title: 'AI Image Authentication',
-    description: 'A forensic CNN tool to detect AI-generated imagery with 94.7% accuracy.',
+    description: 'Using Custom CNN to detect AI-generated imagery.',
     tags: ['PyTorch', 'CNN', 'Gradio'],
     image: neuralNetImg,
-    github: 'https://github.com/rkcode2025/AiAuth',
+    github: 'https://github.com/RkCode2025/AI-Authenticator',
     demo: 'https://tinyurl.com/syphaxauth',
   },
   {
