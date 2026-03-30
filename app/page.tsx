@@ -33,7 +33,6 @@ const LiveClock = () => {
 export default function Home() {
   return (
     <>
-      {/* Background stays global and outside */}
       <div className="fixed inset-0 -z-10">
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
@@ -46,7 +45,6 @@ export default function Home() {
               w-full
               max-w-4xl
               mx-auto
-              px-6 sm:px-10 lg:px-12
               backdrop-blur-xl bg-background/70
               rounded-3xl
               border-2 border-dashed border-muted-foreground/20
@@ -56,36 +54,48 @@ export default function Home() {
               overflow-hidden
             "
           >
-            {/* Location & Clock Header */}
-            <BlurFade delay={0.1} className="pt-6 -mb-2">
+            {/* ── Header Tab Bar ── */}
+            <BlurFade delay={0.1}>
               <div className="
                 flex items-center gap-2
+                px-6 sm:px-10 lg:px-12
+                py-3
+                bg-muted/40 dark:bg-muted/20
+                border-b-2 border-muted-foreground/20
+                shadow-[inset_0_-1px_0_0_hsl(var(--muted-foreground)/0.06),0_1px_3px_0_hsl(var(--background)/0.4)]
                 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium
-                pb-4
-                border-b-2 border-muted-foreground/30
-                shadow-[0_2px_0_0_hsl(var(--muted-foreground)/0.08),0_3px_0_0_hsl(var(--muted-foreground)/0.03)]
               ">
                 <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Jammu & Kashmir, India • <LiveClock />
               </div>
             </BlurFade>
 
-            {/* Content Sections */}
-            <section id="hero" className="pt-2 scroll-mt-20">
-              <HeroSection />
-            </section>
-            <section id="journey" className="mt-8 scroll-mt-20">
-              <JourneyTimeline />
-            </section>
-            <section id="projects" className="mt-8 scroll-mt-20">
-              <ProjectsSection />
-            </section>
-            <section id="socials" className="mt-8 scroll-mt-20">
-              <SocialLinks />
-            </section>
+            {/* ── Content Sections ── */}
+            <div className="px-6 sm:px-10 lg:px-12">
+              <section id="hero" className="pt-6 scroll-mt-20">
+                <HeroSection />
+              </section>
+              <section id="journey" className="mt-8 scroll-mt-20">
+                <JourneyTimeline />
+              </section>
+              <section id="projects" className="mt-8 scroll-mt-20">
+                <ProjectsSection />
+              </section>
+              <section id="socials" className="mt-8 scroll-mt-20">
+                <SocialLinks />
+              </section>
+            </div>
 
-            {/* Footer */}
-            <footer className="text-center text-sm text-muted-foreground pb-12 pt-12 border-t border-dashed border-muted-foreground/10 mt-12">
+            {/* ── Footer Tab Bar ── */}
+            <footer className="
+              mt-12
+              px-6 sm:px-10 lg:px-12
+              py-4
+              text-center text-sm text-muted-foreground
+              bg-muted/40 dark:bg-muted/20
+              border-t-2 border-muted-foreground/20
+              shadow-[inset_0_1px_0_0_hsl(var(--muted-foreground)/0.06),0_-1px_3px_0_hsl(var(--background)/0.4)]
+            ">
               <p className="mb-1">Built with Next.js 14, Tailwind & Framer Motion</p>
               <p>© 2026 — Always learning, always building</p>
             </footer>
