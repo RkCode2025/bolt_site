@@ -62,8 +62,8 @@ export default function Home() {
                 flex items-center gap-2
                 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium
                 pb-4
-                border-b border-muted-foreground/15
-                shadow-[0_1px_0_0_hsl(var(--muted-foreground)/0.05)]
+                border-b-2 border-muted-foreground/30
+                shadow-[0_2px_0_0_hsl(var(--muted-foreground)/0.08),0_3px_0_0_hsl(var(--muted-foreground)/0.03)]
               ">
                 <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Jammu & Kashmir, India • <LiveClock />
