@@ -61,7 +61,7 @@ export default function Home() {
                 px-6 sm:px-10 lg:px-12
                 py-6 {/* Increased from py-3 */}
                 bg-muted/40 dark:bg-muted/20
-                border-b-2 border-muted-foreground/20
+                border-b-2 border-dashed border-muted-foreground/20
                 shadow-[inset_0_-1px_0_0_hsl(var(--muted-foreground)/0.06),0_1px_3px_0_hsl(var(--background)/0.4)]
                 text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium
               ">
