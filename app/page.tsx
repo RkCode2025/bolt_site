@@ -33,14 +33,11 @@ const LiveClock = () => {
 export default function Home() {
   return (
     <>
-      {/* Background Layer */}
       <div className="fixed inset-0 -z-10">
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
-
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Main container: Removed vertical padding (py-0) to touch top and bottom */}
-        <main className="flex-1 flex justify-center px-4 sm:px-8 py-0"> 
+        <main className="flex-1 flex justify-center px-4 sm:px-8 py-3"> {/* Added vertical padding to main container */}
           <div
             id="content-card"
             className="
@@ -49,73 +46,63 @@ export default function Home() {
               max-w-4xl
               mx-auto
               backdrop-blur-xl bg-background/70
-              /* Removed top/bottom rounding to sit flush with screen edges */
-              rounded-l-3xl rounded-r-3xl rounded-t-none rounded-b-none 
-              border-x-2 border-dashed border-muted-foreground/20
-              shadow-none
+              rounded-3xl
+              border-2 border-dashed border-muted-foreground/20
+              shadow-none ring-0
+              transition-all duration-500
               flex flex-col
-              min-h-screen
+              overflow-hidden
             "
           >
-            {/* ── HEADER: Deep padding & Black/Large text ── */}
+            {/* ── Header Tab Bar (Increased Height) ── */}
             <BlurFade delay={0.1}>
               <div className="
-                flex items-center justify-between
-                px-8 sm:px-12
-                py-12 {/* Very long header */}
-                bg-muted/50 dark:bg-muted/30
+                flex items-center gap-2
+                px-6 sm:px-10 lg:px-12
+                py-6 {/* Increased from py-3 */}
+                bg-muted/40 dark:bg-muted/20
                 border-b-2 border-muted-foreground/20
-                text-sm sm:text-base uppercase tracking-[0.3em] text-foreground font-black
+                shadow-[inset_0_-1px_0_0_hsl(var(--muted-foreground)/0.06),0_1px_3px_0_hsl(var(--background)/0.4)]
+                text-[10px] uppercase tracking-widest text-muted-foreground/70 font-medium
               ">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>J&K, INDIA • <LiveClock /></span>
-                </div>
-                <div className="hidden md:block opacity-40">
-                  PORTFOLIO / 2026
-                </div>
+                <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Jammu & Kashmir, India • <LiveClock />
               </div>
             </BlurFade>
 
-            {/* ── CONTENT: Main Body ── */}
+            {/* ── Content Sections ── */}
             <div className="px-6 sm:px-10 lg:px-12 flex-1">
-              <section id="hero" className="pt-12 scroll-mt-20">
+              <section id="hero" className="pt-8 scroll-mt-20">
                 <HeroSection />
               </section>
-              <section id="journey" className="mt-20 scroll-mt-20">
+              <section id="journey" className="mt-12 scroll-mt-20">
                 <JourneyTimeline />
               </section>
-              <section id="projects" className="mt-20 scroll-mt-20">
+              <section id="projects" className="mt-12 scroll-mt-20">
                 <ProjectsSection />
               </section>
-              <section id="socials" className="mt-20 mb-20 scroll-mt-20">
+              <section id="socials" className="mt-12 mb-12 scroll-mt-20">
                 <SocialLinks />
               </section>
             </div>
 
-            {/* ── FOOTER: Deep padding & Extra Bold ── */}
+            {/* ── Footer Tab Bar (Increased Height) ── */}
             <footer className="
-              px-8 sm:px-12
-              py-20 {/* Extra long footer */}
-              text-center
-              bg-muted/50 dark:bg-muted/30
+              px-6 sm:px-10 lg:px-12
+              py-10 {/* Increased from py-4 */}
+              text-center text-sm text-muted-foreground
+              bg-muted/40 dark:bg-muted/20
               border-t-2 border-muted-foreground/20
+              shadow-[inset_0_1px_0_0_hsl(var(--muted-foreground)/0.06),0_-1px_3px_0_hsl(var(--background)/0.4)]
             ">
-              <div className="space-y-4">
-                <p className="text-xl sm:text-2xl font-black text-foreground tracking-tighter italic">
-                  BUILT WITH NEXT.JS 14 & FRAMER MOTION
-                </p>
-                <div className="h-px w-12 bg-muted-foreground/30 mx-auto" />
-                <p className="text-xs sm:text-sm font-bold text-muted-foreground tracking-[0.5em] uppercase">
-                  © 2026 — ALWAYS BUILDING
-                </p>
-              </div>
+              <p className="mb-2 font-medium">Built with Next.js 14, Tailwind & Framer Motion</p>
+              <p className="opacity-70">© 2026 — Always learning, always building</p>
             </footer>
           </div>
         </main>
 
-        {/* Floating Navigation */}
-        <div className="fixed bottom-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
+        {/* Floating Bottom Navigation */}
+        <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
           <div className="pointer-events-auto">
             <BottomNav />
           </div>
