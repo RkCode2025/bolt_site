@@ -37,7 +37,7 @@ export default function Home() {
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
       <div className="relative z-10 min-h-screen flex flex-col">
-        <main className="flex-1 flex justify-center px-4 sm:px-8">
+        <main className="flex-1 flex justify-center px-4 sm:px-8 py-10"> {/* Added vertical padding to main container */}
           <div
             id="content-card"
             className="
@@ -54,12 +54,12 @@ export default function Home() {
               overflow-hidden
             "
           >
-            {/* ── Header Tab Bar ── */}
+            {/* ── Header Tab Bar (Increased Height) ── */}
             <BlurFade delay={0.1}>
               <div className="
                 flex items-center gap-2
                 px-6 sm:px-10 lg:px-12
-                py-3
+                py-6 {/* Increased from py-3 */}
                 bg-muted/40 dark:bg-muted/20
                 border-b-2 border-muted-foreground/20
                 shadow-[inset_0_-1px_0_0_hsl(var(--muted-foreground)/0.06),0_1px_3px_0_hsl(var(--background)/0.4)]
@@ -71,33 +71,32 @@ export default function Home() {
             </BlurFade>
 
             {/* ── Content Sections ── */}
-            <div className="px-6 sm:px-10 lg:px-12">
-              <section id="hero" className="pt-6 scroll-mt-20">
+            <div className="px-6 sm:px-10 lg:px-12 flex-1">
+              <section id="hero" className="pt-8 scroll-mt-20">
                 <HeroSection />
               </section>
-              <section id="journey" className="mt-8 scroll-mt-20">
+              <section id="journey" className="mt-12 scroll-mt-20">
                 <JourneyTimeline />
               </section>
-              <section id="projects" className="mt-8 scroll-mt-20">
+              <section id="projects" className="mt-12 scroll-mt-20">
                 <ProjectsSection />
               </section>
-              <section id="socials" className="mt-8 scroll-mt-20">
+              <section id="socials" className="mt-12 mb-12 scroll-mt-20">
                 <SocialLinks />
               </section>
             </div>
 
-            {/* ── Footer Tab Bar ── */}
+            {/* ── Footer Tab Bar (Increased Height) ── */}
             <footer className="
-              mt-12
               px-6 sm:px-10 lg:px-12
-              py-4
+              py-10 {/* Increased from py-4 */}
               text-center text-sm text-muted-foreground
               bg-muted/40 dark:bg-muted/20
               border-t-2 border-muted-foreground/20
               shadow-[inset_0_1px_0_0_hsl(var(--muted-foreground)/0.06),0_-1px_3px_0_hsl(var(--background)/0.4)]
             ">
-              <p className="mb-1">Built with Next.js 14, Tailwind & Framer Motion</p>
-              <p>© 2026 — Always learning, always building</p>
+              <p className="mb-2 font-medium">Built with Next.js 14, Tailwind & Framer Motion</p>
+              <p className="opacity-70">© 2026 — Always learning, always building</p>
             </footer>
           </div>
         </main>
