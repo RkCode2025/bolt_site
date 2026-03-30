@@ -37,7 +37,7 @@ export default function Home() {
         <AnimatedBackground className="opacity-60 dark:opacity-40" />
       </div>
       <div className="relative z-10 min-h-screen flex flex-col">
-        <main className="flex-1 flex justify-center px-4 sm:px-8 py-3"> {/* Added vertical padding to main container */}
+        <main className="flex-1 flex justify-center px-4 sm:px-8 py-0"> {/* Added vertical padding to main container */}
           <div
             id="content-card"
             className="
