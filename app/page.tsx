@@ -72,7 +72,7 @@ export default function Home() {
 
             {/* ── Content Sections ── */}
             <div className="px-6 sm:px-10 lg:px-12 flex-1">
-              <section id="hero" className="pt-8 scroll-mt-20">
+              <section id="hero" className="pt-3 scroll-mt-20">
                 <HeroSection />
               </section>
               <section id="journey" className="mt-12 scroll-mt-20">
