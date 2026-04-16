@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react'; // Keeping Send for the button
+import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import BlurFade from '@/components/blurfade';
 
@@ -9,19 +9,16 @@ const socialLinks = [
   { 
     name: 'GitHub', 
     url: 'https://github.com/rkcode2025', 
-    // Official GitHub logo from Simple Icons
     logo: 'https://cdn.simpleicons.org/github/white' 
   },
   { 
     name: 'X (Twitter)', 
     url: 'https://x.com/syphax_twt', 
-    // Official X logo
     logo: 'https://cdn.simpleicons.org/x/white' 
   },
   { 
     name: 'Gmail', 
     url: 'mailto:syphaxtwt2025@gmail.com', 
-    // Official Gmail logo (using color version for Gmail usually looks better)
     logo: 'https://cdn.simpleicons.org/gmail/EA4335' 
   },
 ];
@@ -31,10 +28,49 @@ const BLUR_FADE_DELAY = 0.04;
 export function SocialLinks() {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-  const handleSend = () => {
-    const mailtoUrl = `mailto:syphaxtwt2025@gmail.com?subject=Message from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}`;
-    window.location.href = mailtoUrl;
+  const handleSend = async () => {
+    // Basic validation
+    if (!name.trim() || !message.trim()) return;
+
+    setStatus('sending');
+
+    // PASTE YOUR DISCORD WEBHOOK URL HERE
+    const DISCORD_WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL_HERE";
+
+    try {
+      const response = await fetch(DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: "🚀 New Portfolio Message",
+            color: 0x5865F2, // Discord Blurple
+            fields: [
+              { name: "From", value: name, inline: true },
+              { name: "Message", value: message }
+            ],
+            timestamp: new Date().toISOString(),
+          }]
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setName('');
+        setMessage('');
+        // Reset button after 3 seconds
+        setTimeout(() => setStatus('idle'), 3000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch (error) {
+      console.error("Discord Webhook Error:", error);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
   };
 
   return (
@@ -54,7 +90,7 @@ export function SocialLinks() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           
-          {/* Left Side: Brand Badge Links */}
+          {/* Left Side: Social Links */}
           <div className="lg:col-span-1 space-y-4">
             <BlurFade delay={BLUR_FADE_DELAY * 3} inView>
               <p className="font-info text-sm text-muted-foreground mb-4">Find me here!</p>
@@ -95,38 +131,65 @@ export function SocialLinks() {
                       <label className="text-xs font-info text-muted-foreground uppercase tracking-wider ml-1">Name</label>
                       <input
                         type="text"
+                        disabled={status === 'sending'}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
-                        className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-info text-sm"
+                        className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-info text-sm disabled:opacity-50"
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-info text-muted-foreground uppercase tracking-wider ml-1">Message</label>
                       <textarea
                         rows={4}
+                        disabled={status === 'sending'}
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Write your message here..."
-                        className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all resize-none font-info text-sm"
+                        className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all resize-none font-info text-sm disabled:opacity-50"
                       />
                     </div>
                   </div>
 
                   <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
+                    whileHover={{ scale: status === 'idle' ? 1.01 : 1 }}
+                    whileTap={{ scale: status === 'idle' ? 0.99 : 1 }}
                     onClick={handleSend}
-                    className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-lg shadow-primary/10"
+                    disabled={status !== 'idle' || !name || !message}
+                    className={`w-full font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-lg disabled:cursor-not-allowed
+                      ${status === 'success' ? 'bg-green-600 text-white' : 
+                        status === 'error' ? 'bg-red-600 text-white' : 
+                        'bg-primary text-primary-foreground shadow-primary/10 disabled:opacity-50'}`}
                   >
-                    <Send className="w-4 h-4" />
-                    Send Message
+                    {status === 'idle' && (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Send Message
+                      </>
+                    )}
+                    {status === 'sending' && (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Sending...
+                      </>
+                    )}
+                    {status === 'success' && (
+                      <>
+                        <CheckCircle2 className="w-4 h-4" />
+                        Message Sent!
+                      </>
+                    )}
+                    {status === 'error' && (
+                      <>
+                        <AlertCircle className="w-4 h-4" />
+                        Something went wrong
+                      </>
+                    )}
                   </motion.button>
                 </div>
               </div>
             </BlurFade>
           </div>
-
         </div>
       </div>
     </section>
