@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import BlurFade from '@/components/blurfade';
-import { sendToDiscord } from '@/app/actions';
 
+// Make sure your paths to simpleicons and blurfade are correct for your project
 const socialLinks = [
   { name: 'GitHub', url: 'https://github.com/rkcode2025', logo: 'https://cdn.simpleicons.org/github/white' },
   { name: 'X (Twitter)', url: 'https://x.com/syphax_twt', logo: 'https://cdn.simpleicons.org/x/white' },
@@ -20,14 +20,40 @@ export function SocialLinks() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   const handleSend = async () => {
+    // Basic validation
     if (!message.trim()) return;
 
     setStatus('sending');
 
-    try {
-      const success = await sendToDiscord(name, message);
+    // Grab the PUBLIC environment variable
+    const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL;
 
-      if (success) {
+    if (!webhookUrl) {
+      console.error("Webhook URL is missing! Check your .env.local or Vercel settings.");
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+
+    try {
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: "📬 New Portfolio Message",
+            color: 0x5865F2,
+            fields: [
+              { name: "Sender", value: name || "Anonymous", inline: true },
+              { name: "Message", value: message }
+            ],
+            footer: { text: "Sent from Static Portfolio" },
+            timestamp: new Date().toISOString(),
+          }]
+        }),
+      });
+
+      if (response.ok) {
         setStatus('success');
         setName('');
         setMessage('');
@@ -37,6 +63,7 @@ export function SocialLinks() {
         setTimeout(() => setStatus('idle'), 3000);
       }
     } catch (error) {
+      console.error("Fetch Error:", error);
       setStatus('error');
       setTimeout(() => setStatus('idle'), 3000);
     }
@@ -45,15 +72,22 @@ export function SocialLinks() {
   return (
     <section id="socials" className="px-10 md:px-22 pt-8 pb-16 relative">
       <div className="max-w-6xl mx-auto">
+        
         <BlurFade delay={BLUR_FADE_DELAY} inView>
-          <h2 className="font-heading text-4xl md:text-5xl font-semibold mb-1 tracking-tight">Contact</h2>
+          <h2 className="font-heading text-4xl md:text-5xl font-semibold mb-1 tracking-tight">
+            Contact
+          </h2>
         </BlurFade>
         
         <BlurFade delay={BLUR_FADE_DELAY * 2} inView>
-          <p className="text-sm md:text-md text-muted-foreground mb-12">Get in touch / Reach out</p>
+          <p className="text-sm md:text-md text-muted-foreground mb-12">
+            Get in touch / Reach out
+          </p>
         </BlurFade>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          
+          {/* Left Side: Social Links */}
           <div className="lg:col-span-1 space-y-4">
             <BlurFade delay={BLUR_FADE_DELAY * 3} inView>
               <p className="font-info text-sm text-muted-foreground mb-4">Find me here!</p>
@@ -62,8 +96,13 @@ export function SocialLinks() {
             <div className="flex flex-col gap-3">
               {socialLinks.map((link, index) => (
                 <BlurFade key={link.name} delay={BLUR_FADE_DELAY * 4 + index * 0.05} inView>
-                  <a href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/30 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all font-info text-sm group">
-                    <img src={link.logo} alt={link.name} className="w-4 h-4 object-contain transition-transform group-hover:scale-110" />
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/30 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all font-info text-sm group"
+                  >
+                    <img src={link.logo} alt={`${link.name} logo`} className="w-4 h-4 object-contain transition-transform group-hover:scale-110" />
                     <span>{link.name}</span>
                   </a>
                 </BlurFade>
@@ -71,10 +110,12 @@ export function SocialLinks() {
             </div>
           </div>
 
+          {/* Right Side: Contact Form Card */}
           <div className="lg:col-span-2">
             <BlurFade delay={BLUR_FADE_DELAY * 6} inView>
               <div className="group relative bg-secondary/30 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border/50 transition-all hover:border-border/80">
                 <div className="relative z-10 space-y-6">
+                  
                   <div className="grid grid-cols-1 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-info text-muted-foreground uppercase tracking-wider ml-1">Name</label>
@@ -115,10 +156,12 @@ export function SocialLinks() {
                     {status === 'success' && <><CheckCircle2 className="w-4 h-4" /> Message Sent!</>}
                     {status === 'error' && <><AlertCircle className="w-4 h-4" /> Something went wrong</>}
                   </motion.button>
+                  
                 </div>
               </div>
             </BlurFade>
           </div>
+
         </div>
       </div>
     </section>
