@@ -4,7 +4,9 @@ export async function sendToDiscord(name: string, message: string) {
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
 
   if (!webhookUrl) {
-    throw new Error("Webhook URL not configured");
+    // This will only log on the Vercel server console, not the user's browser
+    console.error("DISCORD_WEBHOOK_URL is not defined");
+    return false;
   }
 
   try {
@@ -16,7 +18,7 @@ export async function sendToDiscord(name: string, message: string) {
           title: "🚀 New Portfolio Message",
           color: 0x5865F2,
           fields: [
-            { name: "From", value: name, inline: true },
+            { name: "From", value: name || "Anonymous", inline: true },
             { name: "Message", value: message }
           ],
           timestamp: new Date().toISOString(),
@@ -26,7 +28,7 @@ export async function sendToDiscord(name: string, message: string) {
 
     return response.ok;
   } catch (error) {
-    console.error("Server Action Error:", error);
+    console.error("Fetch error:", error);
     return false;
   }
 }
