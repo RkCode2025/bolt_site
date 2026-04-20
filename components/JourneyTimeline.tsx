@@ -18,7 +18,7 @@ const BLUR_FADE_DELAY = 0.04;
 export default function Experience() {
   const experiences: ExperienceItem[] = [
     {
-      role: "AI/ML Developer",
+      role: "Intern",
       company: "Fiberr.co",
       date: "November 2025 – Present",
       logo: fibLogo,
