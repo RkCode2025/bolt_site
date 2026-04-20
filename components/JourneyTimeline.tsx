@@ -22,7 +22,7 @@ export default function Experience() {
       company: "Fiberr.co",
       date: "November 2025 – Present",
       logo: fibLogo,
-      githubUrl: "https://github.com/old-droid",
+      githubUrl: "https://github.com/MangalanLabs",
     },
   ];
 
