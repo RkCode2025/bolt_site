@@ -105,7 +105,7 @@ export function HeroSection() {
             </BlurFade>
 
             <BlurFade delay={BLUR_FADE_DELAY * 2}>
-              <p className="font-info text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+              <p className="font-info text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl">
                 I'm an AI/ML developer currently learning Pytorch
                 and deep learning. I am interested in Natural Language Processing.
                 with focus on Research with implementing new designs for Language Models.
@@ -119,7 +119,7 @@ export function HeroSection() {
                 </h2>
               </BlurFade>
               <BlurFade delay={BLUR_FADE_DELAY * 4}>
-                <p className="font-info mt-2 text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl">
+                <p className="font-info mt-2 text-sm md:text-base text-muted-foreground leading-relaxed max-w-3xl">
                   I started coding and quickly found it both fun and interesting. I’m driven
                   by the desire to build things that make a real impact. My interests lie
                   primarily in Research and modern AI.
