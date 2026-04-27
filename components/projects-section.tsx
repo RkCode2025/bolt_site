@@ -25,32 +25,32 @@ const projects: Project[] = [
   {
     title: 'Efficient MoE Transformer',
     description:
-      'Compact Mixture-of-Experts Transformer architecture benchmarked on Wikitext-2. Designed for parameter efficiency without sacrificing model quality.',
+      'Compact Mixture-of-Experts Model benchmarked on Wikitext-2.',
     tags: ['PyTorch', 'Transformer', 'Research'],
     image: amazonImg,
     github: 'https://github.com/rkcode2025/wikitext-MoE-40M',
-    year: '2024',
+    year: '2025',
     index: 0,
   },
   {
     title: 'AI Image Authentication',
     description:
-      'Custom CNN pipeline for detecting AI-generated imagery with a Gradio interface. Trained on a curated dataset of real vs. synthetic visuals.',
+      'Custom CNN pipeline for detecting AI-generated imagery with a Gradio interface.',
     tags: ['PyTorch', 'CNN', 'Gradio'],
     image: neuralNetImg,
     github: 'https://github.com/RkCode2025/AI-Authenticator',
     demo: 'https://tinyurl.com/syphaxauth',
-    year: '2024',
+    year: '2026',
     index: 1,
   },
   {
     title: 'XTRAIN',
     description:
-      'CPU-focused deep learning library built in collaboration with /old-droid. Pure NumPy at its core — no GPU required.',
+      'CPU-focused deep learning library built in collaboration with /old-droid.',
     tags: ['Deep Learning', 'NumPy', 'Collaboration'],
     image: xtrainImg,
     github: 'https://github.com/old-droid/XTRAIN',
-    year: '2023',
+    year: '2025',
     index: 2,
   },
 ];
