@@ -19,7 +19,7 @@ export default function Experience() {
   const experiences: ExperienceItem[] = [
     {
       role: "Intern",
-      company: "Fiberr.co",
+      company: "Mangalan Labs",
       date: "November 2025 – May 2026",
       logo: fibLogo,
       githubUrl: "https://github.com/MangalanLabs",
