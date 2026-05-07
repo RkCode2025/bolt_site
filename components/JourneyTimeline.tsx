@@ -20,7 +20,7 @@ export default function Experience() {
     {
       role: "Intern",
       company: "Fiberr.co",
-      date: "November 2025 – Present",
+      date: "November 2025 – May 2026",
       logo: fibLogo,
       githubUrl: "https://github.com/MangalanLabs",
     },
