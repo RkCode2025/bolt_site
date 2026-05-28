@@ -22,7 +22,7 @@ import {
 } from 'recharts';
 import { format, parseISO, subMonths, isAfter } from 'date-fns';
 
-import profilePic from '/profile1.jpg';
+import profilePic from '/download.jpg';
 import profilePic2 from '/profile2.jpg';
 
 const BLUR_FADE_DELAY = 0.04;
